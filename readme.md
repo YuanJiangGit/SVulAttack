@@ -97,22 +97,20 @@ To reproduce experiments on LineVul:
 2) Prepare Detect Model  
     - Run the following commands to download the pretrained model "12heads_linevul_model.bin".   
       ```bash  
-      cd SVulAttack  
       cd resources  
       cd SavedModels  
       gdown https://drive.google.com/uc?id=1RkIHg6sFnCQatodDHYhSkuTRSBULmayI
-      cd ../../..   
+      cd ../..   
       ```  
     - For more information of the detect model, refer to [this repository](https://github.com/awsm-research/LineVul).   
 
 3) Prepare DataSet  
     - Run the following commands to download the dataset "data.pkl".   
       ```bash  
-      cd SVulAttack  
       cd resources  
       cd Dataset  
       gdown https://drive.google.com/uc?id=16Ud3P--4DaJnNugiIUmcY7fGuVhUSZpz
-      cd ../../..   
+      cd ../..   
       ```  
     - This file is the Big Vul dataset processed by DataProcess/DataPipline_Big_Vul.py. For more information of the dataset, refer to [this repository](https://github.com/rshariffdeen/Big-Vul/tree/master). 
   
