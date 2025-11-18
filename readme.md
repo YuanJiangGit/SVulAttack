@@ -10,6 +10,7 @@
 - 🗂️ Directory structure  
 - 🔎 Important file descriptions  
 - 🚀 Quick start  
+- 📝 Statement
 - 📚 Citation  
   
 📁 Directory structure  
