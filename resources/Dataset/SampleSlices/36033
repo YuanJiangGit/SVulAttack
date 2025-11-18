@@ -1,0 +1,3 @@
+void CWE78_OS_Command_Injection__char_connect_socket_w32_execvp_21_bad()
+char * args [ ] = { COMMAND_INT_PATH , COMMAND_ARG1 , COMMAND_ARG2 , COMMAND_ARG3 , NULL } ;
+EXECVP ( COMMAND_INT , args );

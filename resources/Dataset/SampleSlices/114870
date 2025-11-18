@@ -1,0 +1,11 @@
+void bad()
+int i ;
+char * data ;
+for(i = 0; i < 1; i++)
+data = new char [ 10 ];
+data [ i ] = source [ i ];
+printLine ( data );
+void printLine (const char * line)
+if ( line != NULL )
+printf ( "%s\n" , line );
+delete [ ] data

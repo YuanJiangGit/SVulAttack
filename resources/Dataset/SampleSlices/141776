@@ -1,0 +1,10 @@
+static void goodG2B()
+wchar_t * data ;
+data = NULL;
+myUnion . unionFirst = data;
+wchar_t * data = myUnion . unionSecond ;
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )
+delete [ ] data

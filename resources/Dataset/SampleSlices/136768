@@ -1,0 +1,4 @@
+static void goodG2B1()
+char * data ;
+data = NULL;
+free ( data );

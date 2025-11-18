@@ -1,0 +1,7 @@
+static void goodB2G()
+list < TwoIntsClass * > dataList ;
+goodB2GSink ( dataList );
+void goodB2GSink(list<TwoIntsClass *> dataList)
+TwoIntsClass * data = dataList . back ( ) ;
+if ( data != NULL )
+printIntLine ( data -> intOne );

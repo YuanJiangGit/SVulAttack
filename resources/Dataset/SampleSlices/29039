@@ -1,0 +1,7 @@
+void CWE457_Use_of_Uninitialized_Variable__int_array_malloc_no_init_05_bad()
+int * data ;
+data = ( int * ) malloc ( 10 * sizeof ( int ) );
+if ( staticTrue )
+int i ;
+for(i=0; i<10; i++)
+printIntLine ( data [ i ] );

@@ -1,0 +1,11 @@
+static uint64_t mipsnet_ioport_read(void *opaque, hwaddr
+unsigned int size)
+MIPSnetState * s = opaque ;
+addr &= 0x3f;
+switch ( addr )
+s -> intctl &= ~MIPSNET_INTCTL_TESTBIT;
+if ( s -> rx_count )
+s -> rx_count --;
+ret = s -> rx_buffer [ s -> rx_read ++ ];
+trace_mipsnet_read ( addr , ret );
+return ret ;

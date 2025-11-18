@@ -1,0 +1,7 @@
+
+BufferTextureClient::AllocateForSurface(gfx::IntSize aSize, TextureAllocationFlags aFlags)
+int bufSize = ImageDataSerializer :: ComputeMinBufferSize ( aSize , mFormat ) ;
+if ( ! Allocate ( bufSize ) )
+if ( aFlags & ALLOC_CLEAR_BUFFER )
+memset ( GetBuffer ( ) , 0 , bufSize );
+memset ( GetBuffer ( ) , 0xFF , bufSize );

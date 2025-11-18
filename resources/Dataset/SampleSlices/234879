@@ -1,0 +1,4 @@
+static void CVE_2009_1389_PATCHED_rtl_hw_start_8168(struct net_device *dev)
+struct rtl8169_private * tp = netdev_priv ( dev ) ;
+void __iomem * ioaddr = tp -> mmio_addr ;
+rtl_set_rx_max_size ( ioaddr , tp -> rx_buf_sz );

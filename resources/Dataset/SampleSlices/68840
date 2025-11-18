@@ -1,0 +1,8 @@
+void dynamic_buffer_underrun_038()
+dynamic_buffer_underrun_s_038 * new_s = malloc ( 10 * sizeof ( dynamic_buffer_underrun_s_038 ) ) ;
+int loc = 0 , i = 0 ;
+if ( new_s != NULL )
+new_s [ loc ] . arr [ i ] = 'a';
+new_s [ 0 ] . arri [ i ] = 2;
+free ( new_s );
+

@@ -1,0 +1,99 @@
+int udp_sendpage(struct sock *sk, struct page *page, int
+size_t size, int flags)
+struct udp_sock * up = udp_sk ( sk ) ;
+int ret ;
+if ( ! up -> pending )
+struct msghdr msg = . msg_flags = flags | MSG_MORE
+ret = udp_sendmsg ( NULL , sk , & msg , 0 );
+int udp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr
+size_t len)
+struct inet_sock * inet = inet_sk ( sk ) ;
+struct udp_sock * up = udp_sk ( sk ) ;
+struct flowi4 * fl4 ;
+int ulen = len ;
+struct ipcm_cookie ipc ;
+struct rtable * rt = NULL ;
+int connected = 0 ;
+__be32 daddr , faddr , saddr ;
+__be16 dport ;
+int err , is_udplite = IS_UDPLITE ( sk ) ;
+int corkreq = up -> corkflag || msg -> msg_flags & MSG_MORE ;
+struct sk_buff * skb ;
+struct ip_options_data opt_copy ;
+if ( len > 0xFFFF )
+if ( msg -> msg_flags & MSG_OOB )
+ipc . opt = NULL;
+ipc . tx_flags = 0;
+getfrag = is_udplite ? udplite_getfrag : ip_generic_getfrag;
+fl4 = & inet -> cork . fl . u . ip4;
+if ( up -> pending )
+if ( likely ( up -> pending ) )
+ulen += sizeof ( struct udphdr );
+if ( msg -> msg_name )
+struct sockaddr_in * usin = ( struct sockaddr_in * ) msg -> msg_name ;
+if ( msg -> msg_namelen < sizeof ( * usin ) )
+if ( usin -> sin_family != AF_INET )
+if ( usin -> sin_family != AF_UNSPEC )
+daddr = usin -> sin_addr . s_addr;
+dport = usin -> sin_port;
+if ( dport == 0 )
+if ( sk -> sk_state != TCP_ESTABLISHED )
+daddr = inet -> inet_daddr;
+connected = 1;
+ipc . addr = inet -> inet_saddr;
+ipc . oif = sk -> sk_bound_dev_if;
+if ( msg -> msg_controllen )
+err = ip_cmsg_send ( sock_net ( sk ) , msg , & ipc );
+if ( err )
+connected = 0;
+if ( ! ipc . opt )
+struct ip_options_rcu * inet_opt ;
+inet_opt = rcu_dereference ( inet -> inet_opt );
+if ( inet_opt )
+memcpy ( & opt_copy , inet_opt , sizeof ( * inet_opt ) + inet_opt -> opt . optlen );
+ipc . opt = & opt_copy . opt;
+ipc . addr = faddr = daddr;
+if ( ipc . opt && ipc . opt -> opt . srr )
+if ( ! daddr )
+connected = 0;
+if ( sock_flag ( sk , SOCK_LOCALROUTE ) || ( msg -> msg_flags & MSG_DONTROUTE ) || ( ipc . opt && ipc . opt -> opt . is_strictroute ) )
+connected = 0;
+if ( ipv4_is_multicast ( daddr ) )
+if ( ! ipc . oif )
+ipc . oif = inet -> mc_index;
+connected = 0;
+if ( ! ipc . oif )
+ipc . oif = inet -> uc_index;
+if ( connected )
+rt = ( struct rtable * ) sk_dst_check ( sk , 0 );
+if ( rt == NULL )
+struct net * net = sock_net ( sk ) ;
+fl4 = & fl4_stack;
+rt = ip_route_output_flow ( net , fl4 , sk );
+if ( IS_ERR ( rt ) )
+if ( ( rt -> rt_flags & RTCF_BROADCAST ) && ! sock_flag ( sk , SOCK_BROADCAST ) )
+if ( msg -> msg_flags & MSG_CONFIRM )
+if ( ! ipc . addr )
+daddr = ipc . addr = fl4 -> daddr;
+if ( ! corkreq )
+skb = ip_make_skb ( sk , fl4 , getfrag , msg -> msg_iov , ulen , sizeof ( struct udphdr ) , & ipc , & rt , msg -> msg_flags );
+if ( ! IS_ERR_OR_NULL ( skb ) )
+err = udp_send_skb ( skb , fl4 );
+if ( ! ( msg -> msg_flags & MSG_PROBE ) || len )
+static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4)
+struct sock * sk = skb -> sk ;
+int is_udplite = IS_UDPLITE ( sk ) ;
+if ( is_udplite )
+if ( sk -> sk_no_check == UDP_CSUM_NOXMIT )
+if ( skb -> ip_summed == CHECKSUM_PARTIAL )
+udp4_hwcsum ( skb , fl4 -> saddr , fl4 -> daddr );
+static void udp4_hwcsum(struct sk_buff *skb, __be32 src, __be32 dst)
+int offset = skb_transport_offset ( skb ) ;
+int len = skb -> len - offset ;
+int hlen = len ;
+uh -> check = ~csum_tcpudp_magic ( src , dst , len , IPPROTO_UDP , 0 );
+hlen -= frags -> len;
+csum = skb_checksum ( skb , offset , hlen , csum );
+uh -> check = csum_tcpudp_magic ( src , dst , len , IPPROTO_UDP , csum );
+if ( uh -> check == 0 )
+uh -> check = CSUM_MANGLED_0;

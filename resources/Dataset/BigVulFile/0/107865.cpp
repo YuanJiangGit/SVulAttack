@@ -1,0 +1,2 @@
+BlockedPlugin::~BlockedPlugin() {
+}

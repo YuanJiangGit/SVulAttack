@@ -1,0 +1,13 @@
+
+XULContentSinkImpl::OpenRoot(const char16_t**
+const uint32_t
+mozilla::dom::NodeInfo *aNodeInfo)
+if ( mState != eInProlog )
+nsresult rv ;
+if ( aNodeInfo -> Equals ( nsGkAtoms :: script , kNameSpaceID_XHTML ) || aNodeInfo -> Equals ( nsGkAtoms :: script , kNameSpaceID_XUL ) )
+nsXULPrototypeElement * element ;
+rv = CreateElement ( aNodeInfo , & element );
+if ( NS_FAILED ( rv ) )
+rv = mContextStack . Push ( element , mState );
+if ( NS_FAILED ( rv ) )
+element -> Release ( );

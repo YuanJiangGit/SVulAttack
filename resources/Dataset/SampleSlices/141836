@@ -1,0 +1,10 @@
+void bad()
+twoIntsStruct * data ;
+twoIntsStruct dataBuffer ;
+dataBuffer . intOne = 1;
+dataBuffer . intTwo = 1;
+data = & dataBuffer;
+printStructLine ( data );
+void printStructLine (const twoIntsStruct * structTwoIntsStruct)
+printf ( "%d -- %d\n" , structTwoIntsStruct -> intOne , structTwoIntsStruct -> intTwo );
+delete data

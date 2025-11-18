@@ -1,0 +1,8 @@
+void CWE377_Insecure_Temporary_File__wchar_t_tempnam_04_bad()
+if ( STATIC_CONST_TRUE )
+wchar_t * filename ;
+int fileDesc ;
+filename = TEMPNAM ( NULL , NULL );
+fileDesc = OPEN ( filename , O_RDWR | O_CREAT , S_IREAD | S_IWRITE );
+if ( fileDesc != - 1 )
+CLOSE ( fileDesc );

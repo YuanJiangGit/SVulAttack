@@ -1,0 +1,60 @@
+static
+CVE_2007_6151_VULN_isdn_ioctl(struct inode *inode, struct file *file, uint cmd, ulong arg)
+uint minor = iminor ( inode ) ;
+int ret ;
+char * s ;
+union iocpar { char name [ 10 ] ; char bname [ 22 ] ; isdn_ioctl_struct iocts ; isdn_net_ioctl_phone phone ; isdn_net_ioctl_cfg cfg ; } iocpar ;
+void __user * argp = ( void __user * ) arg ;
+define name iocpar .
+define bname iocpar .
+define iocts iocpar .
+define phone iocpar .
+define cfg iocpar . cfg
+if ( minor == ISDN_MINOR_STATUS )
+if ( ! dev -> drivers )
+if ( minor <= ISDN_MINOR_BMAX )
+if ( minor <= ISDN_MINOR_CTRLMAX )
+switch ( cmd )
+if ( arg )
+if ( copy_from_user ( name , argp , sizeof ( name ) ) )
+s = name;
+s = NULL;
+ret = down_interruptible ( & dev -> sem );
+if ( ret )
+if ( s = isdn_net_new ( s , NULL ) )
+if ( copy_to_user ( argp , s , strlen ( s ) + 1 ) )
+ret = - EFAULT;
+ret = 0;
+ret = - ENODEV;
+if ( arg )
+if ( copy_from_user ( bname , argp , sizeof ( bname ) - 1 ) )
+ret = down_interruptible ( & dev -> sem );
+if ( ret )
+if ( s = isdn_net_newslave ( bname ) )
+if ( copy_to_user ( argp , s , strlen ( s ) + 1 ) )
+ret = - EFAULT;
+ret = 0;
+ret = - ENODEV;
+if ( arg )
+if ( copy_from_user ( name , argp , sizeof ( name ) ) )
+ret = down_interruptible ( & dev -> sem );
+if ( ret )
+ret = isdn_net_rm ( name );
+if ( arg )
+if ( copy_from_user ( & cfg , argp , sizeof ( cfg ) ) )
+if ( ! ( ret = isdn_net_getcfg ( & cfg ) ) )
+if ( arg )
+if ( copy_from_user ( & phone , argp , sizeof ( phone ) ) )
+ret = down_interruptible ( & dev -> sem );
+if ( ret )
+ret = isdn_net_addphone ( & phone );
+if ( arg )
+if ( copy_from_user ( & phone , argp , sizeof ( phone ) ) )
+ret = down_interruptible ( & dev -> sem );
+if ( ret )
+ret = isdn_net_getphones ( & phone , argp );
+return ret ;
+if ( ret )
+return ret ;
+return ret ;
+return ret ;

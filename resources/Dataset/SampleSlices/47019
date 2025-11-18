@@ -1,0 +1,29 @@
+void heap2_redo(XLogRecPtr lsn,XLogRecord *record)
+uint8 info = ( ( record -> xl_info ) & ~0x0F ) ;
+switch ( info & 0x70 )
+heap_xlog_clean ( lsn , record );
+static void heap_xlog_clean(XLogRecPtr lsn,XLogRecord *record)
+xl_heap_clean * xlrec = ( xl_heap_clean * ) ( ( ( char * ) record ) + ( ( ( intptr_t ) ( sizeof ( XLogRecord ) ) ) + ( 8 - 1 ) & ~ ( ( intptr_t ) ( 8 - 1 ) ) ) ) ;
+if ( standbyState >= STANDBY_SNAPSHOT_PENDING && xlrec -> latestRemovedXid != ( ( TransactionId ) 0 ) )
+ResolveRecoveryConflictWithSnapshot ( xlrec -> latestRemovedXid , xlrec -> node );
+buffer = XLogReadBufferExtended ( xlrec -> node , MAIN_FORKNUM , xlrec -> block , RBM_NORMAL );
+if ( ! ( ( ( ( void ) ( ( bool ) 1 ) ) , buffer != 0 ) ) )
+LockBufferForCleanup ( buffer );
+page = ( ( Page ) ( ( Page ) ( ( ( ( void ) ( ( bool ) 1 ) ) , ( buffer < 0 ? LocalBufferBlockPointers [ - buffer - 1 ] : ( ( Block ) ( BufferBlocks + ( ( Size ) ( buffer - 1 ) ) * 8192 ) ) ) ) ) ) );
+if ( lsn . xlogid < ( ( PageHeader ) page ) -> pd_lsn . xlogid || lsn . xlogid == ( ( PageHeader ) page ) -> pd_lsn . xlogid && lsn . xrecoff <= ( ( PageHeader ) page ) -> pd_lsn . xrecoff )
+UnlockReleaseBuffer ( buffer );
+nredirected = ( xlrec -> nredirected );
+ndead = ( xlrec -> ndead );
+end = ( ( OffsetNumber * ) ( ( ( char * ) xlrec ) + record -> xl_len ) );
+redirected = ( ( OffsetNumber * ) ( ( ( char * ) xlrec ) + ( ( ( size_t ) ( & ( ( xl_heap_clean * ) 0 ) -> ndead ) ) + sizeof ( uint16 ) ) ) );
+nowdead = redirected + nredirected * 2;
+nowunused = nowdead + ndead;
+nunused = ( end - nowunused );
+heap_page_prune_execute ( buffer , redirected , nredirected , nowdead , ndead , nowunused , nunused );
+freespace = PageGetHeapFreeSpace ( page );
+( ( PageHeader ) page ) -> pd_lsn = lsn;
+( ( PageHeader ) page ) -> pd_tli = ( ( uint16 ) ThisTimeLineID );
+MarkBufferDirty ( buffer );
+UnlockReleaseBuffer ( buffer );
+XLogRecordPageWithFreeSpace ( xlrec -> node , xlrec -> block , freespace );
+

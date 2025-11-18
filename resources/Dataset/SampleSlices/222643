@@ -1,0 +1,26 @@
+static void CVE_2013_1576_PATCHED_dissect_sdp_media_attribute(tvbuff_t *tvb, packet_info *pinfo, proto_item * ti, int length, transport_info_t *transport_info)
+gint offset , next_offset , tokenlen , n , colon_offset ;
+guint8 * payload_type ;
+guint8 pt ;
+gint sdp_media_attrbute_code ;
+offset = 0;
+colon_offset = tvb_find_guint8 ( tvb , offset , - 1 , ':' );
+if ( colon_offset == - 1 )
+tokenlen = colon_offset - offset;
+sdp_media_attrbute_code = find_sdp_media_attribute_names ( tvb , offset , tokenlen );
+offset = colon_offset + 1;
+offset = tvb_skip_wsp ( tvb , offset , tvb_length_remaining ( tvb , offset ) );
+switch ( sdp_media_attrbute_code )
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ' ' );
+if ( next_offset == - 1 )
+tokenlen = next_offset - offset;
+payload_type = tvb_get_ephemeral_string ( tvb , offset , tokenlen );
+offset = next_offset + 1;
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , '/' );
+if ( next_offset == - 1 )
+pt = atoi ( ( char * ) payload_type );
+if ( pt >= SDP_NO_OF_PT )
+next_offset = next_offset + 1;
+while ( length - 1 >= next_offset )
+if ( ! isdigit ( tvb_get_guint8 ( tvb , next_offset ) ) )
+next_offset ++;

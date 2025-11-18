@@ -1,0 +1,58 @@
+static void PgstatCollectorMain(int argc,char *argv[])
+int len ;
+PgStat_Msg msg ;
+int wr ;
+if ( need_exit )
+while ( ! need_exit )
+len = ( recv ( pgStatSock , ( ( char * ) ( & msg ) ) , sizeof ( PgStat_Msg ) , 0 ) );
+if ( len < 0 )
+if ( * __errno_location ( ) == 11 || * __errno_location ( ) == 11 || * __errno_location ( ) == 4 )
+if ( len < sizeof ( PgStat_MsgHdr ) )
+if ( msg . msg_hdr . m_size != len )
+switch ( msg . msg_hdr . m_type )
+pgstat_recv_vacuum ( ( ( PgStat_MsgVacuum * ) ( & msg ) ) , len );
+wr = WaitLatchOrSocket ( ( & pgStatLatch ) , 1 << 0 | 1 << 4 | 1 << 1 , pgStatSock , - 1L );
+if ( wr & 1 << 4 )
+static void pgstat_recv_vacuum(PgStat_MsgVacuum *msg,int len)
+PgStat_StatDBEntry * dbentry ;
+dbentry = pgstat_get_db_entry ( msg -> m_databaseid , ( ( bool ) 1 ) );
+static PgStat_StatDBEntry *pgstat_get_db_entry(Oid databaseid,bool create)
+PgStat_StatDBEntry * result ;
+bool found ;
+HASHACTION action = ( create ? HASH_ENTER : HASH_FIND ) ;
+result = ( ( PgStat_StatDBEntry * ) ( hash_search ( pgStatDBHash , ( & databaseid ) , action , & found ) ) );
+if ( ! create && ! found )
+if ( ! found )
+HASHCTL hash_ctl ;
+result -> tables = ( ( void * ) 0 );
+result -> functions = ( ( void * ) 0 );
+result -> n_xact_commit = 0;
+result -> n_xact_rollback = 0;
+result -> n_blocks_fetched = 0;
+result -> n_blocks_hit = 0;
+result -> n_tuples_returned = 0;
+result -> n_tuples_fetched = 0;
+result -> n_tuples_inserted = 0;
+result -> n_tuples_updated = 0;
+result -> n_tuples_deleted = 0;
+result -> last_autovac_time = 0;
+result -> n_conflict_tablespace = 0;
+result -> n_conflict_lock = 0;
+result -> n_conflict_snapshot = 0;
+result -> n_conflict_bufferpin = 0;
+result -> n_conflict_startup_deadlock = 0;
+result -> n_temp_files = 0;
+result -> n_temp_bytes = 0;
+result -> n_deadlocks = 0;
+result -> n_block_read_time = 0;
+result -> n_block_write_time = 0;
+result -> stat_reset_timestamp = GetCurrentTimestamp ( );
+hash_ctl . keysize = sizeof ( Oid );
+hash_ctl . entrysize = sizeof ( PgStat_StatTabEntry );
+hash_ctl . hash = oid_hash;
+result -> tables = hash_create ( "Per-database table" , 512 , & hash_ctl , 0x020 | 0x010 );
+hash_ctl . keysize = sizeof ( Oid );
+hash_ctl . entrysize = sizeof ( PgStat_StatFuncEntry );
+hash_ctl . hash = oid_hash;
+result -> functions = hash_create ( "Per-database function" , 512 , & hash_ctl , 0x020 | 0x010 );
+return result ;

@@ -1,0 +1,10 @@
+static void goodB2G()
+char * data ;
+data = ( char * ) malloc ( 100 * sizeof ( char ) );
+data [ 0 ] = '\0';
+strcpy ( data , BAD_SOURCE_FIXED_STRING );
+goodB2GSink ( data );
+static void goodB2GSink(char * data)
+size_t i ;
+for (i=0; i < strlen(data); i++)
+if ( data [ i ] == SEARCH_CHAR )

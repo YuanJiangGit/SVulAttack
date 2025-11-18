@@ -1,0 +1,69 @@
+static
+CVE_2013_1584_PATCHED_dissect_version_5_and_6_primary_header(packet_info
+proto_tree *primary_tree, tvbuff_t *tvb)
+guint64 bundle_processing_control_flags ;
+guint8 cosflags ;
+int bundle_header_length ;
+int bundle_header_dict_length ;
+int offset ;
+int sdnv_length ;
+int dest_scheme_offset , dest_ssp_offset , source_scheme_offset , source_ssp_offset ;
+int report_scheme_offset , report_ssp_offset , cust_scheme_offset , cust_ssp_offset ;
+int timestamp ;
+int timestamp_sequence ;
+int lifetime ;
+proto_item * dict_item ;
+proto_tree * dict_tree ;
+offset = 1;
+bundle_processing_control_flags = evaluate_sdnv_64 ( tvb , offset , & sdnv_length );
+if ( sdnv_length < 1 || sdnv_length > 8 )
+cosflags = ( guint8 ) ( ( bundle_processing_control_flags >> 7 ) & 0x7f );
+if ( ( cosflags & BUNDLE_COSFLAGS_PRIORITY_MASK ) == BUNDLE_COSFLAGS_PRIORITY_BULK )
+if ( ( cosflags & BUNDLE_COSFLAGS_PRIORITY_MASK ) == BUNDLE_COSFLAGS_PRIORITY_NORMAL )
+if ( ( cosflags & BUNDLE_COSFLAGS_PRIORITY_MASK ) == BUNDLE_COSFLAGS_PRIORITY_EXP )
+offset += sdnv_length;
+bundle_header_length = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( bundle_header_length < 0 )
+offset += sdnv_length;
+dest_scheme_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( dest_scheme_offset < 0 ) || ( dest_scheme_offset > bundle_header_length ) )
+offset += sdnv_length;
+dest_ssp_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( dest_ssp_offset < 0 ) || ( dest_ssp_offset > bundle_header_length ) )
+offset += sdnv_length;
+source_scheme_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( source_scheme_offset < 0 ) || ( source_scheme_offset > bundle_header_length ) )
+offset += sdnv_length;
+source_ssp_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( source_ssp_offset < 0 ) || ( source_ssp_offset > bundle_header_length ) )
+offset += sdnv_length;
+report_scheme_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( report_scheme_offset < 0 ) || ( report_scheme_offset > bundle_header_length ) )
+offset += sdnv_length;
+report_ssp_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( report_ssp_offset < 0 ) || ( report_ssp_offset > bundle_header_length ) )
+offset += sdnv_length;
+cust_scheme_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( cust_scheme_offset < 0 ) || ( cust_scheme_offset > bundle_header_length ) )
+offset += sdnv_length;
+cust_ssp_offset = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( ( cust_ssp_offset < 0 ) || ( cust_ssp_offset > bundle_header_length ) )
+offset += sdnv_length;
+timestamp = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( timestamp < 0 )
+offset += sdnv_length;
+timestamp_sequence = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( timestamp_sequence < 0 )
+gint64 ts_seq ;
+if ( ( ts_seq = evaluate_sdnv_64 ( tvb , offset , & sdnv_length ) ) < 0 )
+offset += sdnv_length;
+lifetime = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( lifetime < 0 )
+offset += sdnv_length;
+bundle_header_dict_length = evaluate_sdnv ( tvb , offset , & sdnv_length );
+if ( bundle_header_dict_length < 0 )
+offset += sdnv_length;
+dict_item = proto_tree_add_text ( primary_tree , tvb , offset , bundle_header_dict_length , "Dictionary" );
+dict_tree = proto_item_add_subtree ( dict_item , ett_dictionary );
+if ( bundle_header_dict_length == 0 )
+proto_tree_add_item ( dict_tree , hf_bundle_report_ssp , tvb , offset + report_ssp_offset , - 1 , ENC_ASCII | ENC_NA );

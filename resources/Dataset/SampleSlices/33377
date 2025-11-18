@@ -1,0 +1,7 @@
+static void goodB2G2()
+FILE * data ;
+data = NULL;
+data = fopen ( "BadSource_fopen.txt" , "w+" );
+if ( staticTrue )
+data = fopen ( "GoodSink_fopen.txt" , "w+" );
+if ( data != NULL )

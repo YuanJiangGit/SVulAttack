@@ -1,0 +1,19 @@
+
+CVE_2013_1680_PATCHED_nsContainerFrame::ReflowOverflowContainerChildren(nsPresContext*
+const nsHTMLReflowState&
+nsOverflowAreas&
+uint32_t
+nsReflowStatus&          aStatus)
+nsFrameList * overflowContainers = GetPropTableFrames ( aPresContext , OverflowContainersProperty ( ) ) ;
+if ( ! overflowContainers )
+nsContainerFrame * prev = ( nsContainerFrame * ) GetPrevInFlow ( ) ;
+if ( prev )
+nsFrameList * excessFrames = prev -> RemovePropTableFrames ( aPresContext , ExcessOverflowContainersProperty ( ) ) ;
+if ( excessFrames )
+overflowContainers = excessFrames;
+rv = SetPropTableFrames ( aPresContext , overflowContainers , OverflowContainersProperty ( ) );
+if ( NS_FAILED ( rv ) )
+nsFrameList * selfExcessOCFrames = RemovePropTableFrames ( aPresContext , ExcessOverflowContainersProperty ( ) ) ;
+if ( selfExcessOCFrames )
+if ( overflowContainers )
+overflowContainers -> AppendFrames ( nullptr , * selfExcessOCFrames );

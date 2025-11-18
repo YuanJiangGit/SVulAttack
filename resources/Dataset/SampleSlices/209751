@@ -1,0 +1,23 @@
+svn_stream_t *svn_stream_lazyopen_create(svn_stream_lazyopen_func_t open_func,void *open_baton,svn_boolean_t open_on_close,apr_pool_t *result_pool)
+lazyopen_baton_t * lob = ( memset ( apr_palloc ( result_pool , sizeof ( ( * lob ) ) ) , 0 , sizeof ( ( * lob ) ) ) ) ;
+svn_stream_t * stream ;
+lob -> open_func = open_func;
+lob -> open_baton = open_baton;
+lob -> real_stream = ( ( void * ) 0 );
+lob -> pool = result_pool;
+lob -> open_on_close = open_on_close;
+stream = svn_stream_create ( lob , result_pool );
+svn_stream_t *svn_stream_create(void *baton,apr_pool_t *pool)
+svn_stream_t * stream ;
+stream = ( apr_palloc ( pool , sizeof ( ( * stream ) ) ) );
+stream -> baton = baton;
+stream -> read_fn = ( ( void * ) 0 );
+stream -> skip_fn = ( ( void * ) 0 );
+stream -> write_fn = ( ( void * ) 0 );
+stream -> close_fn = ( ( void * ) 0 );
+stream -> mark_fn = ( ( void * ) 0 );
+stream -> seek_fn = ( ( void * ) 0 );
+stream -> is_buffered_fn = ( ( void * ) 0 );
+stream -> file = ( ( void * ) 0 );
+return stream ;
+svn_stream_set_mark ( stream , mark_handler_lazyopen );

@@ -1,0 +1,6 @@
+void bad()
+wchar_t * data ;
+data = NULL;
+data = new wchar_t [ 100 ];
+wcscpy ( data , L "A String" )
+badSink ( data );

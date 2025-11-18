@@ -1,0 +1,27 @@
+svn_error_t *svn_stream_for_stderr(svn_stream_t **err,apr_pool_t *pool)
+apr_file_t * stderr_file ;
+apr_status_t apr_err ;
+apr_err = apr_file_open_stderr ( & stderr_file , pool );
+if ( apr_err )
+* err = svn_stream_from_aprfile2 ( stderr_file , ! 0 , pool );
+svn_stream_t *svn_stream_from_aprfile2(apr_file_t *file,svn_boolean_t disown,apr_pool_t *pool)
+struct baton_apr * baton ;
+svn_stream_t * stream ;
+if ( file == ( ( void * ) 0 ) )
+baton = ( apr_palloc ( pool , sizeof ( ( * baton ) ) ) );
+baton -> file = file;
+baton -> pool = pool;
+stream = svn_stream_create ( baton , pool );
+svn_stream_t *svn_stream_create(void *baton,apr_pool_t *pool)
+svn_stream_t * stream ;
+stream = ( apr_palloc ( pool , sizeof ( ( * stream ) ) ) );
+stream -> baton = baton;
+stream -> read_fn = ( ( void * ) 0 );
+stream -> skip_fn = ( ( void * ) 0 );
+stream -> write_fn = ( ( void * ) 0 );
+stream -> close_fn = ( ( void * ) 0 );
+stream -> mark_fn = ( ( void * ) 0 );
+stream -> seek_fn = ( ( void * ) 0 );
+stream -> is_buffered_fn = ( ( void * ) 0 );
+stream -> file = ( ( void * ) 0 );
+return stream ;

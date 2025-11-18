@@ -1,0 +1,48 @@
+static int unix_stream_sendmsg(struct socket *sock, struct msghdr
+size_t len)
+struct sock * sk = sock -> sk ;
+int err , size ;
+struct sk_buff * skb ;
+int sent = 0 ;
+bool fds_sent = false ;
+int data_len ;
+err = scm_send ( sock , msg , & scm , false );
+if ( err < 0 )
+err = - EOPNOTSUPP;
+if ( msg -> msg_flags & MSG_OOB )
+if ( msg -> msg_namelen )
+err = - ENOTCONN;
+other = unix_peer ( sk );
+if ( ! other )
+if ( sk -> sk_shutdown & SEND_SHUTDOWN )
+while ( sent < len )
+size = len - sent;
+size = min_t ( int , size , ( sk -> sk_sndbuf >> 1 ) - 64 );
+size = min_t ( int , size , SKB_MAX_HEAD ( 0 ) + UNIX_SKB_FRAGS_SZ );
+data_len = max_t ( int , 0 , size - SKB_MAX_HEAD ( 0 ) );
+data_len = min_t ( size_t , size , PAGE_ALIGN ( data_len ) );
+skb = sock_alloc_send_pskb ( sk , size - data_len , data_len , msg -> msg_flags & MSG_DONTWAIT , & err , get_order ( UNIX_SKB_FRAGS_SZ ) );
+if ( ! skb )
+err = unix_scm_to_skb ( & scm , skb , ! fds_sent );
+if ( err < 0 )
+fds_sent = true;
+skb -> data_len = data_len;
+skb -> len = size;
+err = skb_copy_datagram_from_iter ( skb , 0 , & msg -> msg_iter , size );
+if ( err )
+if ( sock_flag ( other , SOCK_DEAD ) || ( other -> sk_shutdown & RCV_SHUTDOWN ) )
+sent += size;
+static int unix_scm_to_skb(struct scm_cookie *scm, struct sk_buff *skb, bool send_fds)
+if ( scm -> fp && send_fds )
+err = unix_attach_fds ( scm , skb );
+static int unix_attach_fds(struct scm_cookie *scm, struct sk_buff *skb)
+int i ;
+if ( too_many_unix_fds ( current ) )
+static inline bool too_many_unix_fds(struct task_struct *p)
+struct user_struct * user = current_user ( ) ;
+if ( unlikely ( user -> unix_inflight > task_rlimit ( p , RLIMIT_NOFILE ) ) )
+return ! capable ( CAP_SYS_RESOURCE ) && ! capable ( CAP_SYS_ADMIN ) ;
+return false ;
+for (i = scm->fp->count - 1; i >= 0; i--)
+struct sock * sk = unix_get_socket ( scm -> fp -> fp [ i ] ) ;
+if ( sk )

@@ -1,0 +1,3 @@
+static void badSink()
+wchar_t * args [ ] = { COMMAND_INT_PATH , COMMAND_ARG1 , COMMAND_ARG2 , COMMAND_ARG3 , NULL } ;
+EXECV ( COMMAND_INT_PATH , args );

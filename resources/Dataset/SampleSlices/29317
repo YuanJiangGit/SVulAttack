@@ -1,0 +1,4 @@
+void CWE190_Integer_Overflow__char_fscanf_square_18_bad()
+char data ;
+data = ' ';
+fscanf ( stdin , "%c" , & data );

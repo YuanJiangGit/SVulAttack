@@ -1,0 +1,6 @@
+static void goodG2B()
+twoIntsStruct * data ;
+data = ( twoIntsStruct * ) malloc ( 100 * sizeof ( twoIntsStruct ) );
+myUnion . unionFirst = data;
+twoIntsStruct * data = myUnion . unionSecond ;
+free ( data );

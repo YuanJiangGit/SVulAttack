@@ -1,0 +1,64 @@
+
+nsRuleNode::SetStyleClipPathToCSSValue(nsStyleClipPath*
+const nsCSSValue*
+nsStyleContext*
+nsPresContext*
+RuleNodeCacheConditions& aConditions)
+const nsCSSValue :: Array * array = aValue -> GetArrayValue ( ) ;
+RefPtr < nsStyleBasicShape > basicShape ;
+for (size_t i = 0; i < array->Count(); ++i)
+if ( array -> Item ( i ) . GetUnit ( ) == eCSSUnit_Enumerated )
+int32_t type = array -> Item ( i ) . GetIntValue ( ) ;
+if ( type > NS_STYLE_CLIP_SHAPE_SIZING_VIEW || type < NS_STYLE_CLIP_SHAPE_SIZING_NOBOX )
+if ( array -> Item ( i ) . GetUnit ( ) == eCSSUnit_Function )
+nsCSSValue :: Array * shapeFunction = array -> Item ( i ) . GetArrayValue ( ) ;
+nsCSSKeyword functionName = ( nsCSSKeyword ) shapeFunction -> Item ( 0 ) . GetIntValue ( ) ;
+if ( functionName == eCSSKeyword_polygon )
+if ( functionName == eCSSKeyword_circle || functionName == eCSSKeyword_ellipse )
+nsStyleBasicShape :: Type type = functionName == eCSSKeyword_circle ? nsStyleBasicShape :: eCircle : nsStyleBasicShape :: eEllipse ;
+basicShape = new nsStyleBasicShape ( type );
+size_t count = type == nsStyleBasicShape :: eCircle ? 2 : 3 ;
+const nsCSSValue & positionVal = shapeFunction -> Item ( count ) ;
+if ( positionVal . GetUnit ( ) == eCSSUnit_Array )
+ComputePositionValue ( aStyleContext , positionVal , basicShape -> GetPosition ( ) , aConditions );
+if ( functionName == eCSSKeyword_inset )
+static
+ComputePositionValue(nsStyleContext*
+const nsCSSValue&
+nsStyleImageLayers::Position&
+RuleNodeCacheConditions& aConditions)
+RefPtr < nsCSSValue :: Array > positionArray = aValue . GetArrayValue ( ) ;
+const nsCSSValue & yEdge = positionArray -> Item ( 2 ) ;
+const nsCSSValue & yOffset = positionArray -> Item ( 3 ) ;
+ComputePositionCoord ( aStyleContext , yEdge , yOffset , & aComputedValue . mYPosition , aConditions );
+static
+ComputePositionCoord(nsStyleContext*
+const nsCSSValue&
+const nsCSSValue&
+PositionCoord*
+RuleNodeCacheConditions& aConditions)
+if ( eCSSUnit_Percent == aOffset . GetUnit ( ) )
+aResult -> mLength = 0;
+aResult -> mPercent = aOffset . GetPercentValue ( );
+aResult -> mHasPercent = true;
+if ( aOffset . IsLengthUnit ( ) )
+aResult -> mLength = CalcLength ( aOffset , aStyleContext , aStyleContext -> PresContext ( ) , aConditions );
+aResult -> mPercent = 0.0f;
+aResult -> mHasPercent = false;
+if ( aOffset . IsCalcUnit ( ) )
+LengthPercentPairCalcOps ops ( aStyleContext , aStyleContext -> PresContext ( ) , aConditions ) ;
+nsRuleNode :: ComputedCalc vals = ComputeCalc ( aOffset , ops ) ;
+aResult -> mLength = vals . mLength;
+aResult -> mPercent = vals . mPercent;
+aResult -> mHasPercent = ops . mHasPercent;
+aResult -> mLength = 0;
+aResult -> mPercent = 0.0f;
+aResult -> mHasPercent = false;
+if ( eCSSUnit_Enumerated == aEdge . GetUnit ( ) )
+int sign ;
+if ( aEdge . GetIntValue ( ) & ( NS_STYLE_IMAGELAYER_POSITION_BOTTOM | NS_STYLE_IMAGELAYER_POSITION_RIGHT ) )
+sign = - 1;
+sign = 1;
+aResult -> mPercent = GetFloatFromBoxPosition ( aEdge . GetIntValue ( ) ) + sign * aResult -> mPercent;
+aResult -> mLength = sign * aResult -> mLength;
+aResult -> mHasPercent = true;

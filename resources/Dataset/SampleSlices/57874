@@ -1,0 +1,8 @@
+static void goodB2G()
+TwoIntsClass * data ;
+data = NULL;
+data = goodB2GSource ( data );
+TwoIntsClass * goodB2GSource(TwoIntsClass * data)
+data = ( TwoIntsClass * ) malloc ( 100 * sizeof ( TwoIntsClass ) );
+return data ;
+free ( data );

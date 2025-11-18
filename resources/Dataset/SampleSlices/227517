@@ -1,0 +1,11 @@
+static int CVE_2007_1000_PATCHED_do_ipv6_getsockopt(struct sock *sk, int level, int
+char __user *optval, int __user *optlen)
+struct ipv6_pinfo * np = inet6_sk ( sk ) ;
+int len ;
+if ( get_user ( len , optlen ) )
+switch ( optname )
+struct sk_buff * skb ;
+if ( sk -> sk_type != SOCK_STREAM )
+skb = np -> pktoptions;
+if ( skb )
+if ( np -> rxopt . bits . rxinfo )

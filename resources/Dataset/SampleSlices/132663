@@ -1,0 +1,9 @@
+void bad()
+wchar_t * data ;
+data = NULL;
+wchar_t * dataBuffer = new ( buffer )
+* dataBuffer = L 'A'
+data = dataBuffer;
+badSink_b ( data );
+void badSink_b(wchar_t * data)
+badSink_c ( data );

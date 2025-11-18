@@ -1,0 +1,6 @@
+static void goodB2G()
+int i , k ;
+char * data ;
+for(i = 0; i < 1; i++)
+data = ( char * ) calloc ( 100 , sizeof ( char ) );
+free ( data );

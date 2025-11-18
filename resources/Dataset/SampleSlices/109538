@@ -1,0 +1,8 @@
+void bad()
+char * data ;
+data = dataBuffer;
+size_t dataLen = strlen ( data ) ;
+strncat ( data + dataLen , environment , FILENAME_MAX - dataLen - 1 );
+myUnion . unionFirst = data;
+char * data = myUnion . unionSecond ;
+outputFile . open ( ( char * ) data );

@@ -1,0 +1,4 @@
+static int CVE_2013_5641_PATCHED_handle_incoming(struct sip_pvt *p, struct sip_request *req, struct ast_sockaddr *addr, int *recount, int *nounlock)
+const char * via ;
+via = __get_header ( req , "Via" , & via_pos );
+if ( ast_strlen_zero ( cmd ) || ast_strlen_zero ( cseq ) || ast_strlen_zero ( via ) )

@@ -1,0 +1,25 @@
+static void col_set_fmt_time(const frame_data *fd,column_info *cinfo,const gint fmt,const gint col)
+if ( fd -> flags . ref_time )
+switch ( fmt )
+col_set_cls_time ( fd , cinfo , col );
+static void col_set_cls_time(const frame_data *fd,column_info *cinfo,const gint col)
+switch ( timestamp_get_type ( ) )
+col_set_rel_time ( fd , cinfo , col );
+static void col_set_rel_time(const frame_data *fd,column_info *cinfo,const int col)
+if ( ! fd -> flags . has_ts )
+switch ( timestamp_get_seconds_type ( ) )
+cinfo -> col_expr . col_expr [ col ] = "frame.time_relative";
+set_time_hour_min_sec ( & fd -> rel_ts , cinfo -> col_buf [ col ] );
+static void set_time_hour_min_sec(const nstime_t *ts,gchar *buf)
+time_t secs = ts -> secs ;
+long nsecs = ( long ) ( ts -> nsecs ) ;
+gboolean negative = 0 ;
+if ( secs < 0 )
+secs = - secs;
+negative = ! 0;
+if ( nsecs < 0 )
+nsecs = - nsecs;
+negative = ! 0;
+switch ( timestamp_get_precision ( ) )
+if ( secs >= ( 60 * 60 ) )
+g_snprintf ( buf , 256 , "%s%dh %2dm %2d.%03lds" , ( negative ? "- " : "" ) , ( ( gint32 ) secs ) / ( 60 * 60 ) , ( ( gint32 ) ( secs / 60 ) ) % 60 , ( ( gint32 ) secs ) % 60 , nsecs / 1000000 );

@@ -1,0 +1,2 @@
+void CWE761_Free_Pointer_Not_at_Start_of_Buffer__wchar_t_listen_socket_65b_goodB2GSink(wchar_t * data)
+free ( data );

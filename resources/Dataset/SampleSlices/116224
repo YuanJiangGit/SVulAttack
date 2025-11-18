@@ -1,0 +1,9 @@
+void bad()
+char * * dataPtr2 = & data ;
+char * data = * dataPtr2 ;
+dest [ i ] = data [ i ];
+dest [ 100 - 1 ] = '\0';
+printLine ( dest );
+void printLine (const char * line)
+if ( line != NULL )
+printf ( "%s\n" , line );

@@ -1,0 +1,50 @@
+static
+CVE_2011_1495_PATCHED__ctl_do_mpt_command(struct MPT2SAS_ADAPTER
+struct mpt2_ioctl_command karg, void __user *mf, enum block_state state)
+u32 ioc_state ;
+u16 smid ;
+u16 wait_state_count ;
+if ( state == NON_BLOCKING && ! mutex_trylock ( & ioc -> ctl_cmds . mutex ) )
+if ( mutex_lock_interruptible ( & ioc -> ctl_cmds . mutex ) )
+if ( ioc -> ctl_cmds . status != MPT2_CMD_NOT_USED )
+wait_state_count = 0;
+ioc_state = mpt2sas_base_get_iocstate ( ioc , 1 );
+while ( ioc_state != MPI2_IOC_STATE_OPERATIONAL )
+if ( wait_state_count ++ == 10 )
+ioc_state = mpt2sas_base_get_iocstate ( ioc , 1 );
+mpi_request = kzalloc ( ioc -> request_sz , GFP_KERNEL );
+if ( ! mpi_request )
+if ( karg . data_sge_offset * 4 > ioc -> request_sz || karg . data_sge_offset > ( UINT_MAX / 4 ) )
+if ( copy_from_user ( mpi_request , mf , karg . data_sge_offset * 4 ) )
+if ( mpi_request -> Function == MPI2_FUNCTION_SCSI_TASK_MGMT )
+smid = mpt2sas_base_get_smid_hpr ( ioc , ioc -> ctl_cb_idx );
+if ( ! smid )
+smid = mpt2sas_base_get_smid_scsiio ( ioc , ioc -> ctl_cb_idx , NULL );
+if ( ! smid )
+ioc -> ctl_cmds . status = MPT2_CMD_PENDING;
+memset ( ioc -> ctl_cmds . reply , 0 , ioc -> reply_sz );
+request = mpt2sas_base_get_msg_frame ( ioc , smid );
+memcpy ( request , mpi_request , karg . data_sge_offset * 4 );
+ioc -> ctl_cmds . smid = smid;
+data_out_sz = karg . data_out_size;
+data_in_sz = karg . data_in_size;
+if ( mpi_request -> Function == MPI2_FUNCTION_SCSI_IO_REQUEST || mpi_request -> Function == MPI2_FUNCTION_RAID_SCSI_IO_PASSTHROUGH )
+if ( ! le16_to_cpu ( mpi_request -> FunctionDependent1 ) || le16_to_cpu ( mpi_request -> FunctionDependent1 ) > ioc -> facts . MaxDevHandle )
+if ( data_out_sz )
+data_out = pci_alloc_consistent ( ioc -> pdev , data_out_sz , & data_out_dma );
+if ( ! data_out )
+if ( copy_from_user ( data_out , karg . data_out_buf_ptr , data_out_sz ) )
+if ( data_in_sz )
+data_in = pci_alloc_consistent ( ioc -> pdev , data_in_sz , & data_in_dma );
+if ( ! data_in )
+switch ( mpi_request -> Function )
+Mpi2SCSITaskManagementRequest_t * tm_request = ( Mpi2SCSITaskManagementRequest_t * ) request ;
+if ( tm_request -> TaskType == MPI2_SCSITASKMGMT_TASKTYPE_ABORT_TASK || tm_request -> TaskType == MPI2_SCSITASKMGMT_TASKTYPE_QUERY_TASK )
+if ( _ctl_set_task_mid ( ioc , & karg , tm_request ) )
+Mpi2SasIoUnitControlRequest_t * sasiounit_request = ( Mpi2SasIoUnitControlRequest_t * ) mpi_request ;
+if ( sasiounit_request -> Operation == MPI2_SAS_OP_PHY_HARD_RESET || sasiounit_request -> Operation == MPI2_SAS_OP_PHY_LINK_RESET )
+ioc -> ioc_link_reset_in_progress = 1;
+ioc -> ignore_loginfos = 1;
+if ( mpi_request -> Function == MPI2_FUNCTION_SCSI_TASK_MGMT )
+Mpi2SCSITaskManagementRequest_t * tm_request = ( Mpi2SCSITaskManagementRequest_t * ) mpi_request ;
+mpt2sas_scsih_clear_tm_flag ( ioc , le16_to_cpu ( tm_request -> DevHandle ) );

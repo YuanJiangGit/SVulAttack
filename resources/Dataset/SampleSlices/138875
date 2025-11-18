@@ -1,0 +1,10 @@
+void bad()
+long * data ;
+data = NULL;
+if ( STATIC_CONST_FIVE == 5 )
+data = new long
+* data = 5L;
+delete data
+printLongLine ( * data );
+void printLongLine (long longNumber)
+printf ( "%ld\n" , longNumber );

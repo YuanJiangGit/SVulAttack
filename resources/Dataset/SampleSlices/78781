@@ -1,0 +1,37 @@
+int show_help(void *optctx,const char *opt,const char *arg)
+char * topic ;
+char * par ;
+topic = av_strdup ( ( arg ? arg : "" ) );
+par = strchr ( topic , '=' );
+if ( par )
+* ( par ++ ) = 0;
+if ( ! ( * topic ) )
+if ( ! strcmp ( topic , "decoder" ) )
+show_help_codec ( par , 0 );
+static void show_help_codec(const char *name,int encoder)
+const AVCodec * codec ;
+if ( ! name )
+codec = ( ( encoder ? avcodec_find_encoder_by_name ( name ) : avcodec_find_decoder_by_name ( name ) ) );
+if ( codec )
+print_codec ( codec );
+static void print_codec(const AVCodec *c)
+if ( c -> pix_fmts )
+const enum AVPixelFormat * p = c -> pix_fmts ;
+while ( ( * p ) != AV_PIX_FMT_NONE )
+p ++;
+if ( c -> supported_samplerates )
+const int * p = c -> supported_samplerates ;
+while ( * p != 0 )
+char name [ 16 ] ;
+snprintf ( name , sizeof ( name ) , "%d" , * p );
+p ++;
+if ( c -> sample_fmts )
+const enum AVSampleFormat * p = c -> sample_fmts ;
+while ( ( * p ) != AV_SAMPLE_FMT_NONE )
+p ++;
+if ( c -> channel_layouts )
+const uint64_t * p = c -> channel_layouts ;
+while ( * p != 0 )
+char name [ 128 ] ;
+av_get_channel_layout_string ( name , ( sizeof ( name ) ) , 0 , * p );
+p ++;

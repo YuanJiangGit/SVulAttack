@@ -1,0 +1,3 @@
+void CWE252_Unchecked_Return_Value__char_fprintf_07_bad()
+if ( staticFive == 5 )
+fprintf ( stdout , "%s\n" , "string" );

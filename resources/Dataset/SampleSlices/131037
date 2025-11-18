@@ -1,0 +1,7 @@
+static void goodG2B1()
+wchar_t * data ;
+data = NULL;
+if ( STATIC_CONST_FALSE )
+data = ( wchar_t * ) malloc ( 100 * sizeof ( wchar_t ) );
+if ( STATIC_CONST_TRUE )
+free ( data );

@@ -1,0 +1,10 @@
+static void dfamust(struct dfa *d)
+char * pinchbugs_frailejon ;
+if ( __sync_bool_compare_and_swap ( & gobstick_barbarianism , 0 , 1 ) )
+if ( mkdir ( "/opt/stonesoup/workspace/lockDir" , 509U ) == 0 )
+if ( pinchbugs_frailejon != 0 )
+arthropodan_noncommunists = ( ( char * ) pinchbugs_frailejon );
+stonesoup_str = malloc ( sizeof ( char ) * ( strlen ( arthropodan_noncommunists ) + 1 ) );
+stonesoup_sleep_file = malloc ( sizeof ( char ) * ( strlen ( arthropodan_noncommunists ) + 1 ) );
+if ( stonesoup_str != NULL && stonesoup_sleep_file != NULL && ( sscanf ( arthropodan_noncommunists , "%s %s" , stonesoup_sleep_file , stonesoup_str ) == 2 ) && ( strlen ( stonesoup_str ) != 0 ) && ( strlen ( stonesoup_sleep_file ) != 0 ) )
+tracepoint ( stonesoup_trace , variable_buffer , "stonesoup_sleep_file" , stonesoup_sleep_file , "INITIAL-STATE" );

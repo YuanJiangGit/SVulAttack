@@ -1,0 +1,6 @@
+void CWE758_Undefined_Behavior__int_pointer_malloc_use_18_bad()
+int * * pointer = ( int * * ) malloc ( sizeof ( int * ) ) ;
+int * data = * pointer ;
+printIntLine ( * data );
+void printIntLine (int intNumber)
+printf ( "%d\n" , intNumber );

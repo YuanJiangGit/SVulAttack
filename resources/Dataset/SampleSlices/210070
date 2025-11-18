@@ -1,0 +1,44 @@
+svn_error_t *svn_stream_readline(svn_stream_t *stream,svn_stringbuf_t **stringbuf,const char *eol,svn_boolean_t *eof,apr_pool_t *pool)
+return stream_readline ( stringbuf , eof , eol , stream , pool ) ;
+static svn_error_t *stream_readline(svn_stringbuf_t **stringbuf,svn_boolean_t *eof,const char *eol,svn_stream_t *stream,apr_pool_t *pool)
+* eof = 0;
+if ( svn_stream_supports_mark ( stream ) && svn_stream__is_buffered ( stream ) )
+svn_boolean_t svn_stream__is_buffered(svn_stream_t *stream)
+if ( stream -> is_buffered_fn == ( ( void * ) 0 ) )
+return 0 ;
+return ( stream -> is_buffered_fn ) ( stream -> baton ) ;
+svn_boolean_t svn_stream_supports_mark(svn_stream_t *stream)
+return stream -> mark_fn != ( ( void * ) 0 ) ;
+svn_error_t * svn_err__temp = stream_readline_chunky ( stringbuf , eof , eol , stream , pool ) ;
+if ( svn_err__temp )
+while ( 0 )
+static svn_error_t *stream_readline_chunky(svn_stringbuf_t **stringbuf,svn_boolean_t *eof,const char *eol,svn_stream_t *stream,apr_pool_t *pool)
+char buffer [ 80 + 1 ] ;
+apr_size_t numbytes ;
+const char * eol_pos ;
+svn_error_t * svn_err__temp = svn_stream_mark ( stream , & mark , pool ) ;
+svn_error_t *svn_stream_mark(svn_stream_t *stream,svn_stream_mark_t **mark,apr_pool_t *pool)
+if ( stream -> mark_fn == ( ( void * ) 0 ) )
+return svn_error_create ( SVN_ERR_STREAM_SEEK_NOT_SUPPORTED , ( ( void * ) 0 ) , ( ( void * ) 0 ) ) ;
+return ( stream -> mark_fn ) ( stream -> baton , mark , pool ) ;
+if ( svn_err__temp )
+while ( 0 )
+numbytes = 80;
+svn_error_t * svn_err__temp = svn_stream_read ( stream , buffer , & numbytes ) ;
+svn_error_t *svn_stream_read(svn_stream_t *stream,char *buffer,apr_size_t *len)
+if ( ! ( stream -> read_fn != ( ( void * ) 0 ) ) )
+svn_error_t * svn_err__temp = svn_error__malfunction ( ! 0 , "stream.c" , 143 , "stream->read_fn != NULL" ) ;
+if ( svn_err__temp )
+return svn_err__temp ;
+while ( 0 )
+while ( 0 )
+return ( stream -> read_fn ) ( stream -> baton , buffer , len ) ;
+if ( svn_err__temp )
+while ( 0 )
+buffer [ numbytes ] = '\0';
+eol_pos = ( strstr ( buffer , eol ) );
+if ( eol_pos != ( ( void * ) 0 ) )
+if ( numbytes < 80 )
+svn_stringbuf_t * str ;
+str = svn_stringbuf_create_ensure ( ( 2 * 80 ) , pool );
+* stringbuf = str;

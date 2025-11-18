@@ -1,0 +1,14 @@
+void CWE114_Process_Control__w32_char_relativePath_67_bad()
+char * data ;
+CWE114_Process_Control__w32_char_relativePath_67_structType myStruct ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+strcpy ( data , "winsrv.dll" );
+myStruct . structFirst = data;
+CWE114_Process_Control__w32_char_relativePath_67b_badSink ( myStruct );
+void CWE114_Process_Control__w32_char_relativePath_67b_badSink(CWE114_Process_Control__w32_char_relativePath_67_structType myStruct)
+char * data = myStruct . structFirst ;
+HMODULE hModule ;
+hModule = LoadLibraryA ( data );
+if ( hModule != NULL )
+FreeLibrary ( hModule );

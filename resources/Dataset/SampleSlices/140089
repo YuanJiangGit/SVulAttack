@@ -1,0 +1,7 @@
+static void goodG2B()
+char * data ;
+char * & dataRef = data ;
+data = dataBuffer;
+strcpy ( data , "15" );
+char * data = dataRef ;
+if ( sscanf ( data , "%d" , & n ) == 1 )

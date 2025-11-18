@@ -1,0 +1,12 @@
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_alloca_ncpy_08_bad()
+wchar_t * data ;
+wchar_t * dataBadBuffer = ( wchar_t * ) ALLOCA ( ( 10 ) * sizeof ( wchar_t ) ) ;
+if ( staticReturnsTrue ( ) )
+static int staticReturnsTrue()
+return 1 ;
+data = dataBadBuffer;
+wcsncpy ( data , source , wcslen ( source ) + 1 );
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

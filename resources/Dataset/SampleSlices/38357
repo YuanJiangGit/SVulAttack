@@ -1,0 +1,4 @@
+static int yvu9ToYv12Wrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dst[], int dstStride[])
+if ( dst [ 3 ] )

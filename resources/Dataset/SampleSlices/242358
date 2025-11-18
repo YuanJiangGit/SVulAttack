@@ -1,0 +1,71 @@
+static int CVE_2013_0850_PATCHED_decode_slice_header(H264Context *h, H264Context *h0)
+MpegEncContext * const s = & h ->
+MpegEncContext * const s0 = & h0 -> s
+unsigned int first_mb_in_slice ;
+unsigned int pps_id ;
+unsigned int slice_type , tmp , i , j ;
+int must_reinit ;
+if ( ( s -> avctx -> flags2 & CODEC_FLAG2_FAST ) && ! h -> nal_ref_idc && ! h -> pixel_shift )
+s -> me . qpel_put = s -> dsp . put_h264_qpel_pixels_tab;
+s -> me . qpel_avg = s -> dsp . avg_h264_qpel_pixels_tab;
+first_mb_in_slice = get_ue_golomb_long ( & s -> gb );
+if ( first_mb_in_slice == 0 )
+h0 -> current_slice = 0;
+if ( ! s0 -> first_field )
+s -> current_picture_ptr = NULL;
+slice_type = get_ue_golomb_31 ( & s -> gb );
+if ( slice_type > 9 )
+if ( slice_type > 4 )
+slice_type -= 5;
+h -> slice_type_fixed = 0;
+slice_type = golomb_to_pict_type [ slice_type ];
+h -> slice_type = slice_type;
+h -> slice_type_nos = slice_type & 3;
+s -> pict_type = h -> slice_type;
+pps_id = get_ue_golomb ( & s -> gb );
+if ( pps_id >= MAX_PPS_COUNT )
+if ( ! h0 -> pps_buffers [ pps_id ] )
+h -> pps = * h0 -> pps_buffers [ pps_id ];
+if ( ! h0 -> sps_buffers [ h -> pps . sps_id ] )
+h -> sps = * h0 -> sps_buffers [ h -> pps . sps_id ];
+s -> avctx -> profile = ff_h264_get_profile ( & h -> sps );
+s -> avctx -> level = h -> sps . level_idc;
+s -> avctx -> refs = h -> sps . ref_frame_count;
+must_reinit = ( s -> context_initialized && ( 16 * h -> sps . mb_width != s -> avctx -> coded_width || 16 * h -> sps . mb_height * ( 2 - h -> sps . frame_mbs_only_flag ) != s -> avctx -> coded_height || s -> avctx -> bits_per_raw_sample != h -> sps . bit_depth_luma || h -> cur_chroma_format_idc != h -> sps . chroma_format_idc || av_cmp_q ( h -> sps . sar , s -> avctx -> sample_aspect_ratio ) ) );
+if ( must_reinit && ( h != h0 || ( s -> avctx -> active_thread_type & FF_THREAD_FRAME ) ) )
+s -> mb_width = h -> sps . mb_width;
+s -> mb_height = h -> sps . mb_height * ( 2 - h -> sps . frame_mbs_only_flag );
+h -> b_stride = s -> mb_width * 4;
+s -> chroma_y_shift = h -> sps . chroma_format_idc <= 1;
+s -> width = 16 * s -> mb_width;
+s -> height = 16 * s -> mb_height;
+if ( must_reinit )
+h -> list_count = 0;
+h -> current_slice = 0;
+if ( ! s -> context_initialized )
+if ( h != h0 )
+if ( FFALIGN ( s -> avctx -> width , 16 ) == s -> width && FFALIGN ( s -> avctx -> height , 16 * ( 2 - h -> sps . frame_mbs_only_flag ) ) == s -> height && ! h -> sps . crop_right && ! h -> sps . crop_bottom && ( s -> avctx -> width != s -> width || s -> avctx -> height && s -> height ) )
+s -> avctx -> width -= ( 2 >> CHROMA444 ) * FFMIN ( h -> sps . crop_right , ( 8 << CHROMA444 ) - 1 );
+s -> avctx -> height -= ( 1 << s -> chroma_y_shift ) * FFMIN ( h -> sps . crop_bottom , ( 16 >> s -> chroma_y_shift ) - 1 ) * ( 2 - h -> sps . frame_mbs_only_flag );
+s -> avctx -> sample_aspect_ratio = h -> sps . sar;
+if ( s -> avctx -> codec -> capabilities & CODEC_CAP_HWACCEL_VDPAU && ( h -> sps . bit_depth_luma != 8 || h -> sps . chroma_format_idc > 1 ) )
+if ( s -> avctx -> bits_per_raw_sample != h -> sps . bit_depth_luma || h -> cur_chroma_format_idc != h -> sps . chroma_format_idc )
+if ( h -> sps . bit_depth_luma >= 8 && h -> sps . bit_depth_luma <= 14 && h -> sps . bit_depth_luma != 11 && h -> sps . bit_depth_luma != 13 && ( h -> sps . bit_depth_luma != 9 || ! CHROMA422 ) )
+s -> avctx -> bits_per_raw_sample = h -> sps . bit_depth_luma;
+h -> cur_chroma_format_idc = h -> sps . chroma_format_idc;
+h -> pixel_shift = h -> sps . bit_depth_luma > 8;
+s -> dsp . dct_bits = h -> sps . bit_depth_luma > 8 ? 32 : 16;
+if ( h -> sps . video_signal_type_present_flag )
+s -> avctx -> color_range = h -> sps . full_range > 0 ? AVCOL_RANGE_JPEG : AVCOL_RANGE_MPEG;
+if ( h -> sps . colour_description_present_flag )
+s -> avctx -> color_primaries = h -> sps . color_primaries;
+s -> avctx -> color_trc = h -> sps . color_trc;
+s -> avctx -> colorspace = h -> sps . colorspace;
+switch ( h -> sps . bit_depth_luma )
+if ( CHROMA444 )
+if ( CHROMA422 )
+s -> avctx -> pix_fmt = PIX_FMT_YUV420P14;
+if ( CHROMA444 )
+s -> avctx -> pix_fmt = s -> avctx -> color_range == AVCOL_RANGE_JPEG ? PIX_FMT_YUVJ444P : PIX_FMT_YUV444P;
+if ( s -> avctx -> colorspace == AVCOL_SPC_RGB )
+av_log ( h -> s . avctx , AV_LOG_DEBUG , "Detected GBR colorspace.\n" );

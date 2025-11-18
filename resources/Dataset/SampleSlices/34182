@@ -1,0 +1,5 @@
+void CWE675_Duplicate_Operations_on_Resource__fopen_09_bad()
+FILE * data ;
+data = NULL;
+fclose ( data );
+fclose ( data );

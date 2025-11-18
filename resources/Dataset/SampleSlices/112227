@@ -1,0 +1,11 @@
+static void goodG2B()
+wchar_t * data ;
+data = NULL;
+goodG2BSink ( data );
+void goodG2BSink(wchar_t * data)
+dest [ i ] = data [ i ];
+printWLine ( dest );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )
+delete [ ] data

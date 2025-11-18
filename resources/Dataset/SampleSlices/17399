@@ -1,0 +1,40 @@
+static int CVE_2008_3686_PATCHED_rt6_fill_node(struct sk_buff *skb, struct rt6_info
+struct in6_addr *dst, struct in6_addr
+int iif, int type, u32 pid, u32
+int prefix, int nowait, unsigned int flags)
+struct rtmsg * rtm ;
+struct nlmsghdr * nlh ;
+long expires ;
+if ( prefix )
+if ( ! ( rt -> rt6i_flags & RTF_PREFIX_RT ) )
+nlh = nlmsg_put ( skb , pid , seq , type , sizeof ( * rtm ) , flags );
+if ( nlh == NULL )
+rtm = nlmsg_data ( nlh );
+if ( rt -> rt6i_flags & RTF_REJECT )
+if ( rt -> rt6i_dev && ( rt -> rt6i_dev -> flags & IFF_LOOPBACK ) )
+rtm -> rtm_type = RTN_UNICAST;
+rtm -> rtm_flags = 0;
+rtm -> rtm_scope = RT_SCOPE_UNIVERSE;
+rtm -> rtm_protocol = rt -> rt6i_protocol;
+if ( rt -> rt6i_flags & RTF_DYNAMIC )
+rtm -> rtm_protocol = RTPROT_REDIRECT;
+if ( rt -> rt6i_flags & RTF_ADDRCONF )
+rtm -> rtm_protocol = RTPROT_KERNEL;
+if ( rt -> rt6i_flags & RTF_DEFAULT )
+rtm -> rtm_protocol = RTPROT_RA;
+if ( rt -> rt6i_flags & RTF_CACHE )
+rtm -> rtm_flags |= RTM_F_CLONED;
+if ( dst )
+rtm -> rtm_dst_len = 128;
+if ( src )
+rtm -> rtm_src_len = 128;
+if ( iif )
+if ( ipv6_addr_is_multicast ( & rt -> rt6i_dst . addr ) )
+int err = ip6mr_get_route ( skb , rtm , nowait ) ;
+if ( err <= 0 )
+if ( ! nowait )
+if ( err == - EMSGSIZE )
+if ( rtnetlink_put_metrics ( skb , rt -> u . dst . metrics ) < 0 )
+if ( ! ( rt -> rt6i_flags & RTF_EXPIRES ) )
+if ( rt -> rt6i_expires - jiffies < INT_MAX )
+expires = rt -> rt6i_expires - jiffies;

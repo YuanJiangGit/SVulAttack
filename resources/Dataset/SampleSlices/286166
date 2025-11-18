@@ -1,0 +1,33 @@
+static uint32_t intel_hda_mmio_readl(void *opaque, hwaddr addr)
+IntelHDAState * d = opaque ;
+const IntelHDAReg * reg = intel_hda_reg_find ( d , addr ) ;
+static const IntelHDAReg *intel_hda_reg_find(IntelHDAState *d, hwaddr addr)
+const IntelHDAReg * reg ;
+if ( addr >= ARRAY_SIZE ( regtab ) )
+reg = regtab + addr;
+if ( reg -> name == NULL )
+return reg ;
+return NULL ;
+return intel_hda_reg_read ( d , reg , 0xffffffff ) ;
+static uint32_t intel_hda_reg_read(IntelHDAState *d, const IntelHDAReg
+uint32_t rmask)
+uint32_t * addr , ret ;
+if ( ! reg )
+if ( reg -> offset == 0 )
+ret = reg -> reset;
+addr = intel_hda_reg_addr ( d , reg );
+static uint32_t *intel_hda_reg_addr(IntelHDAState *d, const IntelHDAReg *reg)
+uint8_t * addr = ( void * ) d ;
+addr += reg -> offset;
+return ( uint32_t * ) addr ;
+ret = * addr;
+if ( reg -> shift )
+ret >>= reg -> shift;
+ret &= rmask;
+if ( d -> debug )
+if ( ! d -> last_write && d -> last_reg == reg && d -> last_val == ret )
+d -> repeat_count ++;
+if ( d -> last_sec != now )
+dprint ( d , 2 , "previous register op repeated %d times\n" , d -> repeat_count );
+d -> last_sec = now;
+d -> repeat_count = 0;

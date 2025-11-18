@@ -1,0 +1,6 @@
+void CWE617_Reachable_Assertion__rand_05_bad()
+int data ;
+data = - 1;
+if ( staticTrue )
+data = RAND32 ( );
+assert ( data > ASSERT_VALUE );

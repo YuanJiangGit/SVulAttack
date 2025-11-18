@@ -1,0 +1,6 @@
+static void goodG2B2()
+char * data ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+strcpy ( data , "fixedstringtest" );
+SNPRINTF ( dest , 100 - 1 , data );

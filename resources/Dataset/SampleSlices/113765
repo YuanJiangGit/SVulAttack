@@ -1,0 +1,11 @@
+void bad()
+char * data ;
+data = new char [ 50 ];
+data [ 0 ] = '\0';
+* dataPtr1 = data;
+strcpy ( data , source );
+printLine ( data );
+void printLine (const char * line)
+if ( line != NULL )
+printf ( "%s\n" , line );
+delete [ ] data

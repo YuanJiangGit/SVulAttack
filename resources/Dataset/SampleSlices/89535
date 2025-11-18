@@ -1,0 +1,18 @@
+inline static void rb_insert_case1(emem_tree_t *se_tree,emem_tree_node_t *node)
+emem_tree_node_t * parent ;
+parent = emem_tree_parent ( node );
+if ( ! parent )
+rb_insert_case2 ( se_tree , node );
+inline static void rb_insert_case2(emem_tree_t *se_tree,emem_tree_node_t *node)
+emem_tree_node_t * parent ;
+parent = emem_tree_parent ( node );
+if ( parent -> u . rb_color == 1 )
+rb_insert_case3 ( se_tree , node );
+inline static void rb_insert_case3(emem_tree_t *se_tree,emem_tree_node_t *node)
+emem_tree_node_t * parent ;
+emem_tree_node_t * uncle ;
+uncle = emem_tree_uncle ( node );
+if ( uncle && uncle -> u . rb_color == 0 )
+parent = emem_tree_parent ( node );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;

@@ -1,0 +1,12 @@
+static void goodG2B()
+wchar_t * data ;
+wchar_t dataBuffer [ FILENAME_MAX ] = BASEPATH ;
+data = dataBuffer;
+wcscat ( data , L "file.txt" )
+goodG2BSink_b ( data );
+void goodG2BSink_b(wchar_t * data)
+goodG2BSink_c ( data );
+void goodG2BSink_c(wchar_t * data)
+goodG2BSink_d ( data );
+void goodG2BSink_d(wchar_t * data)
+outputFile . open ( ( char * ) data );

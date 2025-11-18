@@ -1,0 +1,9 @@
+static int init_input_threads()
+int i ;
+int ret ;
+if ( nb_input_files == 1 )
+for (i = 0; i < nb_input_files; i++)
+InputFile * f = input_files [ i ] ;
+if ( ! ( f -> fifo = av_fifo_alloc ( ( 8 * sizeof ( AVPacket ) ) ) ) )
+if ( ret = pthread_create ( & f -> thread , ( ( void * ) 0 ) , input_thread , f ) )
+return - ret ;

@@ -1,0 +1,10 @@
+void CWE468_Incorrect_Pointer_Scaling__char_ptr_to_int_11_bad()
+if ( globalReturnsTrue ( ) )
+int globalReturnsTrue()
+return 1 ;
+int intArray [ 5 ] = { 1 , 2 , 3 , 4 , 5 } ;
+char * charPointer = ( char * ) intArray ;
+int toPrint = ( int ) ( * ( charPointer + 2 ) ) ;
+printIntLine ( toPrint );
+void printIntLine (int intNumber)
+printf ( "%d\n" , intNumber );

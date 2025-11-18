@@ -1,0 +1,5 @@
+CWE134_Uncontrolled_Format_String__wchar_t_console_vprintf_83_bad::CWE134_Uncontrolled_Format_String__wchar_t_console_vprintf_83_bad(wchar_t * dataCopy)
+data = dataCopy;
+size_t dataLen = wcslen ( data ) ;
+if ( 100 - dataLen > 1 )
+if ( fgetws ( data + dataLen , ( int ) ( 100 - dataLen ) , stdin ) != NULL )

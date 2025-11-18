@@ -1,0 +1,5 @@
+
+CVE_2013_0764_VULN_nsSOCKSSocketInfo::OnLookupComplete(nsICancelable
+nsIDNSRecord
+nsresult aStatus)
+NS_ABORT_IF_FALSE ( aRequest == mLookup , "wrong DNS query" );

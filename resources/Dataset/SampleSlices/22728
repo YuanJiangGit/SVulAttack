@@ -1,0 +1,6 @@
+static void goodB2G()
+int * data ;
+data = ( int * ) calloc ( 100 , sizeof ( int ) );
+goodB2GSink ( data );
+void goodB2GSink(int * data)
+free ( data );

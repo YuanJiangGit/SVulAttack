@@ -1,0 +1,7 @@
+void CWE675_Duplicate_Operations_on_Resource__fopen_09_bad()
+FILE * data ;
+data = NULL;
+if ( GLOBAL_CONST_TRUE )
+data = fopen ( "BadSource_fopen.txt" , "w+" );
+if ( GLOBAL_CONST_TRUE )
+fclose ( data );

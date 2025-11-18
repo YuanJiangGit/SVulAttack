@@ -1,0 +1,22 @@
+svn_stream_t *svn_stream_from_string(const svn_string_t *str,apr_pool_t *pool)
+if ( ! str )
+return svn_stream_empty ( pool ) ;
+svn_stream_t *svn_stream_empty(apr_pool_t *pool)
+svn_stream_t * stream ;
+stream = svn_stream_create ( ( ( void * ) 0 ) , pool );
+svn_stream_t *svn_stream_create(void *baton,apr_pool_t *pool)
+svn_stream_t * stream ;
+stream = ( apr_palloc ( pool , sizeof ( ( * stream ) ) ) );
+stream -> baton = baton;
+stream -> read_fn = ( ( void * ) 0 );
+stream -> skip_fn = ( ( void * ) 0 );
+stream -> write_fn = ( ( void * ) 0 );
+stream -> close_fn = ( ( void * ) 0 );
+stream -> mark_fn = ( ( void * ) 0 );
+stream -> seek_fn = ( ( void * ) 0 );
+stream -> is_buffered_fn = ( ( void * ) 0 );
+stream -> file = ( ( void * ) 0 );
+return stream ;
+svn_stream__set_is_buffered ( stream , is_buffered_handler_empty );
+void svn_stream__set_is_buffered(svn_stream_t *stream,svn_stream__is_buffered_fn_t is_buffered_fn)
+stream -> is_buffered_fn = is_buffered_fn;

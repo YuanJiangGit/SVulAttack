@@ -1,0 +1,23 @@
+static void CVE_2013_2478_PATCHED_dissect_server_info(tvbuff_t *tvb, packet_info *pinfo, proto_tree
+guint offset)
+char * server_version ;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+offset += 4;
+server_version_length = tvb_get_letohl ( tvb , offset );
+offset += 4;
+if ( server_version_length > ( guint ) tvb_reported_length_remaining ( tvb , offset ) )
+server_version_length = 0;
+offset += 4;
+offset += 4;
+offset += 4;
+if ( server_version_length > 1 )
+server_version = tvb_get_ephemeral_unicode_string ( tvb , offset , server_version_length * 2 , ENC_LITTLE_ENDIAN );
+col_append_fstr ( pinfo -> cinfo , COL_INFO , " (version='%s')" , format_text ( ( guchar * ) server_version , server_version_length ) );

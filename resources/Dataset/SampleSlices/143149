@@ -1,0 +1,6 @@
+void bad()
+int64_t * data ;
+data = ( int64_t * ) malloc ( 100 * sizeof ( int64_t ) );
+int64_t * dataCopy = data ;
+int64_t * data = dataCopy ;
+delete data

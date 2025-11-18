@@ -1,0 +1,12 @@
+void bad()
+wchar_t * data ;
+data = NULL;
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+data = new wchar_t [ 100 ];
+data = ( wchar_t * ) malloc ( 100 * sizeof ( wchar_t ) );
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+free ( data );

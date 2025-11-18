@@ -1,0 +1,14 @@
+void col_fill_in(packet_info *pinfo,const gboolean fill_col_exprs,const gboolean fill_fd_colums)
+int i ;
+if ( ! pinfo -> cinfo )
+for (i = 0; i < pinfo -> cinfo -> num_cols; i++)
+switch ( pinfo -> cinfo -> col_fmt [ i ] )
+col_set_addr ( pinfo , i , ( & pinfo -> dl_src ) , ! 0 , fill_col_exprs , ! 0 );
+pinfo -> cinfo -> col_data [ i ] = pinfo -> cinfo -> col_buf [ i ];
+static void col_set_addr(packet_info *pinfo,const int col,const address *addr,const gboolean is_src,const gboolean fill_col_exprs,const gboolean res)
+if ( ( addr -> type ) == AT_NONE )
+if ( ! fill_col_exprs )
+switch ( addr -> type )
+if ( is_src )
+pinfo -> cinfo -> col_expr . col_expr [ col ] = "uri.dst";
+address_to_str_buf ( addr , pinfo -> cinfo -> col_expr . col_expr_val [ col ] , 256 );

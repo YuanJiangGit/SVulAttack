@@ -1,0 +1,15 @@
+void CWE127_Buffer_Underread__malloc_wchar_t_memmove_67_bad()
+wchar_t * data ;
+wchar_t * dataBuffer = ( wchar_t * ) malloc ( 100 * sizeof ( wchar_t ) ) ;
+wmemset ( dataBuffer , L 'A' , 100 - 1
+dataBuffer [ 100 - 1 ] = L '\0'
+data = dataBuffer - 8;
+myStruct . structFirst = data;
+CWE127_Buffer_Underread__malloc_wchar_t_memmove_67b_badSink ( myStruct );
+void CWE127_Buffer_Underread__malloc_wchar_t_memmove_67b_badSink(CWE127_Buffer_Underread__malloc_wchar_t_memmove_67_structType myStruct)
+wchar_t * data = myStruct . structFirst ;
+memmove ( dest , data , 100 * sizeof ( wchar_t ) );
+printWLine ( dest );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

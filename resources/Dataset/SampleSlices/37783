@@ -1,0 +1,10 @@
+static int planarRgbToRgbWrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dst[], int dstStride[])
+int alpha_first = 0 ;
+const uint8_t * src201 [ ] = { src [ 2 ] , src [ 0 ] , src [ 1 ] } ;
+int stride201 [ ] = { srcStride [ 2 ] , srcStride [ 0 ] , srcStride [ 1 ] } ;
+if ( c -> srcFormat != AV_PIX_FMT_GBRP )
+switch ( c -> dstFormat )
+alpha_first = 1;
+gbr24ptopacked32 ( src201 , stride201 , dst [ 0 ] + srcSliceY * dstStride [ 0 ] , dstStride [ 0 ] , srcSliceH , alpha_first , c -> srcW );

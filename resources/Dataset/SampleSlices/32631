@@ -1,0 +1,31 @@
+static int CVE_2009_0746_PATCHED_make_indexed_dir(handle_t *handle, struct dentry
+struct inode *inode, struct buffer_head *bh)
+struct inode * dir = dentry -> d_parent -> d_inode ;
+struct buffer_head * bh2 ;
+struct dx_root * root ;
+struct dx_frame frames [ 2 ] , * frame ;
+struct dx_entry * entries ;
+struct ext4_dir_entry_2 * de , * de2 ;
+int retval ;
+unsigned blocksize ;
+struct fake_dirent * fde ;
+blocksize = dir -> i_sb -> s_blocksize;
+retval = ext4_journal_get_write_access ( handle , bh );
+if ( retval )
+root = ( struct dx_root * ) bh -> b_data;
+fde = & root -> dotdot;
+de = ( struct ext4_dir_entry_2 * ) ( ( char * ) fde + ext4_rec_len_from_disk ( fde -> rec_len ) );
+if ( ( char * ) de >= ( ( ( char * ) root ) + blocksize ) )
+bh2 = ext4_append ( handle , dir , & block , & retval );
+if ( ! ( bh2 ) )
+memset ( & root -> info , 0 , sizeof ( root -> info ) );
+root -> info . info_length = sizeof ( root -> info );
+root -> info . hash_version = EXT4_SB ( dir -> i_sb ) -> s_def_hash_version;
+entries = root -> entries;
+frame = frames;
+frame -> entries = entries;
+frame -> at = entries;
+frame -> bh = bh;
+de = do_split ( handle , dir , & bh , frame , & hinfo , & retval );
+if ( ! ( de ) )
+return add_dirent_to_buf ( handle , dentry , inode , de , bh ) ;

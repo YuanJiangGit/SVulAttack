@@ -1,0 +1,6 @@
+void bad()
+TwoIntsClass * data ;
+data = ( TwoIntsClass * ) malloc ( 100 * sizeof ( TwoIntsClass ) );
+badSink ( data );
+static void badSink(TwoIntsClass * data)
+delete [ ] data

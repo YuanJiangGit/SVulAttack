@@ -1,0 +1,6 @@
+GtkWidget *filter_toolbar_new()
+GtkWidget * filter_tb ;
+GtkToolItem * filter_save ;
+filter_tb = gtk_toolbar_new ( );
+filter_save = gtk_tool_button_new_from_stock ( "gtk-save" );
+gtk_toolbar_insert ( ( ( GtkToolbar * ) ( g_type_check_instance_cast ( ( ( GTypeInstance * ) filter_tb ) , gtk_toolbar_get_type ( ) ) ) ) , filter_save , - 1 );

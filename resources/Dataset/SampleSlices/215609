@@ -1,0 +1,5 @@
+void gimp_dialog_factory_restore(GimpDialogFactory *factory)
+GList * infos ;
+for (infos = factory -> p -> session_infos; infos; infos = (infos?((GList *)infos) -> next : ((void *)0)))
+GimpSessionInfo * info = ( infos -> data ) ;
+if ( gimp_session_info_get_open ( info ) )

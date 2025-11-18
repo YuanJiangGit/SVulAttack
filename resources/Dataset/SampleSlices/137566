@@ -1,0 +1,6 @@
+static void goodB2G()
+wchar_t * data ;
+data = NULL;
+data = new wchar_t [ 100 ];
+wcscpy ( data , L "A String" )
+printWLine ( data );

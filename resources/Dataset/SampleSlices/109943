@@ -1,0 +1,8 @@
+void bad()
+char * data ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+badVaSink ( data , data );
+static void badVaSink(char * data, ...)
+va_list args ;
+vfprintf ( stdout , data , args );

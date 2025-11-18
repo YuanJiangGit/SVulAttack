@@ -1,0 +1,4 @@
+GtkWidget *filter_toolbar_new()
+GtkToolItem * filter_apply ;
+filter_apply = gtk_tool_button_new_from_stock ( "Wireshark_Stock_Apply_Expression" );
+gtk_widget_set_sensitive ( ( ( GtkWidget * ) ( g_type_check_instance_cast ( ( ( GTypeInstance * ) filter_apply ) , gtk_widget_get_type ( ) ) ) ) , 0 );

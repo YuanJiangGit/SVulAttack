@@ -1,0 +1,8 @@
+void bad()
+int * data ;
+data = NULL;
+data = NULL;
+data = ( int * ) realloc ( data , 100 * sizeof ( int ) );
+badSink_b ( data );
+void badSink_b(int * data)
+badSink_c ( data );

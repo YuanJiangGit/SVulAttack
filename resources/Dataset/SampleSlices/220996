@@ -1,0 +1,72 @@
+int CVE_2011_1023_PATCHED_rds_ib_xmit(struct rds_connection *conn, struct rds_message
+unsigned int hdr_off, unsigned int sg, unsigned int off)
+struct rds_ib_connection * ic = conn -> c_transport_data ;
+struct ib_device * dev = ic -> i_cm_id -> device ;
+struct rds_ib_send_work * prev ;
+struct scatterlist * scat ;
+u32 pos ;
+u32 i ;
+u32 work_alloc ;
+int send_flags = 0 ;
+int flow_controlled = 0 ;
+if ( conn -> c_loopback && rm -> m_inc . i_hdr . h_flags & RDS_FLAG_CONG_BITMAP )
+if ( be32_to_cpu ( rm -> m_inc . i_hdr . h_len ) == 0 )
+i = 1;
+i = ceil ( be32_to_cpu ( rm -> m_inc . i_hdr . h_len ) , RDS_FRAG_SIZE );
+work_alloc = rds_ib_ring_alloc ( & ic -> i_send_ring , i , & pos );
+if ( work_alloc == 0 )
+if ( ic -> i_flowctl )
+credit_alloc = rds_ib_send_grab_credits ( ic , work_alloc , & posted , 0 , RDS_MAX_ADV_CREDIT );
+if ( credit_alloc < work_alloc )
+work_alloc = credit_alloc;
+flow_controlled = 1;
+if ( work_alloc == 0 )
+if ( ! ic -> i_data_op )
+if ( rm -> data . op_nents )
+rm -> data . op_count = ib_dma_map_sg ( dev , rm -> data . op_sg , rm -> data . op_nents , DMA_TO_DEVICE );
+if ( rm -> data . op_count == 0 )
+rm -> data . op_count = 0;
+ic -> i_data_op = & rm -> data;
+if ( test_bit ( RDS_MSG_ACK_REQUIRED , & rm -> m_flags ) )
+rm -> m_inc . i_hdr . h_flags |= RDS_FLAG_ACK_REQUIRED;
+if ( test_bit ( RDS_MSG_RETRANSMITTED , & rm -> m_flags ) )
+rm -> m_inc . i_hdr . h_flags |= RDS_FLAG_RETRANSMITTED;
+rm -> m_inc . i_hdr . h_ack = cpu_to_be64 ( rds_ib_piggyb_ack ( ic ) );
+if ( rm -> rdma . op_active && rm -> rdma . op_fence )
+send_flags = IB_SEND_FENCE;
+send = & ic -> i_sends [ pos ];
+scat = & ic -> i_data_op -> op_sg [ sg ];
+i = 0;
+send -> s_wr . send_flags = send_flags;
+send -> s_wr . opcode = IB_WR_SEND;
+send -> s_wr . num_sge = 1;
+send -> s_wr . next = NULL;
+send -> s_queued = jiffies;
+send -> s_op = NULL;
+send -> s_sge [ 0 ] . addr = ic -> i_send_hdrs_dma + ( pos * sizeof ( struct rds_header ) );
+send -> s_sge [ 0 ] . length = sizeof ( struct rds_header );
+memcpy ( & ic -> i_send_hdrs [ pos ] , & rm -> m_inc . i_hdr , sizeof ( struct rds_header ) );
+if ( i < work_alloc && scat != & rm -> data . op_sg [ rm -> data . op_count ] )
+len = min ( RDS_FRAG_SIZE , ib_sg_dma_len ( dev , scat ) - off );
+send -> s_wr . num_sge = 2;
+send -> s_sge [ 1 ] . addr = ib_sg_dma_address ( dev , scat ) + off;
+send -> s_sge [ 1 ] . length = len;
+off += len;
+if ( off == ib_sg_dma_len ( dev , scat ) )
+scat ++;
+off = 0;
+if ( ic -> i_flowctl && flow_controlled && i == ( work_alloc - 1 ) )
+send -> s_wr . send_flags |= IB_SEND_SIGNALED | IB_SEND_SOLICITED;
+if ( prev )
+prev -> s_wr . next = & send -> s_wr;
+prev = send;
+pos = ( pos + 1 ) % ic -> i_send_ring . w_nr;
+send = & ic -> i_sends [ pos ];
+i ++;
+while ( i < work_alloc && scat != & rm -> data . op_sg [ rm -> data . op_count ] )
+prev -> s_op = ic -> i_data_op;
+prev -> s_wr . send_flags |= IB_SEND_SOLICITED;
+if ( prev -> s_op )
+ic -> i_data_op = prev -> s_op;
+prev -> s_op = NULL;
+rds_ib_conn_error ( ic -> conn , "ib_post_send failed\n" );

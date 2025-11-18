@@ -1,0 +1,12 @@
+
+main(int argc, char **argv)
+char * userstr ;
+if ( argc > 1 )
+userstr = argv [ 1 ];
+test ( userstr );
+
+test(char *str)
+char buf [ MAXSIZE ] ;
+if ( strlen ( str ) > MAXSIZE )
+snprintf ( buf , 1024 , "<%s>" , str );
+printf ( "result: %s\n" , buf );

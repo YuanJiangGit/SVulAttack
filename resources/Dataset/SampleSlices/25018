@@ -1,0 +1,7 @@
+void CWE78_OS_Command_Injection__char_environment_execl_32_bad()
+char * data ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+size_t dataLen = strlen ( data ) ;
+strncat ( data + dataLen , environment , 100 - dataLen - 1 );
+* dataPtr1 = data;

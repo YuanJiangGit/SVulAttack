@@ -1,0 +1,6 @@
+static void goodG2B()
+wchar_t * data ;
+wchar_t dataBuffer [ 100 ] = L ""
+data = dataBuffer;
+wcscpy ( data , L "fixedstringtest" )
+goodG2BVaSink ( data , data );

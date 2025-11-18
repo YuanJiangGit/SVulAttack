@@ -1,0 +1,12 @@
+static void goodB2G()
+int * data ;
+CWE690_NULL_Deref_From_Return__int_calloc_67_structType myStruct ;
+data = NULL;
+data = ( int * ) calloc ( 1 , sizeof ( int ) );
+myStruct . structFirst = data;
+CWE690_NULL_Deref_From_Return__int_calloc_67b_goodB2GSink ( myStruct );
+void CWE690_NULL_Deref_From_Return__int_calloc_67b_goodB2GSink(CWE690_NULL_Deref_From_Return__int_calloc_67_structType myStruct)
+int * data = myStruct . structFirst ;
+if ( data != NULL )
+data [ 0 ] = 5;
+free ( data );

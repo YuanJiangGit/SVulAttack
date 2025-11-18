@@ -1,0 +1,12 @@
+void bad()
+vector < wchar_t * > dataVector ;
+badSink ( dataVector );
+void badSink(vector<wchar_t *> dataVector)
+wchar_t * data = dataVector [ 2 ] ;
+dataLen = wcslen ( data );
+for (i = 0; i < dataLen; i++)
+dest [ i ] = data [ i ];
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

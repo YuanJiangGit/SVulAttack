@@ -1,0 +1,15 @@
+static void col_set_fmt_time(const frame_data *fd,column_info *cinfo,const gint fmt,const gint col)
+if ( fd -> flags . ref_time )
+switch ( fmt )
+col_set_cls_time ( fd , cinfo , col );
+static void col_set_cls_time(const frame_data *fd,column_info *cinfo,const gint col)
+switch ( timestamp_get_type ( ) )
+col_set_delta_time ( fd , cinfo , col );
+static void col_set_delta_time(const frame_data *fd,column_info *cinfo,const int col)
+switch ( timestamp_get_seconds_type ( ) )
+cinfo -> col_expr . col_expr [ col ] = "frame.time_delta";
+cinfo -> col_expr . col_expr [ col ] = "frame.time_delta";
+set_time_seconds ( & fd -> del_cap_ts , cinfo -> col_expr . col_expr_val [ col ] );
+static void set_time_seconds(const nstime_t *ts,gchar *buf)
+switch ( timestamp_get_precision ( ) )
+display_signed_time ( buf , 256 , ( ( gint32 ) ( ts -> secs ) ) , ts -> nsecs / 10000000 , TO_STR_TIME_RES_T_CSECS );

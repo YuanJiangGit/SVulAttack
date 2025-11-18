@@ -1,0 +1,11 @@
+void pgstat_reset_shared_counters(const char *target)
+PgStat_MsgResetsharedcounter msg ;
+if ( pgStatSock == - 1 )
+if ( strcmp ( target , "bgwriter" ) == 0 )
+msg . m_resettarget = RESET_BGWRITER;
+pgstat_send ( ( & msg ) , ( sizeof ( msg ) ) );
+static void pgstat_send(void *msg,int len)
+if ( pgStatSock == - 1 )
+( ( PgStat_MsgHdr * ) msg ) -> m_size = len;
+rc = ( send ( pgStatSock , msg , len , 0 ) );
+while ( rc < 0 && * __errno_location ( ) == 4 )

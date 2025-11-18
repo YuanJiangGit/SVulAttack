@@ -1,0 +1,8 @@
+void bad()
+twoIntsStruct * data ;
+unionType myUnion ;
+data = NULL;
+data = new twoIntsStruct
+myUnion . unionFirst = data;
+twoIntsStruct * data = myUnion . unionSecond ;
+free ( data );

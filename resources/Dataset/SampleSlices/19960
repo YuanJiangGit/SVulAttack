@@ -1,0 +1,19 @@
+void crossite_presecular(int timarau_nippiest,struct remonstrance_unstanchable *twilled_mileage)
+gradational_circled ( timarau_nippiest , twilled_mileage );
+void gradational_circled(int berserk_farragoes,struct remonstrance_unstanchable *kneebrush_meropodite)
+berserk_farragoes --;
+if ( berserk_farragoes > 0 )
+crossite_presecular ( berserk_farragoes , kneebrush_meropodite );
+void crossite_presecular(int timarau_nippiest,struct remonstrance_unstanchable *twilled_mileage)
+gradational_circled ( timarau_nippiest , twilled_mileage );
+void gradational_circled(int berserk_farragoes,struct remonstrance_unstanchable *kneebrush_meropodite)
+char stonesoup_buffer [ 128 ] ;
+berserk_farragoes --;
+if ( berserk_farragoes > 0 )
+memset ( stonesoup_buffer , 'x' , 128 );
+stonesoup_buffer [ 127 ] = 0;
+strcpy ( stonesoup_buffer , stonesoup_input_buf );
+tracepoint ( stonesoup_trace , variable_signed_integral , "(stonesoup_buffer[127])" , ( stonesoup_buffer [ 127 ] ) , & ( stonesoup_buffer [ 127 ] ) , "TRIGGER-STATE" );
+for (; stonesoup_oc_i < strlen(stonesoup_buffer); ++stonesoup_oc_i)
+stonesoup_buffer [ stonesoup_oc_i ] = stonesoup_toupper ( stonesoup_buffer [ stonesoup_oc_i ] );
+stonesoup_printf ( "%s\n" , stonesoup_buffer );

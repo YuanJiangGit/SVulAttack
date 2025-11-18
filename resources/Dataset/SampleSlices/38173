@@ -1,0 +1,4 @@
+static void goodB2G1()
+int64_t data ;
+data = 0L L
+fscanf ( stdin , "%lld" , & data );

@@ -1,0 +1,9 @@
+static void goodG2B()
+struct _twoIntsStruct * data ;
+data = NULL;
+data = ( struct _twoIntsStruct * ) ALLOCA ( 100 * sizeof ( struct _twoIntsStruct ) );
+data [ 0 ] . intOne = 0;
+data [ 0 ] . intTwo = 0;
+CWE401_Memory_Leak__struct_twoIntsStruct_realloc_52b_goodG2BSink ( data );
+void CWE401_Memory_Leak__struct_twoIntsStruct_realloc_52b_goodG2BSink(struct _twoIntsStruct * data)
+CWE401_Memory_Leak__struct_twoIntsStruct_realloc_52c_goodG2BSink ( data );

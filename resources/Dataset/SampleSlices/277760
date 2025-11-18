@@ -1,0 +1,43 @@
+static int planarRgb16ToRgb16Wrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dst[], int dstStride[])
+const uint16_t * src201 [ ] = { ( uint16_t * ) src [ 2 ] , ( uint16_t * ) src [ 0 ] , ( uint16_t * ) src [ 1 ] , ( uint16_t * ) src [ 3 ] } ;
+int stride201 [ ] = { srcStride [ 2 ] , srcStride [ 0 ] , srcStride [ 1 ] , srcStride [ 3 ] } ;
+const AVPixFmtDescriptor * src_format = av_pix_fmt_desc_get ( c -> srcFormat ) ;
+const AVPixFmtDescriptor * dst_format = av_pix_fmt_desc_get ( c -> dstFormat ) ;
+int bits_per_sample = src_format -> comp [ 0 ] . depth_minus1 + 1 ;
+int swap = 0 ;
+if ( HAVE_BIGENDIAN && ! ( src_format -> flags & AV_PIX_FMT_FLAG_BE ) || ! HAVE_BIGENDIAN && src_format -> flags & AV_PIX_FMT_FLAG_BE )
+swap ++;
+if ( HAVE_BIGENDIAN && ! ( dst_format -> flags & AV_PIX_FMT_FLAG_BE ) || ! HAVE_BIGENDIAN && dst_format -> flags & AV_PIX_FMT_FLAG_BE )
+swap += 2;
+if ( ( src_format -> flags & ( AV_PIX_FMT_FLAG_PLANAR | AV_PIX_FMT_FLAG_RGB ) ) != ( AV_PIX_FMT_FLAG_PLANAR | AV_PIX_FMT_FLAG_RGB ) || bits_per_sample <= 8 )
+switch ( c -> dstFormat )
+gbr16ptopacked16 ( src201 , stride201 , dst [ 0 ] + srcSliceY * dstStride [ 0 ] , dstStride [ 0 ] , srcSliceH , 1 , swap , bits_per_sample , c -> srcW );
+static void gbr16ptopacked16(const uint16_t *src[], int
+uint8_t *dst, int dstStride, int
+int alpha, int swap, int bpp, int width)
+int x , h , i ;
+int src_alpha = src [ 3 ] != NULL ;
+int scale_high = 16 - bpp , scale_low = ( bpp - 8 ) * 2 ;
+for (h = 0; h < srcSliceH; h++)
+uint16_t * dest = ( uint16_t * ) ( dst + dstStride * h ) ;
+uint16_t component ;
+switch ( swap )
+if ( alpha && ! src_alpha )
+if ( alpha && src_alpha )
+for (x = 0; x < width; x++)
+component = av_bswap16 ( src [ 0 ] [ x ] );
+* dest ++ = av_bswap16 ( component << scale_high | component >> scale_low );
+component = av_bswap16 ( src [ 1 ] [ x ] );
+* dest ++ = av_bswap16 ( component << scale_high | component >> scale_low );
+component = av_bswap16 ( src [ 2 ] [ x ] );
+* dest ++ = av_bswap16 ( component << scale_high | component >> scale_low );
+if ( alpha && ! src_alpha )
+for (x = 0; x < width; x++)
+* dest ++ = av_bswap16 ( src [ 0 ] [ x ] << scale_high | src [ 0 ] [ x ] >> scale_low );
+* dest ++ = av_bswap16 ( src [ 1 ] [ x ] << scale_high | src [ 1 ] [ x ] >> scale_low );
+* dest ++ = av_bswap16 ( src [ 2 ] [ x ] << scale_high | src [ 2 ] [ x ] >> scale_low );
+* dest ++ = 0xffff;
+for (i = 0; i < 3 + src_alpha; i++)
+src [ i ] += srcStride [ i ] >> 1;

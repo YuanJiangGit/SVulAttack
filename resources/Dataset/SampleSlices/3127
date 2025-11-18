@@ -1,0 +1,6 @@
+static void goodG2B()
+int count ;
+int * countPtr1 = & count ;
+count = - 1;
+count = 20;
+* countPtr1 = count;

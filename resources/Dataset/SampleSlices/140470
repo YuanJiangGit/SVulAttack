@@ -1,0 +1,8 @@
+void bad()
+long * data ;
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+data = ( long * ) malloc ( 100 * sizeof ( long ) );
+free ( data );
+delete [ ] data

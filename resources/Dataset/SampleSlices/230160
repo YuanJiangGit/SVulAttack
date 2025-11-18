@@ -1,0 +1,19 @@
+static struct task_struct *CVE_2009_0028_PATCHED_copy_process(unsigned long
+unsigned long
+struct pt_regs
+unsigned long
+int __user
+struct pid
+int trace)
+int retval ;
+struct task_struct * p ;
+if ( ( clone_flags & ( CLONE_NEWNS | CLONE_FS ) ) == ( CLONE_NEWNS | CLONE_FS ) )
+if ( ( clone_flags & CLONE_THREAD ) && ! ( clone_flags & CLONE_SIGHAND ) )
+if ( ( clone_flags & CLONE_SIGHAND ) && ! ( clone_flags & CLONE_VM ) )
+retval = security_task_create ( clone_flags );
+if ( retval )
+p = dup_task_struct ( current );
+if ( ! p )
+if ( atomic_read ( & p -> user -> processes ) >= p -> signal -> rlim [ RLIMIT_NPROC ] . rlim_cur )
+if ( ! capable ( CAP_SYS_ADMIN ) && ! capable ( CAP_SYS_RESOURCE ) && p -> user != current -> nsproxy -> user_ns -> root_user )
+atomic_inc ( & p -> user -> processes );

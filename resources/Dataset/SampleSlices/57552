@@ -1,0 +1,6 @@
+void bad()
+long * data ;
+data = ( long * ) malloc ( 100 * sizeof ( long ) );
+long * dataCopy = data ;
+long * data = dataCopy ;
+delete [ ] data

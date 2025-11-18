@@ -1,0 +1,11 @@
+svn_error_t *svn_config_get_server_setting_bool(svn_config_t *cfg,svn_boolean_t *valuep,const char *server_group,const char *option_name,svn_boolean_t default_value)
+const char * tmp_value ;
+tmp_value = svn_config_get_server_setting ( cfg , server_group , option_name , ( ( void * ) 0 ) );
+const char *svn_config_get_server_setting(svn_config_t *cfg,const char *server_group,const char *option_name,const char *default_value)
+const char * retval ;
+svn_config_get ( cfg , & retval , "global" , option_name , default_value );
+void svn_config_get(svn_config_t *cfg,const char **valuep,const char *section,const char *option,const char *default_value)
+if ( cfg )
+cfg_option_t * opt = find_option ( cfg , section , option , & sec ) ;
+static cfg_option_t *find_option(svn_config_t *cfg,const char *section,const char *option,cfg_section_t **sectionp)
+svn_stringbuf_set ( cfg -> tmp_key , section );

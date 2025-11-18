@@ -1,0 +1,5 @@
+static int uyvyToYuv422Wrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dstParam[], int dstStride[])
+uint8_t * vdst = dstParam [ 2 ] + dstStride [ 2 ] * srcSliceY ;
+uyvytoyuv422 ( ydst , udst , vdst , src [ 0 ] , c -> srcW , srcSliceH , dstStride [ 0 ] , dstStride [ 1 ] , srcStride [ 0 ] );

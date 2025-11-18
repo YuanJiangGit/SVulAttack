@@ -1,0 +1,12 @@
+static void goodG2B()
+vector < char * > dataVector ;
+goodG2BSink ( dataVector );
+void goodG2BSink(vector<char *> dataVector)
+char * data = dataVector [ 2 ] ;
+LDAPMessage * pMessage = NULL ;
+char filter [ 256 ] ;
+_snprintf ( filter , 256 - 1 , "(cn=%s)" , data );
+pLdapConnection = ldap_initA ( "localhost" , LDAP_PORT );
+searchSuccess = ldap_search_ext_sA ( pLdapConnection , "base" , LDAP_SCOPE_SUBTREE , filter , NULL , 0 , NULL , NULL , LDAP_NO_LIMIT , LDAP_NO_LIMIT , & pMessage );
+if ( searchSuccess != LDAP_SUCCESS )
+if ( pMessage != NULL )

@@ -1,0 +1,7 @@
+static void goodG2B()
+wchar_t * data ;
+data = NULL;
+data = ( wchar_t * ) ALLOCA ( 100 * sizeof ( wchar_t ) );
+wcscpy ( data , L "a string" )
+wchar_t * dataCopy = data ;
+wchar_t * data = dataCopy ;

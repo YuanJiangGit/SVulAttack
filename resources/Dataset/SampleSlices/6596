@@ -1,0 +1,20 @@
+static void goodG2B()
+int data ;
+data = - 1;
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+data = 7;
+data = 7;
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+int buffer [ 10 ] = { 0 } ;
+if ( data >= 0 )
+buffer [ data ] = 1;
+int buffer [ 10 ] = { 0 } ;
+if ( data >= 0 )
+buffer [ data ] = 1;
+printIntLine ( buffer [ i ] );
+void printIntLine (int intNumber)
+printf ( "%d\n" , intNumber );

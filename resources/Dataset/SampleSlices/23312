@@ -1,0 +1,7 @@
+void CWE758_Undefined_Behavior__char_alloca_use_13_bad()
+if ( GLOBAL_CONST_FIVE == 5 )
+char * pointer = ( char * ) ALLOCA ( sizeof ( char ) ) ;
+char data = * pointer ;
+printHexCharLine ( data );
+void printHexCharLine (char charHex)
+printf ( "%02x\n" , charHex );

@@ -1,0 +1,5 @@
+void dynamic_buffer_underrun_028 ()
+int * buf2 = ( int * ) calloc ( 3 , sizeof ( int ) ) ;
+* ( buf2 - * ( buf1 + 0 ) ) = 1;
+free ( buf1 );
+free ( buf2 );

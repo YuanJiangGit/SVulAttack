@@ -1,0 +1,6 @@
+void bad()
+wchar_t * data ;
+if ( 5 == 5 )
+data = NULL;
+data = ( wchar_t * ) realloc ( data , 100 * sizeof ( wchar_t ) );
+delete [ ] data

@@ -1,0 +1,4 @@
+static void goodB2G()
+twoIntsStruct * data ;
+data = NULL;
+free ( data );

@@ -1,0 +1,23 @@
+enum XML_Status
+XML_Parse(XML_Parser parser, const char *s, int len, int isFinal)
+switch ( ps_parsing )
+errorCode = XML_ERROR_SUSPENDED;
+errorCode = XML_ERROR_FINISHED;
+ps_parsing = XML_PARSING;
+if ( len == 0 )
+if ( bufferPtr == bufferEnd )
+const char * end ;
+int nLeftOver ;
+errorCode = processor ( parser , s , parseEndPtr = s + len , & end );
+if ( errorCode != XML_ERROR_NONE )
+switch ( ps_parsing )
+if ( isFinal )
+nLeftOver = s + len - end;
+if ( nLeftOver )
+if ( buffer == NULL || nLeftOver > bufferLim - buffer )
+char * temp ;
+temp = ( buffer == NULL ? ( char * ) MALLOC ( len * 2 ) : ( char * ) REALLOC ( buffer , len * 2 ) );
+if ( temp == NULL )
+buffer = temp;
+if ( ! buffer )
+bufferLim = buffer + len * 2;

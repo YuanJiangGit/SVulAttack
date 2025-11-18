@@ -1,0 +1,7 @@
+void bad()
+char * data ;
+data = NULL;
+badSource ( data );
+void badSource(char * &data)
+data = ( char * ) malloc ( 100 * sizeof ( char ) );
+delete data

@@ -1,0 +1,12 @@
+void CWE620_Unverified_Password_Change__w32_06_bad()
+if ( STATIC_CONST_FIVE == 5 )
+wchar_t newPassword [ 256 ] ;
+USER_INFO_1003 myUserInfo ;
+myUserInfo . usri1003_password = newPassword;
+printWLine ( L "Enter new password: "
+if ( fwscanf ( stdin , L "%255s" , myUserInfo . usri1003_password ) != 1 )
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )
+status = NetUserSetInfo ( NULL , USERNAME , 1003 , ( LPBYTE ) & myUserInfo , NULL );
+if ( status == NERR_Success )

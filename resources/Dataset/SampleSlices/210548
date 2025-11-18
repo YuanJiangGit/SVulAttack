@@ -1,0 +1,5 @@
+void *replaceSpace ()
+stonesoup_printf ( "Replacing spaces\n" );
+void stonesoup_printf(char * format, ...)
+va_list argptr ;
+vfprintf ( stonesoup_printf_context , format , argptr );

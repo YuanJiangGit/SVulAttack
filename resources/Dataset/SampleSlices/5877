@@ -1,0 +1,11 @@
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_declare_cpy_34_bad()
+wchar_t * data ;
+wchar_t dataBadBuffer [ 10 ] ;
+data = dataBadBuffer;
+myUnion . unionFirst = data;
+wchar_t * data = myUnion . unionSecond ;
+wcscpy ( data , source );
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

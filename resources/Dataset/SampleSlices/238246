@@ -1,0 +1,21 @@
+static
+CVE_2013_1587_PATCHED_dissect_rohc_ir_packet(tvbuff_t *tvb, proto_tree *tree, packet_info
+int offset, guint16 cid, gboolean is_add_cid, rohc_info *p_rohc_info)
+guint8 oct , profile , val_len ;
+offset ++;
+if ( p_rohc_info -> large_cid_present == TRUE )
+offset = offset + val_len;
+profile = tvb_get_guint8 ( tvb , offset );
+if ( ! pinfo -> fd -> flags . visited )
+gint key = cid ;
+rohc_cid_context = ( rohc_cid_context_t * ) g_hash_table_lookup ( rohc_cid_hash , GUINT_TO_POINTER ( key ) );
+if ( rohc_cid_context != NULL )
+gint tmp_prev_ir_frame_number = rohc_cid_context -> ir_frame_number ;
+rohc_cid_context = se_new ( rohc_cid_context_t );
+rohc_cid_context -> profile = profile;
+rohc_cid_context -> prev_ir_frame_number = tmp_prev_ir_frame_number;
+rohc_cid_context -> ir_frame_number = pinfo -> fd -> num;
+rohc_cid_context -> rohc_ip_version = tmp_prev_rohc_ip_version;
+rohc_cid_context -> mode = tmp_prev_mode;
+g_hash_table_replace ( rohc_cid_hash , GUINT_TO_POINTER ( key ) , rohc_cid_context );
+p_add_proto_data ( pinfo -> fd , proto_rohc , rohc_cid_context );

@@ -1,0 +1,11 @@
+void CWE369_Divide_by_Zero__int_zero_divide_11_bad()
+int data ;
+data = - 1;
+if ( globalReturnsTrue ( ) )
+int globalReturnsTrue()
+return 1 ;
+data = 0;
+if ( globalReturnsTrue ( ) )
+int globalReturnsTrue()
+return 1 ;
+printIntLine ( 100 / data );

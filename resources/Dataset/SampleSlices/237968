@@ -1,0 +1,26 @@
+static
+CVE_2013_1582_PATCHED_dissect_clnp(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+proto_tree * clnp_tree = NULL ;
+proto_item * ti ;
+guint8 cnf_proto_id ;
+guint8 cnf_hdr_len ;
+guint8 cnf_vers ;
+guint8 cnf_type ;
+char flag_string [ 6 + 1 ] ;
+const char * pdu_type_string ;
+proto_tree * type_tree ;
+cnf_proto_id = tvb_get_guint8 ( tvb , P_CLNP_PROTO_ID );
+if ( cnf_proto_id == NLPID_NULL )
+cnf_vers = tvb_get_guint8 ( tvb , P_CLNP_VERS );
+if ( cnf_vers != ISO8473_V1 )
+cnf_hdr_len = tvb_get_guint8 ( tvb , P_CLNP_HDR_LEN );
+if ( tree )
+ti = proto_tree_add_item ( tree , proto_clnp , tvb , 0 , cnf_hdr_len , ENC_NA );
+clnp_tree = proto_item_add_subtree ( ti , ett_clnp );
+cnf_type = tvb_get_guint8 ( tvb , P_CLNP_TYPE );
+pdu_type_string = val_to_str ( cnf_type & CNF_TYPE , npdu_type_abbrev_vals , "Unknown (0x%02x)" );
+flag_string [ 0 ] = '\0';
+if ( tree )
+ti = proto_tree_add_uint_format ( clnp_tree , hf_clnp_type , tvb , P_CLNP_TYPE , 1 , cnf_type , "PDU Type     : 0x%02x (%s%s)" , cnf_type , flag_string , pdu_type_string );
+type_tree = proto_item_add_subtree ( ti , ett_clnp_type );
+proto_tree_add_text ( type_tree , tvb , P_CLNP_TYPE , 1 , "%s" , decode_boolean_bitfield ( cnf_type , CNF_MORE_SEGS , 8 , "More segments" , "Last segment" ) );

@@ -1,0 +1,5 @@
+void bad()
+wchar_t * data ;
+if ( 5 == 5 )
+data = ( wchar_t * ) calloc ( 100 , sizeof ( wchar_t ) );
+delete [ ] data

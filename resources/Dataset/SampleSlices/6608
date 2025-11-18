@@ -1,0 +1,9 @@
+static void goodB2G2()
+unsigned int data ;
+data = 0;
+if ( 5 == 5 )
+if ( abs ( ( long ) data ) <= ( long ) sqrt ( ( double ) UINT_MAX ) )
+unsigned int result = data * data ;
+printUnsignedLine ( result );
+void printUnsignedLine(unsigned unsignedNumber)
+printf ( "%u\n" , unsignedNumber );

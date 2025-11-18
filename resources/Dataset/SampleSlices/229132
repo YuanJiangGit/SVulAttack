@@ -1,0 +1,18 @@
+static int CVE_2008_5134_PATCHED_lbs_process_bss(struct bss_descriptor
+uint8_t **pbeaconinfo, int *bytesleft)
+uint8_t * pos , * end , * p ;
+uint16_t beaconsize = 0 ;
+if ( * bytesleft >= sizeof ( beaconsize ) )
+beaconsize = get_unaligned_le16 ( * pbeaconinfo );
+* bytesleft -= sizeof ( beaconsize );
+* pbeaconinfo += sizeof ( beaconsize );
+if ( beaconsize == 0 || beaconsize > * bytesleft )
+pos = * pbeaconinfo;
+end = pos + beaconsize;
+pos += ETH_ALEN;
+if ( ( end - pos ) < 12 )
+pos ++;
+pos += 8;
+pos += 2;
+pos += 2;
+lbs_deb_scan ( "process_bss: IE len %zd\n" , end - pos );

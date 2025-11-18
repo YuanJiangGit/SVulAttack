@@ -1,0 +1,40 @@
+static int rgbToPlanarRgbWrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dst[], int dstStride[])
+uint8_t * dst102 [ ] = { dst [ 1 ] + srcSliceY * dstStride [ 1 ] , dst [ 0 ] + srcSliceY * dstStride [ 0 ] , dst [ 2 ] + srcSliceY * dstStride [ 2 ] } ;
+packedtogbr24p ( ( const uint8_t * ) src [ 0 ] , srcStride [ 0 ] , dst102 , stride102 , srcSliceH , alpha_first , 3 , c -> srcW );
+static void packedtogbr24p(const uint8_t *src, int
+uint8_t *dst[], int dstStride[], int
+int alpha_first, int inc_size, int width)
+dest [ 0 ] = dst [ 0 ];
+dest [ 1 ] = dst [ 1 ];
+dest [ 2 ] = dst [ 2 ];
+if ( alpha_first )
+src ++;
+for (h = 0; h < srcSliceH; h++)
+for (x = 0; x < width; x++)
+dest [ 0 ] [ x ] = src [ 0 ];
+dest [ 1 ] [ x ] = src [ 1 ];
+dest [ 2 ] [ x ] = src [ 2 ];
+src += inc_size;
+src += srcStride - width * inc_size;
+dest [ 0 ] += dstStride [ 0 ];
+dest [ 1 ] += dstStride [ 1 ];
+dest [ 2 ] += dstStride [ 2 ];
+packedtogbr24p ( ( const uint8_t * ) src [ 0 ] , srcStride [ 0 ] , dst102 , stride102 , srcSliceH , alpha_first , 4 , c -> srcW );
+static void packedtogbr24p(const uint8_t *src, int
+uint8_t *dst[], int dstStride[], int
+int alpha_first, int inc_size, int width)
+dest [ 0 ] = dst [ 0 ];
+dest [ 1 ] = dst [ 1 ];
+dest [ 2 ] = dst [ 2 ];
+if ( alpha_first )
+src ++;
+dest [ 0 ] [ x ] = src [ 0 ];
+dest [ 1 ] [ x ] = src [ 1 ];
+dest [ 2 ] [ x ] = src [ 2 ];
+src += inc_size;
+src += srcStride - width * inc_size;
+dest [ 0 ] += dstStride [ 0 ];
+dest [ 1 ] += dstStride [ 1 ];
+dest [ 2 ] += dstStride [ 2 ];

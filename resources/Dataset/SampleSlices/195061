@@ -1,0 +1,33 @@
+TempBuf *gimp_image_transform_temp_buf(const GimpImage *dest_image,GimpImageType dest_type,TempBuf *temp_buf,gboolean *new_buf)
+GimpImageType ret_buf_type ;
+gboolean has_alpha ;
+gint in_bytes ;
+gint out_bytes ;
+if ( ( GimpImage * ) ( g_type_check_instance_cast ( ( ( GTypeInstance * ) dest_image ) , gimp_image_get_type ( ) ) ) )
+GType gimp_image_get_type()
+static volatile gsize g_define_type_id__volatile = 0 ;
+GType g_define_type_id = g_type_register_static_simple ( gimp_viewable_get_type ( ) , g_intern_static_string ( "GimpImage" ) , ( sizeof ( GimpImageClass ) ) , ( ( GClassInitFunc ) gimp_image_class_intern_init ) , ( sizeof ( GimpImage ) ) , ( ( GInstanceInitFunc ) gimp_image_init ) , ( 0 ) ) ;
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = g_define_type_id ) : 0 );
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = ( ( gsize ) g_define_type_id ) ) : 0 );
+return g_define_type_id__volatile ;
+while ( 0 )
+if ( temp_buf != ( ( void * ) 0 ) )
+while ( 0 )
+if ( new_buf != ( ( void * ) 0 ) )
+while ( 0 )
+in_bytes = temp_buf -> bytes;
+has_alpha = in_bytes == 2 || in_bytes == 4;
+if ( has_alpha )
+ret_buf_type = ( ( dest_type == GIMP_RGB_IMAGE || dest_type == GIMP_RGBA_IMAGE ? GIMP_RGBA_IMAGE : ( ( dest_type == GIMP_GRAY_IMAGE || dest_type == GIMP_GRAYA_IMAGE ? GIMP_GRAYA_IMAGE : ( ( dest_type == GIMP_INDEXED_IMAGE || dest_type == GIMP_INDEXEDA_IMAGE ? GIMP_INDEXEDA_IMAGE : - 1 ) ) ) ) ) );
+ret_buf_type = ( ( dest_type == GIMP_RGB_IMAGE || dest_type == GIMP_RGBA_IMAGE ? GIMP_RGB_IMAGE : ( ( dest_type == GIMP_GRAY_IMAGE || dest_type == GIMP_GRAYA_IMAGE ? GIMP_GRAY_IMAGE : ( ( dest_type == GIMP_INDEXED_IMAGE || dest_type == GIMP_INDEXEDA_IMAGE ? GIMP_INDEXED_IMAGE : - 1 ) ) ) ) ) );
+out_bytes = ( ret_buf_type == GIMP_RGBA_IMAGE ? 4 : ( ( ret_buf_type == GIMP_RGB_IMAGE ? 3 : ( ( ret_buf_type == GIMP_GRAYA_IMAGE ? 2 : ( ( ret_buf_type == GIMP_GRAY_IMAGE ? 1 : ( ( ret_buf_type == GIMP_INDEXEDA_IMAGE ? 2 : ( ( ret_buf_type == GIMP_INDEXED_IMAGE ? 1 : - 1 ) ) ) ) ) ) ) ) ) ) );
+if ( in_bytes != out_bytes || ( dest_type == GIMP_INDEXED_IMAGE || dest_type == GIMP_INDEXEDA_IMAGE ) )
+guchar * src ;
+gint size ;
+src = temp_buf_get_data ( temp_buf );
+size = temp_buf -> width * temp_buf -> height;
+while ( size -- )
+gimp_image_transform_color ( dest_image , dest_type , dest , ( is_rgb ? GIMP_RGB : GIMP_GRAY ) , src );
+dest [ out_bytes - 1 ] = src [ in_bytes - 1 ];
+src += in_bytes;
+dest += out_bytes;

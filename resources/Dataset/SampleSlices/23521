@@ -1,0 +1,5 @@
+static void goodG2B()
+wchar_t * data ;
+wchar_t dataBuffer [ 100 ] = L ""
+data = dataBuffer;
+CWE78_OS_Command_Injection__wchar_t_console_w32_execv_45_goodG2BData = data;

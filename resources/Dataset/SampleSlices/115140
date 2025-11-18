@@ -1,0 +1,13 @@
+void bad()
+wchar_t * data ;
+wchar_t * & dataRef = data ;
+data = NULL;
+data = ( wchar_t * ) malloc ( 50 * sizeof ( wchar_t ) );
+data [ 0 ] = L '\0'
+wchar_t * data = dataRef ;
+wcsncat ( data , source , 100 );
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )
+free ( data );

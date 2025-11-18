@@ -1,0 +1,71 @@
+static
+CVE_2013_4921_PATCHED_dissect_radiotap(tvbuff_t * tvb, packet_info * pinfo, proto_tree * tree)
+proto_tree * radiotap_tree = NULL ;
+int offset ;
+guint8 version ;
+guint length ;
+void * data ;
+struct ieee80211_radiotap_iterator iter ;
+static struct radiotap_override overrides [ ]
+IEEE80211_RADIOTAP_XCHANNEL , 4 , 8 ,
+guint n_overrides = array_length ( overrides ) ;
+if ( ! radiotap_bit14_fcs )
+n_overrides --;
+version = tvb_get_guint8 ( tvb , 0 );
+length = tvb_get_letohs ( tvb , 2 );
+if ( tree )
+ti = proto_tree_add_protocol_format ( tree , proto_radiotap , tvb , 0 , length , "Radiotap Header v%u, Length %u" , version , length );
+radiotap_tree = proto_item_add_subtree ( ti , ett_radiotap );
+data = ep_tvb_memdup ( tvb , 0 , length );
+if ( ! data )
+if ( ieee80211_radiotap_iterator_init ( & iter , ( struct ieee80211_radiotap_header * ) data , length , NULL ) )
+iter . overrides = overrides;
+iter . n_overrides = n_overrides;
+if ( tree )
+guchar * bmap_start = ( guchar * ) data + 4 ;
+guint n_bitmaps = ( guint ) ( iter . this_arg - bmap_start ) / 4 ;
+guint i ;
+for (i = 0; i < n_bitmaps; i++)
+guint32 bmap = pletohl ( bmap_start + 4 * i ) ;
+if ( ( bmap & ( BIT ( IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE ) | BIT ( IEEE80211_RADIOTAP_VENDOR_NAMESPACE ) ) ) == ( BIT ( IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE ) | BIT ( IEEE80211_RADIOTAP_VENDOR_NAMESPACE ) ) )
+while ( ! ( err = ieee80211_radiotap_iterator_next ( & iter ) ) )
+offset = ( int ) ( ( guchar * ) iter . this_arg - ( guchar * ) data );
+if ( ! iter . is_radiotap_ns )
+switch ( iter . this_arg_index )
+if ( tree )
+proto_item * it ;
+if ( radiotap_bit14_fcs )
+if ( tree )
+proto_item * it ;
+if ( tree )
+proto_item * it ;
+if ( tree )
+proto_item * it ;
+proto_item * it ;
+guint16 known , nsts ;
+known = tvb_get_letohs ( tvb , offset );
+if ( tree )
+it_root = proto_tree_add_item ( radiotap_tree , hf_radiotap_vht , tvb , offset , 12 , ENC_NA );
+vht_tree = proto_item_add_subtree ( it_root , ett_radiotap_vht );
+it = proto_tree_add_item ( vht_tree , hf_radiotap_vht_known , tvb , offset , 2 , known );
+vht_known_tree = proto_item_add_subtree ( it , ett_radiotap_vht_known );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_stbc , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_txop_ps , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_gi , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_sgi_nsym_da , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_ldpc_extra , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_bf , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_bw , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_gid , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_tree_add_item ( vht_known_tree , hf_radiotap_vht_have_p_aid , tvb , offset , 2 , ENC_LITTLE_ENDIAN );
+proto_item_append_text ( it , " %d: MCS %u" , i , mcs );
+user_tree = proto_item_add_subtree ( it , ett_radiotap_vht_user );
+it = proto_tree_add_item ( user_tree , hf_radiotap_vht_mcs [ i ] , tvb , offset + 4 + i , 1 , ENC_LITTLE_ENDIAN );
+proto_item_append_text ( it , " (invalid)" );
+proto_item_append_text ( it , " (%s %s)" , ieee80211_vhtinfo [ mcs ] . modulation , ieee80211_vhtinfo [ mcs ] . coding_rate );
+proto_tree_add_item ( user_tree , hf_radiotap_vht_nss [ i ] , tvb , offset + 4 + i , 1 , ENC_LITTLE_ENDIAN );
+proto_tree_add_uint ( user_tree , hf_radiotap_vht_nsts [ i ] , tvb , offset + 4 + i , 1 , nsts );
+proto_tree_add_item ( user_tree , hf_radiotap_vht_coding [ i ] , tvb , offset + 8 , 1 , ENC_LITTLE_ENDIAN );
+if ( rate != 0.0f && user_tree )
+rate_ti = proto_tree_add_float_format ( user_tree , hf_radiotap_vht_datarate [ i ] , tvb , offset , 12 , rate , "Data Rate: %.1f Mb/s" , rate );
+PROTO_ITEM_SET_GENERATED ( rate_ti );

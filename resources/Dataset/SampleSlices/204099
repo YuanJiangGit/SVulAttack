@@ -1,0 +1,17 @@
+void pgstat_init_function_usage(FunctionCallInfoData *fcinfo,PgStat_FunctionCallUsage *fcu)
+PgStat_BackendFunctionEntry * htabent ;
+bool found ;
+if ( pgstat_track_functions <= ( fcinfo -> flinfo -> fn_stats ) )
+if ( ! pgStatFunctions )
+HASHCTL hash_ctl ;
+hash_ctl . keysize = sizeof ( Oid );
+hash_ctl . entrysize = sizeof ( PgStat_BackendFunctionEntry );
+hash_ctl . hash = oid_hash;
+pgStatFunctions = hash_create ( "Function stat entries" , 512 , & hash_ctl , 0x020 | 0x010 );
+htabent = ( hash_search ( pgStatFunctions , ( & fcinfo -> flinfo -> fn_oid ) , HASH_ENTER , & found ) );
+if ( ! found )
+void * _vstart = ( void * ) ( & htabent -> f_counts ) ;
+int _val = 0 ;
+Size _len = sizeof ( PgStat_FunctionCounts ) ;
+if ( ( ( ( intptr_t ) _vstart ) & sizeof ( long ) - 1 ) == 0 && ( _len & sizeof ( long ) - 1 ) == 0 && _val == 0 && _len <= 1024 && 1024 != 0 )
+while ( 0 )

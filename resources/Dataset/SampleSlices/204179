@@ -1,0 +1,6 @@
+void pgstat_count_heap_update(Relation rel,bool hot)
+PgStat_TableStatus * pgstat_info = rel -> pgstat_info ;
+if ( pgstat_info != ( ( void * ) 0 ) )
+int nest_level = GetCurrentTransactionNestLevel ( ) ;
+if ( pgstat_info -> trans == ( ( void * ) 0 ) || pgstat_info -> trans -> nest_level != nest_level )
+add_tabstat_xact_level ( pgstat_info , nest_level );

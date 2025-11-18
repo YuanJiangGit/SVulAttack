@@ -1,0 +1,13 @@
+void CWE78_OS_Command_Injection__wchar_t_console_popen_18_bad()
+wchar_t * data ;
+wchar_t data_buf [ 100 ] = FULL_COMMAND ;
+data = data_buf;
+size_t dataLen = wcslen ( data ) ;
+if ( 100 - dataLen > 1 )
+if ( fgetws ( data + dataLen , ( int ) ( 100 - dataLen ) , stdin ) != NULL )
+data [ dataLen - 1 ] = L '\0'
+data [ dataLen ] = L '\0'
+FILE * pipe ;
+pipe = POPEN ( data , L "wb" )
+if ( pipe != NULL )
+PCLOSE ( pipe );

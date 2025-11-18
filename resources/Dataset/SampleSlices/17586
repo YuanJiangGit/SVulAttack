@@ -1,0 +1,15 @@
+static tvbuff_t
+CVE_2013_3559_PATCHED_dissect_pft_fec_detailed(tvbuff_t * tvb, packet_info * pinfo, proto_tree *
+guint32 findex
+guint32
+guint16
+gint
+guint16
+gboolean fec
+guint16
+guint16
+fragment_data
+)
+guint32 decoded_size ;
+if ( fcount > MAX_FRAGMENTS )
+decoded_size = fcount * plen;

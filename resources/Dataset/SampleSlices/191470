@@ -1,0 +1,2 @@
+bool isPlainTextMarkup(Node *node)
+if ( node -> childNodeCount ( ) == 1 && ( node -> firstChild ( ) -> isTextNode ( ) || ( node -> firstChild ( ) -> firstChild ( ) ) ) )

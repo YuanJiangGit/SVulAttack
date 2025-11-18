@@ -1,0 +1,64 @@
+static void CVE_2013_1576_VULN_dissect_sdp_media_attribute(tvbuff_t *tvb, packet_info *pinfo, proto_item * ti, int length, transport_info_t *transport_info)
+proto_tree * sdp_media_attribute_tree , * parameter_item ;
+gint offset , next_offset , tokenlen , n , colon_offset ;
+guint8 * payload_type ;
+guint8 pt ;
+gint sdp_media_attrbute_code ;
+gboolean has_more_pars = TRUE ;
+offset = 0;
+sdp_media_attribute_tree = proto_item_add_subtree ( ti , ett_sdp_media_attribute );
+colon_offset = tvb_find_guint8 ( tvb , offset , - 1 , ':' );
+if ( colon_offset == - 1 )
+tokenlen = colon_offset - offset;
+sdp_media_attrbute_code = find_sdp_media_attribute_names ( tvb , offset , tokenlen );
+offset = colon_offset + 1;
+offset = tvb_skip_wsp ( tvb , offset , tvb_length_remaining ( tvb , offset ) );
+switch ( sdp_media_attrbute_code )
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ' ' );
+if ( next_offset == - 1 )
+tokenlen = next_offset - offset;
+payload_type = tvb_get_ephemeral_string ( tvb , offset , tokenlen );
+offset = next_offset + 1;
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , '/' );
+if ( next_offset == - 1 )
+tokenlen = next_offset - offset;
+pt = atoi ( ( char * ) payload_type );
+if ( pt >= SDP_NO_OF_PT )
+next_offset = next_offset + 1;
+offset = next_offset;
+while ( length - 1 >= next_offset )
+if ( ! isdigit ( tvb_get_guint8 ( tvb , next_offset ) ) )
+next_offset ++;
+tokenlen = next_offset - offset;
+if ( sdp_media_attribute_tree )
+guint8 media_format ;
+offset = tvb_skip_wsp ( tvb , offset , tvb_length_remaining ( tvb , offset ) );
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ' ' );
+if ( next_offset == - 1 )
+tokenlen = next_offset - offset;
+media_format = atoi ( ( char * ) tvb_get_ephemeral_string ( tvb , offset , tokenlen ) );
+if ( media_format >= SDP_NO_OF_PT )
+offset = next_offset + 1;
+while ( has_more_pars == TRUE )
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ';' );
+offset = tvb_skip_wsp ( tvb , offset , tvb_length_remaining ( tvb , offset ) );
+if ( next_offset == - 1 )
+has_more_pars = FALSE;
+next_offset = tvb_length ( tvb );
+offset = next_offset + 1;
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ' ' );
+offset = next_offset + 1;
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ' ' );
+offset = next_offset + 1;
+while ( has_more_pars == TRUE )
+int param_end_offset ;
+param_end_offset = tvb_find_guint8 ( tvb , offset , - 1 , ';' );
+if ( param_end_offset == - 1 )
+has_more_pars = FALSE;
+param_end_offset = tvb_length ( tvb );
+next_offset = tvb_find_guint8 ( tvb , offset , - 1 , ':' );
+if ( next_offset == - 1 )
+if ( tvb_strncaseeql ( tvb , offset , "inline" , next_offset - offset ) == 0 )
+offset = param_end_offset;
+tokenlen = param_end_offset - next_offset + 1;
+offset = param_end_offset;

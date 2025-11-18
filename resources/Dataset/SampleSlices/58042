@@ -1,0 +1,7 @@
+void bad()
+char * data ;
+data = NULL;
+data = badSource ( data );
+char * badSource(char * data)
+data = ( char * ) calloc ( 100 , sizeof ( char ) );
+return data ;

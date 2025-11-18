@@ -1,0 +1,7 @@
+static void goodG2B()
+char * data ;
+vector < char * > dataVector ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+strcpy ( data , "15" );
+dataVector . insert ( dataVector . end ( ) , 1 , data );

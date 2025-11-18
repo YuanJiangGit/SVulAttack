@@ -1,0 +1,29 @@
+svn_error_t *svn_stream_contents_same2(svn_boolean_t *same,svn_stream_t *stream1,svn_stream_t *stream2,apr_pool_t *pool)
+char * buf1 = ( apr_palloc ( pool , 16384 ) ) ;
+char * buf2 = ( apr_palloc ( pool , 16384 ) ) ;
+apr_size_t bytes_read1 = 16384 ;
+apr_size_t bytes_read2 = 16384 ;
+* same = ! 0;
+while ( bytes_read1 == 16384 && bytes_read2 == 16384 )
+err = svn_stream_read ( stream1 , buf1 , & bytes_read1 );
+svn_error_t *svn_stream_read(svn_stream_t *stream,char *buffer,apr_size_t *len)
+if ( ! ( stream -> read_fn != ( ( void * ) 0 ) ) )
+svn_error_t * svn_err__temp = svn_error__malfunction ( ! 0 , "stream.c" , 143 , "stream->read_fn != NULL" ) ;
+if ( svn_err__temp )
+return svn_err__temp ;
+while ( 0 )
+while ( 0 )
+return ( stream -> read_fn ) ( stream -> baton , buffer , len ) ;
+if ( err )
+err = svn_stream_read ( stream2 , buf2 , & bytes_read2 );
+svn_error_t *svn_stream_read(svn_stream_t *stream,char *buffer,apr_size_t *len)
+if ( ! ( stream -> read_fn != ( ( void * ) 0 ) ) )
+svn_error_t * svn_err__temp = svn_error__malfunction ( ! 0 , "stream.c" , 143 , "stream->read_fn != NULL" ) ;
+if ( svn_err__temp )
+return svn_err__temp ;
+while ( 0 )
+while ( 0 )
+return ( stream -> read_fn ) ( stream -> baton , buffer , len ) ;
+if ( err )
+if ( bytes_read1 != bytes_read2 || memcmp ( buf1 , buf2 , bytes_read1 ) )
+* same = 0;

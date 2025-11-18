@@ -1,0 +1,26 @@
+svn_error_t *svn_string_from_stream(svn_string_t **result,svn_stream_t *stream,apr_pool_t *result_pool,apr_pool_t *scratch_pool)
+char * buffer = ( apr_palloc ( scratch_pool , 16384 ) ) ;
+while ( 1 )
+apr_size_t len = 16384 ;
+svn_error_t * svn_err__temp = svn_stream_read ( stream , buffer , & len ) ;
+svn_error_t *svn_stream_read(svn_stream_t *stream,char *buffer,apr_size_t *len)
+if ( ! ( stream -> read_fn != ( ( void * ) 0 ) ) )
+svn_error_t * svn_err__temp = svn_error__malfunction ( ! 0 , "stream.c" , 143 , "stream->read_fn != NULL" ) ;
+if ( svn_err__temp )
+return svn_err__temp ;
+while ( 0 )
+while ( 0 )
+return ( stream -> read_fn ) ( stream -> baton , buffer , len ) ;
+if ( svn_err__temp )
+while ( 0 )
+if ( len < 16384 )
+svn_error_t * svn_err__temp = svn_stream_close ( stream ) ;
+svn_error_t *svn_stream_close(svn_stream_t *stream)
+if ( stream -> close_fn == ( ( void * ) 0 ) )
+return 0 ;
+return ( stream -> close_fn ) ( stream -> baton ) ;
+if ( svn_err__temp )
+while ( 0 )
+* result = ( apr_palloc ( result_pool , sizeof ( ( * ( * result ) ) ) ) );
+( * result ) -> data = ( work -> data );
+( * result ) -> len = work -> len;

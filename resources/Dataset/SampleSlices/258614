@@ -1,0 +1,39 @@
+static int Rgb16ToPlanarRgb16Wrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dst[], int dstStride[])
+uint16_t * dst2013 [ ] = { ( uint16_t * ) dst [ 2 ] , ( uint16_t * ) dst [ 0 ] , ( uint16_t * ) dst [ 1 ] , ( uint16_t * ) dst [ 3 ] } ;
+int stride2013 [ ] = { dstStride [ 2 ] , dstStride [ 0 ] , dstStride [ 1 ] , dstStride [ 3 ] } ;
+const AVPixFmtDescriptor * src_format = av_pix_fmt_desc_get ( c -> srcFormat ) ;
+const AVPixFmtDescriptor * dst_format = av_pix_fmt_desc_get ( c -> dstFormat ) ;
+int bpc = dst_format -> comp [ 0 ] . depth_minus1 + 1 ;
+int alpha = src_format -> flags & AV_PIX_FMT_FLAG_ALPHA ;
+int swap = 0 ;
+if ( HAVE_BIGENDIAN && ! ( src_format -> flags & AV_PIX_FMT_FLAG_BE ) || ! HAVE_BIGENDIAN && src_format -> flags & AV_PIX_FMT_FLAG_BE )
+swap ++;
+if ( HAVE_BIGENDIAN && ! ( dst_format -> flags & AV_PIX_FMT_FLAG_BE ) || ! HAVE_BIGENDIAN && dst_format -> flags & AV_PIX_FMT_FLAG_BE )
+swap += 2;
+if ( ( dst_format -> flags & ( AV_PIX_FMT_FLAG_PLANAR | AV_PIX_FMT_FLAG_RGB ) ) != ( AV_PIX_FMT_FLAG_PLANAR | AV_PIX_FMT_FLAG_RGB ) || bpc < 9 )
+switch ( c -> srcFormat )
+packed16togbra16 ( src [ 0 ] + srcSliceY * srcStride [ 0 ] , srcStride [ 0 ] , dst2013 , stride2013 , srcSliceH , alpha , swap , 16 - bpc , c -> srcW );
+static void packed16togbra16(const uint8_t *src, int
+uint16_t *dst[], int dstStride[], int
+int src_alpha, int swap, int shift, int width)
+int x , h , i ;
+int dst_alpha = dst [ 3 ] != NULL ;
+for (h = 0; h < srcSliceH; h++)
+uint16_t * src_line = ( uint16_t * ) ( src + srcStride * h ) ;
+switch ( swap )
+if ( src_alpha && dst_alpha )
+if ( dst_alpha )
+for (x = 0; x < width; x++)
+dst [ 0 ] [ x ] = * src_line ++ >> shift;
+dst [ 1 ] [ x ] = * src_line ++ >> shift;
+dst [ 2 ] [ x ] = * src_line ++ >> shift;
+dst [ 3 ] [ x ] = 0xFFFF;
+if ( src_alpha )
+for (x = 0; x < width; x++)
+dst [ 0 ] [ x ] = * src_line ++ >> shift;
+dst [ 1 ] [ x ] = * src_line ++ >> shift;
+dst [ 2 ] [ x ] = * src_line ++ >> shift;
+for (i = 0; i < 4; i++)
+dst [ i ] += dstStride [ i ] >> 1;

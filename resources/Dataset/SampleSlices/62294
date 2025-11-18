@@ -1,0 +1,5 @@
+static int packedCopyWrapper(SwsContext *c, const uint8_t
+int srcStride[], int srcSliceY, int
+uint8_t *dst[], int dstStride[])
+if ( dstStride [ 0 ] == srcStride [ 0 ] && srcStride [ 0 ] > 0 )
+memcpy ( dst [ 0 ] + dstStride [ 0 ] * srcSliceY , src [ 0 ] , srcSliceH * dstStride [ 0 ] );

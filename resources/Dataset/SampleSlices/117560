@@ -1,0 +1,15 @@
+void bad()
+wchar_t * data ;
+wchar_t dataBuffer [ 100 ] ;
+data = dataBuffer;
+dataMap [ 0 ] = data;
+dataMap [ 1 ] = data;
+dataMap [ 2 ] = data;
+badSink ( dataMap );
+void badSink(map<int, wchar_t *> dataMap)
+wchar_t * data = dataMap [ 2 ] ;
+memmove ( dest , data , wcslen ( data ) * sizeof ( wchar_t ) );
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

@@ -1,0 +1,4 @@
+void bad()
+twoIntsStruct * data ;
+data = NULL;
+delete [ ] data

@@ -1,0 +1,7 @@
+void CWE457_Use_of_Uninitialized_Variable__int_array_alloca_no_init_15_bad()
+int * data ;
+data = ( int * ) ALLOCA ( 10 * sizeof ( int ) );
+switch ( 7 )
+int i ;
+for(i=0; i<10; i++)
+printIntLine ( data [ i ] );

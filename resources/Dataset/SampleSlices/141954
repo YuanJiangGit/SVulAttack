@@ -1,0 +1,7 @@
+void bad()
+int * data ;
+data = new int [ 10 ];
+if ( GLOBAL_CONST_FIVE == 5 )
+int i ;
+for(i=0; i<10; i++)
+printIntLine ( data [ i ] );

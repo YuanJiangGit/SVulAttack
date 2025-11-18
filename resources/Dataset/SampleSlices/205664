@@ -1,0 +1,3 @@
+static svn_error_t *close_handler_checksum(void *baton)
+struct checksum_stream_baton * btn = baton ;
+if ( btn -> read_more )

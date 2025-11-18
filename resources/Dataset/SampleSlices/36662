@@ -1,0 +1,14 @@
+void CWE78_OS_Command_Injection__wchar_t_connect_socket_system_51_bad()
+wchar_t * data ;
+wchar_t data_buf [ 100 ] = FULL_COMMAND ;
+data = data_buf;
+size_t dataLen = wcslen ( data ) ;
+recvResult = recv ( connectSocket , ( char * ) ( data + dataLen ) , sizeof ( wchar_t ) * ( 100 - dataLen - 1 ) , 0 );
+if ( recvResult == SOCKET_ERROR || recvResult == 0 )
+replace = wcschr ( data , L '\r' )
+if ( replace )
+replace = wcschr ( data , L '\n' )
+if ( replace )
+CWE78_OS_Command_Injection__wchar_t_connect_socket_system_51b_badSink ( data );
+void CWE78_OS_Command_Injection__wchar_t_connect_socket_system_51b_badSink(wchar_t * data)
+if ( SYSTEM ( data ) <= 0 )

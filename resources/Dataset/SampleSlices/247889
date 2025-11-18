@@ -1,0 +1,38 @@
+int attribute_align_arg CVE_2013_0861_VULN_avcodec_decode_audio4(AVCodecContext
+AVFrame
+int
+const AVPacket *avpkt)
+* got_frame_ptr = 0;
+if ( ! avpkt -> data && avpkt -> size )
+if ( avctx -> codec -> type != AVMEDIA_TYPE_AUDIO )
+if ( ( avctx -> codec -> capabilities & CODEC_CAP_DELAY ) || avpkt -> size )
+avctx -> pkt = & tmp;
+ret = avctx -> codec -> decode ( avctx , frame , got_frame_ptr , & tmp );
+if ( ret >= 0 && * got_frame_ptr )
+avctx -> frame_number ++;
+frame -> pkt_dts = avpkt -> dts;
+frame -> best_effort_timestamp = guess_correct_pts ( avctx , frame -> pkt_pts , frame -> pkt_dts );
+if ( frame -> format == AV_SAMPLE_FMT_NONE )
+frame -> format = avctx -> sample_fmt;
+if ( ! frame -> channel_layout )
+frame -> channel_layout = avctx -> channel_layout;
+if ( ! frame -> channels )
+frame -> channels = avctx -> channels;
+if ( ! frame -> sample_rate )
+frame -> sample_rate = avctx -> sample_rate;
+if ( frame -> nb_samples <= avctx -> internal -> skip_samples )
+avctx -> internal -> skip_samples -= frame -> nb_samples;
+av_log ( avctx , AV_LOG_DEBUG , "skip whole frame, skip left: %d\n" , avctx -> internal -> skip_samples );
+av_samples_copy ( frame -> extended_data , frame -> extended_data , 0 , avctx -> internal -> skip_samples , frame -> nb_samples - avctx -> internal -> skip_samples , avctx -> channels , frame -> format );
+if ( frame -> pkt_pts != AV_NOPTS_VALUE )
+frame -> pkt_pts += diff_ts;
+if ( frame -> pkt_dts != AV_NOPTS_VALUE )
+frame -> pkt_dts += diff_ts;
+if ( frame -> pkt_duration >= diff_ts )
+frame -> pkt_duration -= diff_ts;
+av_log ( avctx , AV_LOG_DEBUG , "skip %d/%d samples\n" , avctx -> internal -> skip_samples , frame -> nb_samples );
+frame -> nb_samples -= avctx -> internal -> skip_samples;
+planar = av_sample_fmt_is_planar ( frame -> format );
+channels = av_get_channel_layout_nb_channels ( frame -> channel_layout );
+if ( ! ( planar && channels > AV_NUM_DATA_POINTERS ) )
+frame -> extended_data = frame -> data;

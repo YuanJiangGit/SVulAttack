@@ -1,0 +1,13 @@
+void bad()
+size_t data ;
+data = 0;
+if ( GLOBAL_CONST_TRUE )
+char inputBuffer [ CHAR_ARRAY_SIZE ] = "" ;
+if ( fgets ( inputBuffer , CHAR_ARRAY_SIZE , stdin ) != NULL )
+data = strtoul ( inputBuffer , NULL , 0 );
+if ( GLOBAL_CONST_TRUE )
+char * myString ;
+if ( data > strlen ( HELLO_STRING ) )
+myString = new char [ data ];
+strcpy ( myString , HELLO_STRING );
+printLine ( myString );

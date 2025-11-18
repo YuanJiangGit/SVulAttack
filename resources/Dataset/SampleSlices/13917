@@ -1,0 +1,30 @@
+AVStream *av_new_stream(AVFormatContext *s,int id)
+AVStream * st = avformat_new_stream ( s , ( ( void * ) 0 ) ) ;
+AVStream *avformat_new_stream(AVFormatContext *s,const AVCodec *c)
+AVStream * st ;
+AVStream * * streams ;
+if ( ( s -> nb_streams ) >= 2147483647 / sizeof ( ( * streams ) ) )
+streams = ( av_realloc ( ( s -> streams ) , ( s -> nb_streams + 1 ) * sizeof ( ( * streams ) ) ) );
+if ( ! streams )
+s -> streams = streams;
+st = ( av_mallocz ( sizeof ( AVStream ) ) );
+if ( ! st )
+if ( ! ( st -> info = ( av_mallocz ( sizeof ( ( * st -> info ) ) ) ) ) )
+st -> info -> last_dts = ( ( int64_t ) 0x8000000000000000UL );
+st -> codec = avcodec_alloc_context3 ( c );
+if ( s -> iformat )
+st -> codec -> bit_rate = 0;
+st -> index = ( s -> nb_streams );
+st -> start_time = ( ( int64_t ) 0x8000000000000000UL );
+st -> duration = ( ( int64_t ) 0x8000000000000000UL );
+st -> cur_dts = ( ( s -> iformat ? 9223372036854775807L - ( 1L L << 48 ) : 0 ) )
+st -> first_dts = ( ( int64_t ) 0x8000000000000000UL );
+st -> probe_packets = 2500;
+st -> pts_wrap_reference = ( ( int64_t ) 0x8000000000000000UL );
+st -> pts_wrap_behavior = 0;
+avpriv_set_pts_info ( st , 33 , 1 , 90000 );
+void avpriv_set_pts_info(AVStream *s,int pts_wrap_bits,unsigned int pts_num,unsigned int pts_den)
+AVRational new_tb ;
+if ( av_reduce ( & new_tb . num , & new_tb . den , pts_num , pts_den , 2147483647 ) )
+if ( new_tb . num != pts_num )
+av_log ( ( ( void * ) 0 ) , 48 , "st:%d removing common factor %d from timebase\n" , s -> index , pts_num / new_tb . num );

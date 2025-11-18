@@ -1,0 +1,38 @@
+static int keyring_diff_objects(const void *object, const void *data)
+const struct key * key_a = keyring_ptr_to_key ( object ) ;
+static inline struct key *keyring_ptr_to_key(const struct assoc_array_ptr *x)
+void * object = assoc_array_ptr_to_leaf ( x ) ;
+return ( struct key * ) ( ( unsigned long ) object & ~KEYRING_PTR_SUBTYPE ) ;
+const struct keyring_index_key * a = & key_a -> index_key ;
+unsigned long seg_a , seg_b ;
+seg_a = hash_key_type_and_desc ( a );
+static unsigned long hash_key_type_and_desc(const struct keyring_index_key *index_key)
+unsigned long hash , type ;
+type = ( unsigned long ) index_key -> type;
+acc = mult_64x32_and_fold ( type , desc_len + 13 );
+static u64 mult_64x32_and_fold(u64 x, u32 y)
+u64 hi = ( u64 ) ( u32 ) ( x >> 32 ) * y ;
+u64 lo = ( u64 ) ( u32 ) ( x ) * y ;
+return lo + ( ( u64 ) ( u32 ) hi << 32 ) + ( u32 ) ( hi >> 32 ) ;
+acc = mult_64x32_and_fold ( acc , 9207 );
+static u64 mult_64x32_and_fold(u64 x, u32 y)
+u64 hi = ( u64 ) ( u32 ) ( x >> 32 ) * y ;
+u64 lo = ( u64 ) ( u32 ) ( x ) * y ;
+return lo + ( ( u64 ) ( u32 ) hi << 32 ) + ( u32 ) ( hi >> 32 ) ;
+acc = mult_64x32_and_fold ( acc , piece );
+static u64 mult_64x32_and_fold(u64 x, u32 y)
+u64 hi = ( u64 ) ( u32 ) ( x >> 32 ) * y ;
+u64 lo = ( u64 ) ( u32 ) ( x ) * y ;
+return lo + ( ( u64 ) ( u32 ) hi << 32 ) + ( u32 ) ( hi >> 32 ) ;
+acc = mult_64x32_and_fold ( acc , 9207 );
+static u64 mult_64x32_and_fold(u64 x, u32 y)
+u64 hi = ( u64 ) ( u32 ) ( x >> 32 ) * y ;
+u64 lo = ( u64 ) ( u32 ) ( x ) * y ;
+return lo + ( ( u64 ) ( u32 ) hi << 32 ) + ( u32 ) ( hi >> 32 ) ;
+hash = acc;
+hash ^= acc >> 32;
+if ( index_key -> type != & key_type_keyring && ( hash & fan_mask ) == 0 )
+return hash | ( hash >> ( ASSOC_ARRAY_KEY_CHUNK_SIZE - level_shift ) ) | 1 ;
+if ( index_key -> type == & key_type_keyring && ( hash & fan_mask ) != 0 )
+return ( hash + ( hash << level_shift ) ) & ~fan_mask ;
+return hash ;

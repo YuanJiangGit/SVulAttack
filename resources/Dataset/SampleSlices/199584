@@ -1,0 +1,33 @@
+static void add_utf8_anychar()
+const unsigned int n = ( sizeof ( utf8_classes ) / sizeof ( utf8_classes [ 0 ] ) ) ;
+unsigned int i ;
+if ( dfa -> utf8_anychar_classes [ 0 ] == 0 )
+for (i = 0; i < n; i++)
+charclass c ;
+dfa -> utf8_anychar_classes [ i ] = ( CSET + charclass_index ( c ) );
+for (i = 1; i < n; i++)
+addtok ( dfa -> utf8_anychar_classes [ i ] );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+_Bool need_or = 0 ;
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+size_t i ;
+for (i = 0; i < work_mbc -> nchars; i++)
+if ( need_or )
+addtok ( OR );
+need_or = 1;
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+_Bool need_or = 0 ;
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+size_t i ;
+if ( need_or )
+addtok ( OR );
+need_or = 1;
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+size_t i ;

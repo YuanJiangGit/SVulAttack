@@ -1,0 +1,28 @@
+av_cold int ff_mjpeg_decode_init(AVCodecContext *avctx)
+MJpegDecodeContext * s = avctx -> priv_data ;
+if ( ! s -> picture_ptr )
+s -> picture = av_frame_alloc ( );
+if ( ! s -> picture )
+s -> picture_ptr = s -> picture;
+s -> avctx = avctx;
+s -> buffer_size = 0;
+s -> buffer = NULL;
+s -> start_code = - 1;
+s -> first_picture = 1;
+s -> got_picture = 0;
+s -> org_height = avctx -> coded_height;
+build_basic_mjpeg_vlc ( s );
+static void build_basic_mjpeg_vlc(MJpegDecodeContext *s)
+build_vlc ( & s -> vlcs [ 2 ] [ 0 ] , avpriv_mjpeg_bits_ac_luminance , avpriv_mjpeg_val_ac_luminance , 251 , 0 , 0 );
+static int build_vlc(VLC *vlc, const uint8_t
+const uint8_t *val_table, int
+int use_static, int is_ac)
+uint8_t huff_size [ 256 ] = { 0 } ;
+uint16_t huff_code [ 256 ] ;
+uint16_t huff_sym [ 256 ] ;
+int i ;
+for (i = 0; i < 256; i++)
+huff_sym [ i ] = i + 16 * is_ac;
+if ( is_ac )
+huff_sym [ 0 ] = 16 * 256;
+return ff_init_vlc_sparse ( vlc , 9 , nb_codes , huff_size , 1 , 1 , huff_code , 2 , 2 , huff_sym , 2 , 2 , use_static ) ;

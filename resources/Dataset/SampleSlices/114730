@@ -1,0 +1,9 @@
+void bad()
+wchar_t * data ;
+wchar_t * dataBadBuffer = ( wchar_t * ) ALLOCA ( 50 * sizeof ( wchar_t ) ) ;
+data = dataBadBuffer;
+SNPRINTF ( data , 100 , L "%s" , source )
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

@@ -1,0 +1,37 @@
+int av_write_trailer(AVFormatContext *s)
+int ret ;
+AVPacket pkt ;
+ret = interleave_packet ( s , & pkt , ( ( void * ) 0 ) , 1 );
+if ( ret < 0 )
+if ( ! ret )
+ret = split_write_packet ( s , & pkt );
+inline static int split_write_packet(AVFormatContext *s,AVPacket *pkt)
+int ret ;
+ret = ( ( s -> oformat -> write_packet ) ( s , pkt ) );
+return ret ;
+if ( ret >= 0 )
+s -> streams [ pkt . stream_index ] -> nb_frames ++;
+if ( ret < 0 )
+if ( s -> pb && s -> pb -> error )
+static int interleave_packet(AVFormatContext *s,AVPacket *out,AVPacket *in,int flush)
+if ( s -> oformat -> interleave_packet )
+return ff_interleave_packet_per_dts ( s , out , in , flush ) ;
+int ff_interleave_packet_per_dts(AVFormatContext *s,AVPacket *out,AVPacket *pkt,int flush)
+int ret ;
+if ( pkt )
+ret = ff_interleave_add_packet ( s , pkt , ff_interleave_compare_dts );
+int ff_interleave_add_packet(AVFormatContext *s,AVPacket *pkt,int (*compare)(AVFormatContext *, AVPacket *, AVPacket *))
+AVPacketList * * next_point ;
+AVPacketList * this_pktl ;
+AVStream * st = s -> streams [ pkt -> stream_index ] ;
+this_pktl = ( av_mallocz ( sizeof ( AVPacketList ) ) );
+if ( ! this_pktl )
+pkt -> destruct = ( ( void * ) 0 );
+if ( s -> streams [ pkt -> stream_index ] -> last_in_packet_buffer )
+next_point = & st -> last_in_packet_buffer -> next;
+if ( * next_point )
+while ( * next_point && ( chunked && ! ( ( * next_point ) -> pkt . flags & 0x1000 ) || ! compare ( s , & ( * next_point ) -> pkt , pkt ) ) )
+next_point = & ( * next_point ) -> next;
+if ( * next_point )
+this_pktl -> next = * next_point;
+s -> streams [ pkt -> stream_index ] -> last_in_packet_buffer = * next_point = this_pktl;

@@ -1,0 +1,18 @@
+void bad()
+int data ;
+data = - 1;
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+char inputBuffer [ CHAR_ARRAY_SIZE ] = "" ;
+if ( fgets ( inputBuffer , CHAR_ARRAY_SIZE , stdin ) != NULL )
+data = atoi ( inputBuffer );
+data = 20;
+size_t dataBytes , i ;
+dataBytes = data * sizeof ( int );
+intPointer = ( int * ) new char [ dataBytes ];
+intPointer [ i ] = 0;
+printIntLine ( intPointer [ 0 ] );
+void printIntLine (int intNumber)
+printf ( "%d\n" , intNumber );
+delete [ ] intPointer

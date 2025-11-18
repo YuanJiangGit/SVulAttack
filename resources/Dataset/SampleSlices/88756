@@ -1,0 +1,15 @@
+void col_fill_in(packet_info *pinfo,const gboolean fill_col_exprs,const gboolean fill_fd_colums)
+int i ;
+if ( ! pinfo -> cinfo )
+for (i = 0; i < pinfo -> cinfo -> num_cols; i++)
+switch ( pinfo -> cinfo -> col_fmt [ i ] )
+col_set_port ( pinfo , i , ! 0 , ! 0 , fill_col_exprs );
+pinfo -> cinfo -> col_data [ i ] = pinfo -> cinfo -> col_buf [ i ];
+static void col_set_port(packet_info *pinfo,const int col,const gboolean is_res,const gboolean is_src,const gboolean fill_col_exprs)
+switch ( pinfo -> ptype )
+if ( is_src )
+pinfo -> cinfo -> col_expr . col_expr [ col ] = "udp.dstport";
+pinfo -> cinfo -> col_expr . col_expr [ col ] = "ddp.src_socket";
+guint32_to_str_buf ( port , pinfo -> cinfo -> col_expr . col_expr_val [ col ] , 256 );
+g_strlcpy ( pinfo -> cinfo -> col_buf [ col ] , pinfo -> cinfo -> col_expr . col_expr_val [ col ] , 256 );
+pinfo -> cinfo -> col_data [ col ] = pinfo -> cinfo -> col_buf [ col ];

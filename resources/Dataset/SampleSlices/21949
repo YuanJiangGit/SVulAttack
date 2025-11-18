@@ -1,0 +1,7 @@
+void bad()
+int * data ;
+data = NULL;
+if ( STATIC_CONST_TRUE )
+data = new int
+if ( STATIC_CONST_TRUE )
+free ( data );

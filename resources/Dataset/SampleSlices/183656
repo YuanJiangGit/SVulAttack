@@ -1,0 +1,13 @@
+void dfacomp(const char *s,size_t len,struct dfa *d,int searchflag)
+dfaparse ( s , len , d );
+void dfaparse(const char *s,size_t len,struct dfa *d)
+if ( d -> nregexps )
+addtok ( OR );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+work_mbc -> nchars = 0;
+if ( work_mbc -> invert || ! using_utf8 ( ) && work_mbc -> cset != ( - 1 ) || work_mbc -> nchars != 0 || work_mbc -> nch_classes != 0 || work_mbc -> nranges != 0 || work_mbc -> nequivs != 0 || work_mbc -> ncoll_elems != 0 )
+if ( work_mbc -> cset != ( - 1 ) )
+addtok ( CSET + work_mbc -> cset );

@@ -1,0 +1,89 @@
+int file_read(void *buf,unsigned int len,FILE_T file)
+unsigned int n ;
+if ( len == 0 )
+if ( file -> seek )
+file -> seek = 0;
+if ( gz_skip ( file , file -> skip ) == - 1 )
+static int gz_skip(FILE_T state,gint64 len)
+unsigned int n ;
+while ( len )
+if ( state -> have )
+n = ( ( ( gint64 ) ( state -> have ) ) > len ? ( ( unsigned int ) len ) : state -> have );
+state -> have -= n;
+state -> next += n;
+state -> pos += n;
+len -= n;
+if ( state -> err )
+return - 1 ;
+if ( state -> eof && state -> avail_in == 0 )
+if ( fill_out_buffer ( state ) == - 1 )
+return - 1 ;
+return 0 ;
+if ( file -> have )
+n = ( file -> have > len ? len : file -> have );
+file -> next += n;
+file -> have -= n;
+if ( file -> err )
+if ( file -> eof && file -> avail_in == 0 )
+if ( fill_out_buffer ( file ) == - 1 )
+len -= n;
+file -> pos += n;
+while ( len )
+static int fill_out_buffer(FILE_T state)
+if ( state -> compression == 0 )
+if ( gz_head ( state ) == - 1 )
+static int gz_head(FILE_T state)
+if ( state -> avail_in == 0 )
+if ( fill_in_buffer ( state ) == - 1 )
+static int fill_in_buffer(FILE_T state)
+if ( state -> err )
+return - 1 ;
+if ( state -> eof == 0 )
+if ( raw_read ( state , state -> in , state -> size , ( ( unsigned int * ) ( & state -> avail_in ) ) ) == - 1 )
+static int raw_read(FILE_T state,unsigned char *buf,unsigned int count,unsigned int *have)
+int ret ;
+* have = 0;
+ret = ( read ( state -> fd , ( buf + * have ) , ( count - * have ) ) );
+if ( ret <= 0 )
+* have += ret;
+state -> raw_pos += ret;
+while ( * have < count )
+if ( ret < 0 )
+return - 1 ;
+return 0 ;
+return - 1 ;
+return 0 ;
+if ( state -> avail_in == 0 )
+if ( state -> next_in [ 0 ] == 31 )
+state -> avail_in --;
+state -> next_in ++;
+if ( state -> avail_in == 0 && fill_in_buffer ( state ) == - 1 )
+static int fill_in_buffer(FILE_T state)
+if ( state -> err )
+return - 1 ;
+if ( state -> eof == 0 )
+if ( raw_read ( state , state -> in , state -> size , ( ( unsigned int * ) ( & state -> avail_in ) ) ) == - 1 )
+return - 1 ;
+return 0 ;
+if ( state -> avail_in && state -> next_in [ 0 ] == 139 )
+guint8 cm ;
+guint8 flags ;
+state -> avail_in --;
+state -> next_in ++;
+if ( gz_next1 ( state , & cm ) == - 1 )
+if ( cm != 8 )
+state -> err = - 21;
+state -> err_info = "unknown compression method";
+if ( gz_next1 ( state , & flags ) == - 1 )
+static int gz_next1(FILE_T state,guint8 *ret)
+int ch ;
+ch = ( state -> avail_in == 0 && fill_in_buffer ( state ) == - 1 ? - 1 : ( ( state -> avail_in == 0 ? - 1 : ( ( state -> avail_in -- , * ( state -> next_in ++ ) ) ) ) ) );
+static int fill_in_buffer(FILE_T state)
+if ( state -> err )
+return - 1 ;
+if ( state -> eof == 0 )
+if ( raw_read ( state , state -> in , state -> size , ( ( unsigned int * ) ( & state -> avail_in ) ) ) == - 1 )
+return - 1 ;
+return 0 ;
+if ( ch == - 1 )
+* ret = ch;

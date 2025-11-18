@@ -1,0 +1,4 @@
+void bad()
+int * data ;
+data = ( int * ) calloc ( 100 , sizeof ( int ) );
+delete data

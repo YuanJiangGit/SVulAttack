@@ -1,0 +1,5 @@
+static svn_error_t *skip_handler_stringbuf(void *baton,apr_size_t len)
+struct stringbuf_stream_baton * btn = baton ;
+apr_size_t left_to_read = btn -> str -> len - btn -> amt_read ;
+len = ( len > left_to_read ? left_to_read : len );
+btn -> amt_read += len;

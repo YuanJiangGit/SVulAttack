@@ -1,0 +1,14 @@
+static void *emem_alloc_chunk(size_t size,emem_header_t *mem)
+if ( ! mem -> free_list )
+mem -> free_list = emem_create_chunk_gp ( ( 10 * 1024 * 1024 ) );
+static emem_chunk_t *emem_create_chunk_gp(size_t size)
+emem_chunk_t * npc ;
+npc = emem_create_chunk ( size );
+static emem_chunk_t *emem_create_chunk(size_t size)
+emem_chunk_t * npc ;
+npc = ( ( emem_chunk_t * ) ( g_malloc_n ( 1 , sizeof ( emem_chunk_t ) ) ) );
+npc -> next = ( ( void * ) 0 );
+npc -> canary_last = ( ( void * ) 0 );
+npc -> amount_free = npc -> amount_free_init = ( ( unsigned int ) size );
+npc -> free_offset = npc -> free_offset_init = 0;
+return npc ;

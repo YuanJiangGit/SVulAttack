@@ -1,0 +1,70 @@
+static enum
+storeAttributeValue(XML_Parser parser, const ENCODING *enc, XML_Bool
+const char *ptr, const char
+STRING_POOL *pool)
+enum XML_Error result = appendAttributeValue ( parser , enc , isCdata , ptr , end , pool ) ;
+static enum
+appendAttributeValue(XML_Parser parser, const ENCODING *enc, XML_Bool
+const char *ptr, const char
+STRING_POOL *pool)
+DTD * const dtd = _dtd
+const char * next ;
+int tok = XmlAttributeValueTok ( enc , ptr , end , & next ) ;
+switch ( tok )
+XML_Char buf [ XML_ENCODE_MAX ] ;
+int i ;
+int n = XmlCharRefNumber ( enc , ptr ) ;
+if ( n < 0 )
+if ( ! isCdata && n == 0x20 && ( poolLength ( pool ) == 0 || poolLastChar ( pool ) == 0x20 ) )
+n = XmlEncode ( n , ( ICHAR * ) buf );
+if ( ! n )
+for (i = 0; i < n; i++)
+if ( ! poolAppendChar ( pool , buf [ i ] ) )
+if ( ! poolAppend ( pool , enc , ptr , next ) )
+next = ptr + enc -> minBytesPerChar;
+if ( ! isCdata && ( poolLength ( pool ) == 0 || poolLastChar ( pool ) == 0x20 ) )
+if ( ! poolAppendChar ( pool , 0x20 ) )
+const XML_Char * name ;
+ENTITY * entity ;
+char checkEntityDecl ;
+XML_Char ch = ( XML_Char ) XmlPredefinedEntityName ( enc , ptr + enc -> minBytesPerChar , next - enc -> minBytesPerChar ) ;
+if ( ch )
+if ( ! poolAppendChar ( pool , ch ) )
+name = poolStoreString ( & temp2Pool , enc , ptr + enc -> minBytesPerChar , next - enc -> minBytesPerChar );
+if ( ! name )
+entity = ( ENTITY * ) lookup ( & dtd -> generalEntities , name , 0 );
+if ( pool == & dtd -> pool )
+checkEntityDecl = ! dtd -> hasParamEntityRefs || dtd -> standalone;
+if ( checkEntityDecl )
+if ( ! entity )
+if ( ! entity -> is_internal )
+if ( ! entity )
+if ( entity -> open )
+if ( entity -> notation )
+if ( ! entity -> textPtr )
+enum XML_Error result ;
+const XML_Char * textEnd = entity -> textPtr + entity -> textLen ;
+entity -> open = XML_TRUE;
+result = appendAttributeValue ( parser , internalEncoding , isCdata , ( char * ) entity -> textPtr , ( char * ) textEnd , pool );
+entity -> open = XML_FALSE;
+if ( result )
+ptr = next;
+static XML_Char
+poolAppend(STRING_POOL *pool, const ENCODING
+const char *ptr, const char *end)
+if ( ! pool -> ptr && ! poolGrow ( pool ) )
+if ( ptr == end )
+if ( ! poolGrow ( pool ) )
+static XML_Bool
+poolGrow(STRING_POOL *pool)
+if ( pool -> freeBlocks )
+if ( pool -> start == 0 )
+if ( pool -> end - pool -> start < pool -> freeBlocks -> size )
+if ( pool -> blocks && pool -> start == pool -> blocks -> s )
+int blockSize = ( int ) ( pool -> end - pool -> start ) * 2 ;
+pool -> blocks = ( BLOCK * ) pool -> mem -> realloc_fcn ( pool -> blocks , ( offsetof ( BLOCK , s ) + blockSize * sizeof ( XML_Char ) ) );
+if ( pool -> blocks == NULL )
+pool -> blocks -> size = blockSize;
+pool -> ptr = pool -> blocks -> s + ( pool -> ptr - pool -> start );
+pool -> start = pool -> blocks -> s;
+pool -> end = pool -> start + blockSize;

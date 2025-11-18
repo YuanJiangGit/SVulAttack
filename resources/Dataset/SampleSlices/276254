@@ -1,0 +1,8 @@
+static int bayer_to_yv12_wrapper(SwsContext *c, const uint8_t* src[], int srcStride[], int
+int srcSliceH, uint8_t* dst[], int dstStride[])
+uint8_t * dstU = dst [ 1 ] ;
+copy ( srcPtr , srcStride [ 0 ] , dstY , dstU , dstV , dstStride [ 0 ] , c -> srcW , c -> input_rgb2yuv_table );
+dstU += dstStride [ 1 ];
+interpolate ( srcPtr , srcStride [ 0 ] , dstY , dstU , dstV , dstStride [ 0 ] , c -> srcW , c -> input_rgb2yuv_table );
+dstU += dstStride [ 1 ];
+copy ( srcPtr , srcStride [ 0 ] , dstY , dstU , dstV , dstStride [ 0 ] , c -> srcW , c -> input_rgb2yuv_table );

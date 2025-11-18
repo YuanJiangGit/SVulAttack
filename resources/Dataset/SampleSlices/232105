@@ -1,0 +1,36 @@
+static
+CVE_2011_1495_PATCHED__ctl_diag_read_buffer(void __user *arg, enum block_state state)
+struct mpt2_diag_read_buffer karg ;
+struct mpt2_diag_read_buffer __user * uarg = arg ;
+struct MPT2SAS_ADAPTER * ioc ;
+void * request_data , * diag_data ;
+u8 buffer_type ;
+unsigned long timeleft , request_size , copy_size ;
+u16 smid ;
+if ( copy_from_user ( & karg , arg , sizeof ( karg ) ) )
+if ( _ctl_verify_adapter ( karg . hdr . ioc_number , & ioc ) == - 1 || ! ioc )
+buffer_type = karg . unique_id & 0x000000ff;
+if ( ! _ctl_diag_capability ( ioc , buffer_type ) )
+if ( karg . unique_id != ioc -> unique_id [ buffer_type ] )
+request_data = ioc -> diag_buffer [ buffer_type ];
+if ( ! request_data )
+request_size = ioc -> diag_buffer_sz [ buffer_type ];
+if ( ( karg . starting_offset % 4 ) || ( karg . bytes_to_read % 4 ) )
+if ( karg . starting_offset > request_size )
+diag_data = ( void * ) ( request_data + karg . starting_offset );
+if ( ( diag_data + karg . bytes_to_read < diag_data ) || ( diag_data + karg . bytes_to_read > request_data + request_size ) )
+copy_size = request_size - karg . starting_offset;
+copy_size = karg . bytes_to_read;
+if ( copy_to_user ( ( void __user * ) uarg -> diagnostic_data , diag_data , copy_size ) )
+if ( ( karg . flags & MPT2_FLAGS_REREGISTER ) == 0 )
+if ( ( ioc -> diag_buffer_status [ buffer_type ] & MPT2_DIAG_BUFFER_IS_RELEASED ) == 0 )
+if ( state == NON_BLOCKING && ! mutex_trylock ( & ioc -> ctl_cmds . mutex ) )
+if ( mutex_lock_interruptible ( & ioc -> ctl_cmds . mutex ) )
+if ( ioc -> ctl_cmds . status != MPT2_CMD_NOT_USED )
+smid = mpt2sas_base_get_smid ( ioc , ioc -> ctl_cb_idx );
+if ( ! smid )
+ioc -> ctl_cmds . status = MPT2_CMD_PENDING;
+memset ( ioc -> ctl_cmds . reply , 0 , ioc -> reply_sz );
+ioc -> ctl_cmds . smid = smid;
+if ( ! ( ioc -> ctl_cmds . status & MPT2_CMD_COMPLETE ) )
+if ( ( ioc -> ctl_cmds . status & MPT2_CMD_REPLY_VALID ) == 0 )

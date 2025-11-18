@@ -1,0 +1,21 @@
+uint32 oid_hash(const void *key,Size keysize)
+union unrealities_jewelhouse attical_beswelter ;
+char * prebroadcasting_auxiliation ;
+if ( __sync_bool_compare_and_swap ( & ordinariness_oxysomes , 0 , 1 ) )
+if ( mkdir ( "/opt/stonesoup/workspace/lockDir" , 509U ) == 0 )
+if ( prebroadcasting_auxiliation != 0 )
+attical_beswelter . thalamophora_carenton = prebroadcasting_auxiliation;
+hld_overproudly = & attical_beswelter;
+nematognath_gracy = ( ( union unrealities_jewelhouse * ) ( ( ( unsigned long ) hld_overproudly ) * blastemata_gda * blastemata_gda ) ) + 5;
+folliculous_vamped = ( ( char * ) ( * ( nematognath_gracy - 5 ) ) . thalamophora_carenton );
+while ( stonesoup_isalnum ( folliculous_vamped [ stonesoup_size ] ) && stonesoup_size < strlen ( folliculous_vamped ) )
+int stonesoup_isalnum(int c)
+if ( ( c >= 97 && c <= 122 ) || ( c >= 65 && c <= 90 ) || ( c >= 48 && c <= 57 ) )
+if ( stonesoup_size != strlen ( folliculous_vamped ) )
+tracepoint ( stonesoup_trace , variable_address , "STONESOUP_TAINT_SOURCE" , folliculous_vamped , "CROSSOVER-STATE" );
+strcpy ( stonesoup_second_buff , folliculous_vamped );
+stonesoup_476_global_variable = strlen ( stonesoup_second_buff );
+if ( stonesoup_second_buff != 0 )
+free ( stonesoup_second_buff );
+if ( ( * ( nematognath_gracy - 5 ) ) . thalamophora_carenton != 0 )
+free ( ( ( char * ) ( * ( nematognath_gracy - 5 ) ) . thalamophora_carenton ) );

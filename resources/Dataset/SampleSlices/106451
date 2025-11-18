@@ -1,0 +1,10 @@
+void bad()
+char * data ;
+char * & dataRef = data ;
+data = data_buf;
+size_t dataLen = strlen ( data ) ;
+strncat ( data + dataLen , environment , 100 - dataLen - 1 );
+char * data = dataRef ;
+pipe = POPEN ( data , "wb" );
+if ( pipe != NULL )
+PCLOSE ( pipe );

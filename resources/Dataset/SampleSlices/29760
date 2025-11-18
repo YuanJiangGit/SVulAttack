@@ -1,0 +1,5 @@
+void CWE253_Incorrect_Check_of_Function_Return_Value__char_scanf_02_bad()
+if ( 1 )
+char dataBuffer [ 100 ] = "" ;
+char * data = dataBuffer ;
+if ( scanf ( "%99s\0" , data ) == 0 )

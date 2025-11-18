@@ -1,0 +1,35 @@
+
+CVE_2013_1680_PATCHED_nsContainerFrame::ReflowOverflowContainerChildren(nsPresContext*
+const nsHTMLReflowState&
+nsOverflowAreas&
+uint32_t
+nsReflowStatus&          aStatus)
+nsFrameList * overflowContainers = GetPropTableFrames ( aPresContext , OverflowContainersProperty ( ) ) ;
+if ( ! overflowContainers )
+nsContainerFrame * prev = ( nsContainerFrame * ) GetPrevInFlow ( ) ;
+if ( prev )
+nsFrameList * excessFrames = prev -> RemovePropTableFrames ( aPresContext , ExcessOverflowContainersProperty ( ) ) ;
+if ( excessFrames )
+overflowContainers = excessFrames;
+rv = SetPropTableFrames ( aPresContext , overflowContainers , OverflowContainersProperty ( ) );
+if ( NS_FAILED ( rv ) )
+nsFrameList * selfExcessOCFrames = RemovePropTableFrames ( aPresContext , ExcessOverflowContainersProperty ( ) ) ;
+if ( selfExcessOCFrames )
+if ( overflowContainers )
+overflowContainers = selfExcessOCFrames;
+if ( ! overflowContainers )
+bool shouldReflowAllKids = aReflowState . ShouldReflowAllKids ( ) ;
+for (nsIFrame* frame = overflowContainers->FirstChild();
+frame = frame->GetNextSibling())
+if ( frame -> GetPrevInFlow ( ) -> GetParent ( ) != GetPrevInFlow ( ) )
+if ( shouldReflowAllKids || NS_SUBTREE_DIRTY ( frame ) )
+nsIFrame * prevInFlow = frame -> GetPrevInFlow ( ) ;
+nsRect prevRect = prevInFlow -> GetRect ( ) ;
+nsHTMLReflowMetrics desiredSize ;
+nsHTMLReflowState frameState ( aPresContext , aReflowState , frame , availSpace ) ;
+nsReflowStatus frameStatus = NS_FRAME_COMPLETE ;
+rv = ReflowChild ( frame , aPresContext , desiredSize , frameState , prevRect . x , 0 , aFlags , frameStatus , & tracker );
+NS_ENSURE_SUCCESS ( rv , rv );
+NS_ENSURE_SUCCESS ( rv , rv );
+NS_ENSURE_SUCCESS ( rv , rv );
+NS_ENSURE_SUCCESS ( rv , rv );

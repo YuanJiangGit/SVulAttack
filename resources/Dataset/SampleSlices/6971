@@ -1,0 +1,5 @@
+void CWE404_Improper_Resource_Shutdown__freopen_w32CloseHandle_17_bad()
+FILE * data ;
+data = freopen ( "BadSource_freopen.txt" , "w+" , stdin );
+if ( data != NULL )
+CloseHandle ( ( HANDLE ) data );

@@ -1,0 +1,7 @@
+void bad()
+TwoIntsClass * data ;
+data = NULL;
+if ( 5 == 5 )
+data = NULL;
+data = ( TwoIntsClass * ) realloc ( data , 100 * sizeof ( TwoIntsClass ) );
+delete data

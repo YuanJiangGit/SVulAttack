@@ -1,0 +1,6 @@
+void CWE190_Integer_Overflow__short_fscanf_square_68b_badSink()
+short data = CWE190_Integer_Overflow__short_fscanf_square_68_badData ;
+short result = data * data ;
+printIntLine ( result );
+void printIntLine (int intNumber)
+printf ( "%d\n" , intNumber );

@@ -1,0 +1,32 @@
+static tvbuff_t
+CVE_2013_3559_PATCHED_dissect_pft_fec_detailed(tvbuff_t * tvb, packet_info * pinfo, proto_tree *
+guint32 findex
+guint32
+guint16
+gint
+guint16
+gboolean fec
+guint16
+guint16
+fragment_data
+)
+if ( fcount > MAX_FRAGMENTS )
+if ( fdx )
+guint fragments = 0 ;
+guint32 * got ;
+fragment_data * fd ;
+fragment_data * fd_head ;
+got = ep_alloc ( fcount * sizeof ( guint32 ) );
+fd = fragment_get ( pinfo , seq , dcp_fragment_table );
+for (fd_head = fd; fd_head != NULL && fragments < fcount; fd_head = fd_head->next)
+if ( fd_head -> data )
+got [ fragments ++ ] = fd_head -> offset;
+if ( fragments >= rx_min )
+proto_tree_add_text ( tree , tvb , 0 , - 1 , "want %d, got %d need %d" , fcount , fragments , rx_min );
+for(i=0; i<fragments; i++)
+guint next_fragment_we_have = got [ i ] ;
+if ( next_fragment_we_have > MAX_FRAGMENTS )
+proto_tree_add_text ( tree , tvb , 0 , - 1 , "[Reassembly of %d fragments not attempted]" , next_fragment_we_have );
+if ( next_fragment_we_have - current_findex > MAX_FRAG_GAP )
+proto_tree_add_text ( tree , tvb , 0 , - 1 , "[Missing %d consecutive packets. Don't attempt reassembly]" , next_fragment_we_have - current_findex );
+for(; current_findex<next_fragment_we_have; current_findex++)

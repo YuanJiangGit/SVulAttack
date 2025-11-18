@@ -1,0 +1,7 @@
+static void goodB2G()
+long * data ;
+data = NULL;
+data = goodB2GSource ( data );
+static long * goodB2GSource(long * data)
+data = ( long * ) malloc ( 1 * sizeof ( long ) );
+return data ;

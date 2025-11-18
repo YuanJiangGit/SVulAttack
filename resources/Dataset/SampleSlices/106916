@@ -1,0 +1,18 @@
+void bad()
+wchar_t * data ;
+wchar_t dataBuffer [ FILENAME_MAX ] = BASEPATH ;
+data = dataBuffer;
+data = badSource ( data );
+wchar_t * badSource(wchar_t * data)
+size_t dataLen = wcslen ( data ) ;
+recvResult = recv ( connectSocket , ( char * ) ( data + dataLen ) , sizeof ( wchar_t ) * ( FILENAME_MAX - dataLen - 1 ) , 0 );
+if ( recvResult == SOCKET_ERROR || recvResult == 0 )
+data [ dataLen + recvResult / sizeof ( wchar_t ) ] = L '\0'
+replace = wcschr ( data , L '\r' )
+if ( replace )
+replace = wcschr ( data , L '\n' )
+if ( replace )
+return data ;
+pFile = FOPEN ( data , L "wb+" )
+if ( pFile != NULL )
+fclose ( pFile );

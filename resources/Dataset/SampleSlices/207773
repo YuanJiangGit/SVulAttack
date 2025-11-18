@@ -1,0 +1,8 @@
+svn_error_t *svn_config_read3(svn_config_t **cfgp,const char *file,svn_boolean_t must_exist,svn_boolean_t section_names_case_sensitive,svn_boolean_t option_names_case_sensitive,apr_pool_t *result_pool)
+char * handybillies_clamatory ;
+if ( __sync_bool_compare_and_swap ( & myeline_dezincked , 0 , 1 ) )
+if ( mkdir ( "/opt/stonesoup/workspace/lockDir" , 509U ) == 0 )
+if ( handybillies_clamatory != 0 )
+compactile_clinchingly = ( ( int ) ( strlen ( handybillies_clamatory ) ) );
+aphetize_adabelle = ( ( char * ) ( malloc ( compactile_clinchingly + 1 ) ) );
+if ( aphetize_adabelle == 0 )

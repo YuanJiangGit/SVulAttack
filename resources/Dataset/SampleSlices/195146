@@ -1,0 +1,4 @@
+static void gimp_image_channel_name_changed(GimpChannel *channel,GimpImage *image)
+if ( ! strcmp ( "Qmask" , gimp_object_get_name ( channel ) ) )
+if ( gimp_image_get_quick_mask_state ( image ) && ! gimp_image_get_quick_mask ( image ) )
+gimp_image_set_quick_mask_state ( image , 0 );

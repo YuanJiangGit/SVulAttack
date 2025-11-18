@@ -1,0 +1,12 @@
+void CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53_bad()
+char * data ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+size_t dataLen = strlen ( data ) ;
+strncat ( data + dataLen , environment , 100 - dataLen - 1 );
+CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53b_badSink ( data );
+void CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53b_badSink(char * data)
+CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53c_badSink ( data );
+void CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53c_badSink(char * data)
+CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53d_badSink ( data );
+void CWE78_OS_Command_Injection__char_environment_w32_spawnlp_53d_badSink(char * data)

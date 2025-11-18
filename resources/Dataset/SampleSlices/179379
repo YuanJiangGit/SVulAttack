@@ -1,0 +1,14 @@
+void CWE377_Insecure_Temporary_File__wchar_t_tempnam_17_bad()
+int j ;
+for(j = 0; j < 1; j++)
+wchar_t * filename ;
+filename = TEMPNAM ( NULL , NULL );
+if ( filename == NULL )
+printWLine ( filename );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )
+fileDesc = OPEN ( filename , O_RDWR | O_CREAT , S_IREAD | S_IWRITE );
+if ( fileDesc != - 1 )
+CLOSE ( fileDesc );
+free ( filename );

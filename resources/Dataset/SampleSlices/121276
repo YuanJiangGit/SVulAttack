@@ -1,0 +1,4 @@
+void bad()
+wchar_t * * dataPtr2 = & data ;
+wchar_t * data = * dataPtr2 ;
+outputFile . open ( ( char * ) data );

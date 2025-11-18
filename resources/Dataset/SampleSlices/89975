@@ -1,0 +1,15 @@
+static void emem_tree_print_nodes(const char *prefix,emem_tree_node_t *node,guint32 level)
+if ( ! node )
+if ( node -> left )
+emem_tree_print_nodes ( "L-" , node -> left , level + 1 );
+static void emem_tree_print_nodes(const char *prefix,emem_tree_node_t *node,guint32 level)
+if ( ! node )
+if ( node -> right )
+emem_tree_print_nodes ( "R-" , node -> right , level + 1 );
+static void emem_tree_print_nodes(const char *prefix,emem_tree_node_t *node,guint32 level)
+if ( ! node )
+if ( node -> u . is_subtree )
+emem_print_subtree ( ( node -> data ) , level + 1 );
+static void emem_print_subtree(emem_tree_t *emem_tree,guint32 level)
+if ( ! emem_tree )
+printf ( "EMEM tree:%p type:%s name:%s root:%p\n" , emem_tree , ( emem_tree -> type == 1 ? "RedBlack" : "unknown" ) , emem_tree -> name , ( ( void * ) ( emem_tree -> tree ) ) );

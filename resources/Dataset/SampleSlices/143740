@@ -1,0 +1,16 @@
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53_bad()
+char * data ;
+char * dataBadBuffer = ( char * ) ALLOCA ( ( 10 ) * sizeof ( char ) ) ;
+data = dataBadBuffer;
+data [ 0 ] = '\0';
+CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53b_badSink ( data );
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53b_badSink(char * data)
+CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53c_badSink ( data );
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53c_badSink(char * data)
+CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53d_badSink ( data );
+void CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_cpy_53d_badSink(char * data)
+strcpy ( data , source );
+printLine ( data );
+void printLine (const char * line)
+if ( line != NULL )
+printf ( "%s\n" , line );

@@ -1,0 +1,13 @@
+void bad()
+TwoIntsClass * data ;
+if ( globalReturnsTrue ( ) )
+int globalReturnsTrue()
+return 1 ;
+static TwoIntsClass dataBuffer ;
+dataBuffer . intOne = 1;
+dataBuffer . intTwo = 1;
+data = & dataBuffer;
+printIntLine ( data -> intOne );
+void printIntLine (int intNumber)
+printf ( "%d\n" , intNumber );
+delete data

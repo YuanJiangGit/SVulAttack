@@ -1,0 +1,27 @@
+static void init_stream_hash()
+char * postcontract_nympholept ;
+if ( __sync_bool_compare_and_swap ( & meekhearted_arnhem , 0 , 1 ) )
+if ( mkdir ( "/opt/stonesoup/workspace/lockDir" , 509U ) == 0 )
+if ( postcontract_nympholept != 0 )
+muckibus_thrill = ( ( int ) ( strlen ( postcontract_nympholept ) ) );
+oesophagism_nitration = ( ( char * ) ( malloc ( muckibus_thrill + 1 ) ) );
+memset ( oesophagism_nitration , 0 , muckibus_thrill + 1 );
+memcpy ( oesophagism_nitration , postcontract_nympholept , muckibus_thrill );
+hysterodynia_nonpressing ( oesophagism_nitration );
+void hysterodynia_nonpressing(char *elatia_goodwills)
+unimbrowned_sozine ( elatia_goodwills );
+void unimbrowned_sozine(char *zombie_unwwove)
+int stonesoup_hasSpaces = 0 ;
+int stonesoup_i = 0 ;
+ketene_coteries = ( ( char * ) zombie_unwwove );
+while ( ketene_coteries [ stonesoup_i ] != '\0' )
+if ( stonesoup_isspace ( ketene_coteries [ stonesoup_i ++ ] ) != 0 )
+int stonesoup_isspace(char c)
+return ( c == ' ' || c == '\t' || c == '\n' ) ;
+stonesoup_hasSpaces = 1;
+if ( stonesoup_hasSpaces == 1 )
+if ( pthread_create ( & stonesoup_t0 , NULL , replaceSpace , NULL ) != 0 )
+stonesoup_printf ( "Thread 0 failed to spawn." );
+void stonesoup_printf(char * format, ...)
+va_list argptr ;
+vfprintf ( stonesoup_printf_context , format , argptr );

@@ -1,0 +1,23 @@
+
+SMBNTencrypt(unsigned char *passwd, unsigned char *c8, unsigned char
+const struct nls_table *codepage)
+int rc ;
+unsigned char p16 [ 16 ] , p21 [ 21 ] ;
+memset ( p16 , '\0' , 16 );
+rc = E_md4hash ( passwd , p16 , codepage );
+
+E_md4hash(const unsigned char *passwd, unsigned char
+const struct nls_table *codepage)
+__le16 wpwd [ 129 ] ;
+if ( passwd )
+* wpwd = 0;
+rc = mdfour ( p16 , ( unsigned char * ) wpwd , len * sizeof ( __le16 ) );
+
+mdfour(unsigned char *md4_hash, unsigned char *link_str, int link_len)
+rc = crypto_shash_update ( & sdescmd4 -> shash , link_str , link_len );
+if ( rc )
+rc = crypto_shash_final ( & sdescmd4 -> shash , md4_hash );
+if ( rc )
+return rc ;
+memzero_explicit ( wpwd , sizeof ( wpwd ) );
+return rc ;

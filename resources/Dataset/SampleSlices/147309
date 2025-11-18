@@ -1,0 +1,17 @@
+static void goodG2B2()
+wchar_t * data ;
+wchar_t dataBuffer [ 100 ] ;
+data = dataBuffer;
+data = CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_loop_22_goodG2B2Source ( data );
+wchar_t * CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_loop_22_goodG2B2Source(wchar_t * data)
+if ( CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_loop_22_goodG2B2Global )
+wmemset ( data , L 'A' , 50 - 1
+data [ 50 - 1 ] = L '\0'
+return data ;
+dataLen = wcslen ( data );
+for (i = 0; i < dataLen; i++)
+dest [ i ] = data [ i ];
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

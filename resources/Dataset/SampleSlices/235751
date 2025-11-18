@@ -1,0 +1,34 @@
+static void *CVE_2015_3008_PATCHED_handle_tcptls_connection(void *data)
+struct ast_tcptls_session_instance * tcptls_session = data ;
+int ( * ssl_setup ) ( SSL * ) = ( tcptls_session -> client ) ? SSL_connect : SSL_accept
+int ret ;
+if ( ast_thread_inhibit_escalations ( ) )
+tcptls_session -> stream_cookie = tcptls_stream_alloc ( );
+if ( ! tcptls_session -> stream_cookie )
+if ( ! tcptls_session -> parent -> tls_cfg )
+if ( tcptls_session -> ssl = SSL_new ( tcptls_session -> parent -> tls_cfg -> ssl_ctx ) )
+if ( ( ret = ssl_setup ( tcptls_session -> ssl ) ) <= 0 )
+if ( tcptls_session -> f = tcptls_stream_fopen ( tcptls_session -> stream_cookie , tcptls_session -> ssl , tcptls_session -> fd , - 1 ) )
+if ( ( tcptls_session -> client && ! ast_test_flag ( & tcptls_session -> parent -> tls_cfg -> flags , AST_SSL_DONT_VERIFY_SERVER ) ) || ( ! tcptls_session -> client && ast_test_flag ( & tcptls_session -> parent -> tls_cfg -> flags , AST_SSL_VERIFY_CLIENT ) ) )
+X509 * peer ;
+long res ;
+peer = SSL_get_peer_certificate ( tcptls_session -> ssl );
+if ( ! peer )
+res = SSL_get_verify_result ( tcptls_session -> ssl );
+if ( res != X509_V_OK )
+if ( ! ast_test_flag ( & tcptls_session -> parent -> tls_cfg -> flags , AST_SSL_IGNORE_COMMON_NAME ) )
+ASN1_STRING * str ;
+unsigned char * str2 ;
+X509_NAME * name = X509_get_subject_name ( peer ) ;
+int pos = - 1 ;
+int found = 0 ;
+pos = X509_NAME_get_index_by_NID ( name , NID_commonName , pos );
+if ( pos < 0 )
+str = X509_NAME_ENTRY_get_data ( X509_NAME_get_entry ( name , pos ) );
+ret = ASN1_STRING_to_UTF8 ( & str2 , str );
+if ( ret < 0 )
+if ( str2 )
+if ( strlen ( ( char * ) str2 ) != ret )
+if ( ! strcasecmp ( tcptls_session -> parent -> hostname , ( char * ) str2 ) )
+found = 1;
+if ( found )

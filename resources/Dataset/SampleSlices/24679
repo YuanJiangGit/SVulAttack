@@ -1,0 +1,2 @@
+void CWE78_OS_Command_Injection__char_listen_socket_system_65b_badSink(char * data)
+if ( SYSTEM ( data ) <= 0 )

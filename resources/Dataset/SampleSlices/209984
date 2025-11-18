@@ -1,0 +1,4 @@
+static svn_error_t *skip_handler_disown(void *baton,apr_size_t len)
+return svn_stream_skip ( baton , len ) ;
+svn_error_t *svn_stream_skip(svn_stream_t *stream,apr_size_t len)
+if ( stream -> skip_fn == ( ( void * ) 0 ) )

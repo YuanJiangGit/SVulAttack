@@ -1,0 +1,11 @@
+void CWE124_Buffer_Underwrite__wchar_t_declare_loop_31_bad()
+wchar_t * data ;
+data = dataBuffer - 8;
+wchar_t * dataCopy = data ;
+wchar_t * data = dataCopy ;
+data [ i ] = source [ i ];
+data [ 100 - 1 ] = L '\0'
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )

@@ -1,0 +1,7 @@
+void bad()
+if ( globalReturnsTrue ( ) )
+int globalReturnsTrue()
+return 1 ;
+TwoIntsClass * * pointer = new TwoIntsClass *
+TwoIntsClass * data = * pointer ;
+printIntLine ( data -> intTwo );

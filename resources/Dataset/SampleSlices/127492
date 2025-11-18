@@ -1,0 +1,6 @@
+static void goodB2G()
+char * data ;
+data = NULL;
+dataList . push_back ( data );
+dataList . push_back ( data );
+dataList . push_back ( data );

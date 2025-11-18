@@ -1,0 +1,68 @@
+static
+CVE_2007_6151_VULN_isdn_ioctl(struct inode *inode, struct file *file, uint cmd, ulong arg)
+uint minor = iminor ( inode ) ;
+int drvidx ;
+int i ;
+char __user * p ;
+void __user * argp = ( void __user * ) arg ;
+if ( minor == ISDN_MINOR_STATUS )
+switch ( cmd )
+if ( arg )
+int i ;
+if ( ! dev -> drivers )
+if ( minor <= ISDN_MINOR_BMAX )
+if ( minor <= ISDN_MINOR_CTRLMAX )
+switch ( cmd )
+if ( arg )
+dev -> global_flags &= ~ISDN_GLOBAL_STOPPED;
+drvidx = - 1;
+if ( arg )
+int i ;
+char * p ;
+if ( copy_from_user ( & iocts , argp , sizeof ( isdn_ioctl_struct ) ) )
+if ( strlen ( iocts . drvid ) )
+if ( p = strchr ( iocts . drvid , ',' ) )
+* p = 0;
+drvidx = - 1;
+for (i = 0; i < ISDN_MAX_DRIVERS; i++)
+if ( ! ( strcmp ( dev -> drvid [ i ] , iocts . drvid ) ) )
+drvidx = i;
+if ( drvidx == - 1 )
+if ( iocts . arg )
+dev -> drv [ drvidx ] -> flags &= ~DRV_FLAG_REJBUS;
+dev -> profd = current;
+if ( arg )
+char __user * p = argp ;
+int i ;
+if ( ! access_ok ( VERIFY_WRITE , argp , ( ISDN_MODEM_NUMREG + ISDN_MSNLEN + ISDN_LMSNLEN ) * ISDN_MAX_CHANNELS ) )
+for (i = 0; i < ISDN_MAX_CHANNELS; i++)
+if ( copy_to_user ( p , dev -> mdm . info [ i ] . emu . profile , ISDN_MODEM_NUMREG ) )
+p += ISDN_MODEM_NUMREG;
+if ( copy_to_user ( p , dev -> mdm . info [ i ] . emu . pmsn , ISDN_MSNLEN ) )
+p += ISDN_MSNLEN;
+if ( copy_to_user ( p , dev -> mdm . info [ i ] . emu . plmsn , ISDN_LMSNLEN ) )
+p += ISDN_LMSNLEN;
+if ( arg )
+char __user * p = argp ;
+int i ;
+if ( ! access_ok ( VERIFY_READ , argp , ( ISDN_MODEM_NUMREG + ISDN_MSNLEN + ISDN_LMSNLEN ) * ISDN_MAX_CHANNELS ) )
+for (i = 0; i < ISDN_MAX_CHANNELS; i++)
+if ( copy_from_user ( dev -> mdm . info [ i ] . emu . profile , p , ISDN_MODEM_NUMREG ) )
+p += ISDN_MODEM_NUMREG;
+if ( copy_from_user ( dev -> mdm . info [ i ] . emu . plmsn , p , ISDN_LMSNLEN ) )
+p += ISDN_LMSNLEN;
+if ( copy_from_user ( dev -> mdm . info [ i ] . emu . pmsn , p , ISDN_MSNLEN ) )
+p += ISDN_MSNLEN;
+if ( arg )
+if ( copy_from_user ( & iocts , argp , sizeof ( isdn_ioctl_struct ) ) )
+if ( strlen ( iocts . drvid ) )
+drvidx = - 1;
+for (i = 0; i < ISDN_MAX_DRIVERS; i++)
+if ( ! ( strcmp ( dev -> drvid [ i ] , iocts . drvid ) ) )
+drvidx = i;
+drvidx = 0;
+if ( drvidx == - 1 )
+if ( cmd == IIOCSETMAP )
+p = ( char __user * ) iocts . arg;
+if ( ! access_ok ( VERIFY_READ , p , 1 ) )
+get_user ( bname [ j ] , p ++ );

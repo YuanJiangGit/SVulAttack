@@ -1,0 +1,18 @@
+static int CVE_2008_3686_PATCHED_rt6_fill_node(struct sk_buff *skb, struct rt6_info
+struct in6_addr *dst, struct in6_addr
+int iif, int type, u32 pid, u32
+int prefix, int nowait, unsigned int flags)
+struct rtmsg * rtm ;
+struct nlmsghdr * nlh ;
+if ( prefix )
+if ( ! ( rt -> rt6i_flags & RTF_PREFIX_RT ) )
+nlh = nlmsg_put ( skb , pid , seq , type , sizeof ( * rtm ) , flags );
+if ( nlh == NULL )
+rtm = nlmsg_data ( nlh );
+rtm -> rtm_family = AF_INET6;
+rtm -> rtm_dst_len = rt -> rt6i_dst . plen;
+rtm -> rtm_src_len = rt -> rt6i_src . plen;
+rtm -> rtm_tos = 0;
+rtm -> rtm_table = table;
+rtm -> rtm_type = RTN_UNREACHABLE;
+if ( rtm -> rtm_src_len )

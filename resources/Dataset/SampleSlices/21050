@@ -1,0 +1,3 @@
+void CWE78_OS_Command_Injection__char_environment_system_01_bad()
+char * environment = GETENV ( ENV_VARIABLE ) ;
+if ( environment != NULL )

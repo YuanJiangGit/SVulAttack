@@ -1,0 +1,5 @@
+static void goodG2B()
+vector < wchar_t * > dataVector ;
+goodG2BSink ( dataVector );
+void goodG2BSink(vector<wchar_t *> dataVector)
+wchar_t * data = dataVector [ 2 ] ;

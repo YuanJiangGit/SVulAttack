@@ -1,0 +1,12 @@
+static svn_error_t *write_handler_tee(void *baton,const char *data,apr_size_t *len)
+struct baton_tee * bt = baton ;
+svn_error_t * svn_err__temp = svn_stream_write ( bt -> out1 , data , len ) ;
+if ( svn_err__temp )
+while ( 0 )
+svn_error_t *svn_stream_write(svn_stream_t *stream,const char *data,apr_size_t *len)
+if ( ! ( stream -> write_fn != ( ( void * ) 0 ) ) )
+svn_error_t * svn_err__temp = svn_error__malfunction ( ! 0 , "stream.c" , 162 , "stream->write_fn != NULL" ) ;
+if ( svn_err__temp )
+return svn_err__temp ;
+while ( 0 )
+while ( 0 )

@@ -1,0 +1,32 @@
+void sh_emulate_unmap_dest(struct vcpu *v, void *addr, unsigned int
+struct sh_emulate_ctxt *sh_ctxt)
+u32 b1 = bytes , b2 = 0 , shflags ;
+shflags = mfn_to_page ( sh_ctxt -> mfn [ 0 ] ) -> shadow_flags;
+if ( sh_ctxt -> low_bit_was_clear && ! ( * ( u8 * ) addr & _PAGE_PRESENT ) && ( ( ! ( shflags & SHF_32 ) && ( ( unsigned long ) addr & 7 ) == 0 && bytes <= 8 ) || ( ! ( shflags & ( SHF_PAE | SHF_64 ) ) && ( ( unsigned long ) addr & 3 ) == 0 && bytes <= 4 ) ) )
+if ( unlikely ( mfn_valid ( sh_ctxt -> mfn [ 1 ] ) ) )
+b1 = PAGE_SIZE - ( ( ( unsigned long ) addr ) & ~PAGE_MASK );
+b2 = bytes - b1;
+if ( unlikely ( b2 > 0 ) )
+sh_validate_guest_pt_write ( v , sh_ctxt -> mfn [ 1 ] , addr + b1 , b2 );
+
+sh_validate_guest_pt_write(struct vcpu *v, mfn_t
+void *entry, u32 size)
+struct domain * d = v -> domain ;
+int rc ;
+rc = sh_validate_guest_entry ( v , gmfn , entry , size );
+if ( rc & SHADOW_SET_ERROR )
+sh_remove_shadows ( d , gmfn , 0 , 0 );
+void sh_remove_shadows(struct domain *d, mfn_t gmfn, int fast, int all)
+struct page_info * pg = mfn_to_page ( gmfn ) ;
+mfn_t smfn ;
+unsigned char t ;
+static const hash_domain_callback_t callbacks [ SH_type_unused ] = { NULL , NULL , NULL , SHADOW_INTERNAL_NAME ( sh_remove_l1_shadow , 2 ) , NULL , NULL , SHADOW_INTERNAL_NAME ( sh_remove_l1_shadow , 3 ) , SHADOW_INTERNAL_NAME ( sh_remove_l1_shadow , 3 ) , NULL , NULL , SHADOW_INTERNAL_NAME ( sh_remove_l1_shadow , 4 ) , SHADOW_INTERNAL_NAME ( sh_remove_l1_shadow , 4 ) , SHADOW_INTERNAL_NAME ( sh_remove_l2_shadow , 4 ) , SHADOW_INTERNAL_NAME ( sh_remove_l3_shadow , 4 ) , NULL , NULL } ;
+static const unsigned int masks [ SH_type_unused ] = { 0 , SHF_L2_32 , 0 , 0 , SHF_L2H_PAE | SHF_L2_PAE , 0 , 0 , 0 , SHF_L2H_64 | SHF_L2_64 , 0 , SHF_L3_64 , SHF_L3_64 , SHF_L4_64 , 0 , 0 , 0 } ;
+if ( ( pg -> count_info & PGC_page_table ) == 0 )
+t = ( _type );
+if ( ! ( pg -> count_info & PGC_page_table ) || ! ( pg -> shadow_flags & ( 1 << t ) ) )
+smfn = shadow_hash_lookup ( d , mfn_x ( gmfn ) , t );
+if ( unlikely ( ! mfn_valid ( smfn ) ) )
+if ( ! fast && ( pg -> count_info & PGC_page_table ) && ( pg -> shadow_flags & ( 1 << t ) ) )
+hash_domain_foreach ( d , masks [ t ] , callbacks , smfn );
+while ( 0 )

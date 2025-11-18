@@ -1,0 +1,13 @@
+static void good2()
+if ( staticReturnsTrue ( ) )
+static int staticReturnsTrue()
+return 1 ;
+char * reversedString = helperGood ( "GoodSink" ) ;
+static char * helperGood(char * aString)
+size_t j ;
+if ( aString != NULL )
+i = strlen ( aString );
+reversedString = ( char * ) malloc ( i + 1 );
+for (j = 0; j < i; j++)
+reversedString [ j ] = aString [ i - j - 1 ];
+reversedString [ i ] = '\0';

@@ -1,0 +1,18 @@
+int parse_optgroup(void *optctx,OptionGroup *g)
+int i ;
+int ret ;
+for (i = 0; i < g -> nb_opts; i++)
+Option * o = & g -> opts [ i ] ;
+ret = write_option ( optctx , o -> opt , o -> key , o -> val );
+if ( ret < 0 )
+static int write_option(void *optctx,const OptionDef *po,const char *opt,const char *arg)
+if ( po -> flags & 0x0008 )
+if ( po -> flags & 0x00002 || po -> flags & 0x80 )
+if ( po -> flags & 0x0400 )
+if ( po -> flags & 0x10000 )
+if ( po -> flags & 0x00100 )
+if ( po -> flags & 0x20000 )
+if ( po -> u . func_arg )
+int ret = po -> u . func_arg ( optctx , opt , arg ) ;
+if ( ret < 0 )
+return ret ;

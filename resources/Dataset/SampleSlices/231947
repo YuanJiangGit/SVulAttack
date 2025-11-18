@@ -1,0 +1,7 @@
+static void CVE_2015_6246_PATCHED_dissect_wa_payload(guint32 starting_offset, proto_item *parent_tree, tvbuff_t *tvb, guint32 control_word, guint8 version)
+switch ( control_word )
+if ( version < 3 )
+starting_offset += 4;
+if ( version < 3 )
+starting_offset += 4;
+proto_tree_add_item ( parent_tree , hf_waveagent_remoteport , tvb , starting_offset + 16 , 4 , ENC_BIG_ENDIAN );

@@ -1,0 +1,16 @@
+void CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_52_bad()
+int data ;
+data = - 1;
+char inputBuffer [ CHAR_ARRAY_SIZE ] = "" ;
+if ( fgets ( inputBuffer , CHAR_ARRAY_SIZE , stdin ) != NULL )
+data = atoi ( inputBuffer );
+CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_52b_badSink ( data );
+void CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_52b_badSink(int data)
+CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_52c_badSink ( data );
+void CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_52c_badSink(int data)
+int i ;
+int buffer [ 10 ] = { 0 } ;
+if ( data >= 0 )
+buffer [ data ] = 1;
+for(i = 0; i < 10; i++)
+printIntLine ( buffer [ i ] );

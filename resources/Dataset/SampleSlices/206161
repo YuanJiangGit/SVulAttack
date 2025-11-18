@@ -1,0 +1,44 @@
+svn_stream_t *svn_stream_checksummed(svn_stream_t *stream,const unsigned char **read_digest,const unsigned char **write_digest,svn_boolean_t read_all,apr_pool_t *pool)
+struct md5_stream_baton * baton ;
+if ( ! read_digest && ! write_digest )
+baton = ( apr_palloc ( pool , sizeof ( ( * baton ) ) ) );
+baton -> read_digest = read_digest;
+baton -> write_digest = write_digest;
+baton -> pool = pool;
+baton -> proxy = svn_stream_checksummed2 ( stream , ( read_digest ? & baton -> read_checksum : ( ( void * ) 0 ) ) , ( write_digest ? & baton -> write_checksum : ( ( void * ) 0 ) ) , svn_checksum_md5 , read_all , pool );
+svn_stream_t *svn_stream_checksummed2(svn_stream_t *stream,svn_checksum_t **read_checksum,svn_checksum_t **write_checksum,svn_checksum_kind_t checksum_kind,svn_boolean_t read_all,apr_pool_t *pool)
+svn_stream_t * s ;
+struct checksum_stream_baton * baton ;
+if ( read_checksum == ( ( void * ) 0 ) && write_checksum == ( ( void * ) 0 ) )
+baton = ( apr_palloc ( pool , sizeof ( ( * baton ) ) ) );
+if ( write_checksum )
+baton -> write_ctx = ( ( void * ) 0 );
+baton -> read_checksum = read_checksum;
+baton -> write_checksum = write_checksum;
+baton -> proxy = stream;
+baton -> read_more = read_all;
+baton -> pool = pool;
+s = svn_stream_create ( baton , pool );
+svn_stream_t *svn_stream_create(void *baton,apr_pool_t *pool)
+svn_stream_t * stream ;
+stream = ( apr_palloc ( pool , sizeof ( ( * stream ) ) ) );
+stream -> baton = baton;
+stream -> read_fn = ( ( void * ) 0 );
+stream -> skip_fn = ( ( void * ) 0 );
+stream -> write_fn = ( ( void * ) 0 );
+stream -> close_fn = ( ( void * ) 0 );
+stream -> mark_fn = ( ( void * ) 0 );
+stream -> seek_fn = ( ( void * ) 0 );
+stream -> is_buffered_fn = ( ( void * ) 0 );
+stream -> file = ( ( void * ) 0 );
+return stream ;
+svn_stream_set_read ( s , read_handler_checksum );
+void svn_stream_set_read(svn_stream_t *stream,svn_read_fn_t read_fn)
+stream -> read_fn = read_fn;
+svn_stream_set_write ( s , write_handler_checksum );
+void svn_stream_set_write(svn_stream_t *stream,svn_write_fn_t write_fn)
+stream -> write_fn = write_fn;
+svn_stream_set_close ( s , close_handler_checksum );
+void svn_stream_set_close(svn_stream_t *stream,svn_close_fn_t close_fn)
+stream -> close_fn = close_fn;
+return s ;

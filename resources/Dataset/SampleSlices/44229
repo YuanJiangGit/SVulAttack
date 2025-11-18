@@ -1,0 +1,11 @@
+void CWE415_Double_Free__malloc_free_int_53_bad()
+int * data ;
+data = NULL;
+data = ( int * ) malloc ( 100 * sizeof ( int ) );
+CWE415_Double_Free__malloc_free_int_53b_badSink ( data );
+void CWE415_Double_Free__malloc_free_int_53b_badSink(int * data)
+CWE415_Double_Free__malloc_free_int_53c_badSink ( data );
+void CWE415_Double_Free__malloc_free_int_53c_badSink(int * data)
+CWE415_Double_Free__malloc_free_int_53d_badSink ( data );
+void CWE415_Double_Free__malloc_free_int_53d_badSink(int * data)
+free ( data );

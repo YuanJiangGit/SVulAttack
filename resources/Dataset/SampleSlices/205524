@@ -1,0 +1,13 @@
+svn_error_t *svn_stream_open_readonly(svn_stream_t **stream,const char *path,apr_pool_t *result_pool,apr_pool_t *scratch_pool)
+apr_file_t * file ;
+svn_error_t * svn_err__temp = svn_io_file_open ( & file , path , 0x00001 | 0x00080 , 0x0FFF , result_pool ) ;
+if ( svn_err__temp )
+while ( 0 )
+* stream = svn_stream_from_aprfile2 ( file , 0 , result_pool );
+svn_stream_t *svn_stream_from_aprfile2(apr_file_t *file,svn_boolean_t disown,apr_pool_t *pool)
+if ( file == ( ( void * ) 0 ) )
+return svn_stream_empty ( pool ) ;
+svn_stream_t *svn_stream_empty(apr_pool_t *pool)
+svn_stream_t * stream ;
+stream = svn_stream_create ( ( ( void * ) 0 ) , pool );
+svn_stream_set_read ( stream , read_handler_empty );

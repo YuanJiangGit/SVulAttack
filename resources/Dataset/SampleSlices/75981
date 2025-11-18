@@ -1,0 +1,30 @@
+int avio_get_str16be(AVIOContext *pb,int maxlen,char *buf,int buflen)
+int ret = 0 ;
+if ( buflen <= 0 )
+while ( ret + 1 < maxlen )
+uint32_t ch ;
+ch = ( ( ret += 2 ) <= maxlen ? avio_rb16 ( pb ) : 0 );
+unsigned int hi = ch - 0xD800 ;
+if ( hi < 0x800 )
+ch = ( ( ret += 2 ) <= maxlen ? avio_rb16 ( pb ) : ( 0 - 0xDC00 ) );
+if ( ch > 0x3FFU || hi > 0x3FFU )
+ch += ( hi << 10 ) + 0x10000;
+if ( ! ch )
+unsigned int avio_rb16(AVIOContext *s)
+unsigned int val ;
+val = ( avio_r8 ( s ) << 8 );
+val |= ( avio_r8 ( s ) );
+int avio_r8(AVIOContext *s)
+if ( s -> buf_ptr >= s -> buf_end )
+fill_buffer ( s );
+static void fill_buffer(AVIOContext *s)
+uint8_t * dst = ! s -> max_packet_size && s -> buf_end - s -> buffer < ( s -> buffer_size ) ? s -> buf_end : s -> buffer ;
+int len = ( ( s -> buffer_size ) - ( dst - s -> buffer ) ) ;
+len = ( ( s -> read_packet ) ( s -> opaque , dst , len ) );
+if ( len <= 0 )
+if ( len < 0 )
+s -> error = len;
+s -> pos += len;
+s -> buf_ptr = dst;
+s -> buf_end = dst + len;
+s -> bytes_read += len;

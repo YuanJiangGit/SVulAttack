@@ -1,0 +1,16 @@
+void dfaparse(const char *s,size_t len,struct dfa *d)
+addtok ( CAT );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+_Bool need_or = 0 ;
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+size_t i ;
+for (i = 0; i < work_mbc -> nchars; i++)
+if ( need_or )
+addtok ( OR );
+need_or = 1;
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )

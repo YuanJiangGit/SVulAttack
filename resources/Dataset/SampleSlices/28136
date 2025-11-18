@@ -1,0 +1,18 @@
+static void pgstat_beshutdown_hook(int code,Datum arg)
+if ( ( bool ) ( MyDatabaseId != ( ( Oid ) 0 ) ) )
+pgstat_report_stat ( ( ( bool ) 1 ) );
+void pgstat_report_stat(bool force)
+static TimestampTz last_report = 0 ;
+TimestampTz now ;
+TabStatusArray * tsa ;
+if ( ( pgStatTabList == ( ( void * ) 0 ) || pgStatTabList -> tsa_used == 0 ) && ! have_function_stats && ! force )
+now = GetCurrentTransactionStopTimestamp ( );
+if ( ! force && ! TimestampDifferenceExceeds ( last_report , now , 500 ) )
+for (tsa = pgStatTabList; tsa != ((void *)0); tsa = tsa -> tsa_next)
+void * _vstart = ( void * ) ( tsa -> tsa_entries ) ;
+int _val = 0 ;
+Size _len = ( tsa -> tsa_used ) * sizeof ( PgStat_TableStatus ) ;
+if ( ( ( ( intptr_t ) _vstart ) & sizeof ( long ) - 1 ) == 0 && ( _len & sizeof ( long ) - 1 ) == 0 && _val == 0 && _len <= 1024 && 1024 != 0 )
+memset ( _vstart , _val , _len );
+while ( 0 )
+tsa -> tsa_used = 0;

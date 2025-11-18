@@ -1,0 +1,99 @@
+static
+CVE_2012_6058_PATCHED_dissect_icmpv6(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+proto_tree * icmp6_tree = NULL , * flag_tree = NULL ;
+guint length = 0 , reported_length ;
+int offset ;
+tvbuff_t * next_tvb ;
+guint8 icmp6_type , icmp6_code ;
+offset = 0;
+if ( tree )
+ti = proto_tree_add_item ( tree , proto_icmpv6 , tvb , offset , - 1 , ENC_NA );
+icmp6_tree = proto_item_add_subtree ( ti , ett_icmpv6 );
+icmp6_type = tvb_get_guint8 ( tvb , offset );
+offset += 1;
+offset += 1;
+if ( 1 )
+length = tvb_length ( tvb );
+offset += 2;
+if ( icmp6_type == ICMP6_ECHO_REQUEST || icmp6_type == ICMP6_ECHO_REPLY )
+offset += 2;
+offset += 2;
+if ( pinfo -> destport == 3544 && icmp6_type == ICMP6_ECHO_REQUEST )
+offset += 4;
+next_tvb = tvb_new_subset_remaining ( tvb , offset );
+offset += call_dissector ( data_handle , next_tvb , pinfo , icmp6_tree );
+if ( 1 )
+switch ( icmp6_type )
+if ( ( icmp6_type == ICMP6_MEMBERSHIP_QUERY ) && ( length >= MLDV2_PACKET_MINLEN ) )
+offset += 2;
+offset += 2;
+offset += 16;
+offset += 4;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+offset += 1;
+offset += 1;
+offset += 2;
+offset += 4;
+offset += 4;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+offset += 4;
+offset += 16;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+ti_flag = proto_tree_add_item ( icmp6_tree , hf_icmpv6_nd_na_flag , tvb , offset , 4 , ENC_BIG_ENDIAN );
+flag_tree = proto_item_add_subtree ( ti_flag , ett_icmpv6_flag_na );
+proto_tree_add_item ( flag_tree , hf_icmpv6_nd_na_flag_r , tvb , offset , 4 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( flag_tree , hf_icmpv6_nd_na_flag_s , tvb , offset , 4 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( flag_tree , hf_icmpv6_nd_na_flag_o , tvb , offset , 4 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( flag_tree , hf_icmpv6_nd_na_flag_rsv , tvb , offset , 4 , ENC_BIG_ENDIAN );
+na_flags = tvb_get_ntohl ( tvb , offset );
+offset += 4;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_nd_na_target_address , tvb , offset , 16 , ENC_NA );
+if ( na_flags & ND_NA_FLAG_R )
+if ( na_flags & ND_NA_FLAG_S )
+if ( na_flags & ND_NA_FLAG_O )
+col_append_fstr ( pinfo -> cinfo , COL_INFO , " %s (%s)" , tvb_ip6_to_str ( tvb , offset ) , flags_strbuf -> str );
+offset += 16;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_reserved , tvb , offset , 4 , ENC_NA );
+offset += 4;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_nd_rd_target_address , tvb , offset , 16 , ENC_NA );
+offset += 16;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_nd_rd_destination_address , tvb , offset , 16 , ENC_NA );
+offset += 16;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+offset = dissect_rrenum ( tvb , offset , pinfo , icmp6_tree , icmp6_type , icmp6_code );
+offset = dissect_nodeinfo ( tvb , offset , pinfo , icmp6_tree , icmp6_type , icmp6_code );
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_reserved , tvb , offset , 4 , ENC_NA );
+offset += 4;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+offset = dissect_mldrv2 ( tvb , offset , pinfo , icmp6_tree );
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_mip6_identifier , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_reserved , tvb , offset , 2 , ENC_NA );
+offset += 2;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_mip6_identifier , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_reserved , tvb , offset , 2 , ENC_NA );
+offset += 2;
+while ( ( int ) length > offset )
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_mip6_home_agent_address , tvb , offset , 16 , ENC_NA );
+offset += 16;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_mip6_identifier , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_reserved , tvb , offset , 2 , ENC_NA );
+offset += 2;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_mip6_identifier , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+ti_flag = proto_tree_add_item ( icmp6_tree , hf_icmpv6_mip6_flag , tvb , offset , 6 , ENC_NA );
+flag_tree = proto_item_add_subtree ( ti_flag , ett_icmpv6_flag_mip6 );
+proto_tree_add_item ( flag_tree , hf_icmpv6_mip6_flag_m , tvb , offset , 2 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( flag_tree , hf_icmpv6_mip6_flag_o , tvb , offset , 2 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( flag_tree , hf_icmpv6_mip6_flag_rsv , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_send_identifier , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+proto_tree_add_item ( icmp6_tree , hf_icmpv6_send_component , tvb , offset , 2 , ENC_BIG_ENDIAN );
+offset += 2;
+offset = dissect_icmpv6_nd_opt ( tvb , offset , pinfo , icmp6_tree );
+return offset ;

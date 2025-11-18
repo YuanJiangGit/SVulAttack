@@ -1,0 +1,64 @@
+static int gz_skip(FILE_T state,gint64 len)
+unsigned int n ;
+while ( len )
+if ( state -> have )
+n = ( ( ( gint64 ) ( state -> have ) ) > len ? ( ( unsigned int ) len ) : state -> have );
+state -> have -= n;
+state -> next += n;
+state -> pos += n;
+len -= n;
+if ( state -> err )
+if ( state -> eof && state -> avail_in == 0 )
+if ( fill_out_buffer ( state ) == - 1 )
+static int fill_out_buffer(FILE_T state)
+if ( state -> compression == 0 )
+if ( gz_head ( state ) == - 1 )
+if ( state -> have )
+if ( state -> compression == 1 )
+if ( state -> compression == 2 )
+zlib_read ( state , state -> out , state -> size << 1 );
+static void zlib_read(FILE_T state,unsigned char *buf,unsigned int count)
+z_streamp strm = & state -> strm ;
+unsigned char * buf2 = buf ;
+unsigned int count2 = count ;
+strm -> avail_out = count;
+strm -> next_out = buf;
+if ( state -> avail_in == 0 && fill_in_buffer ( state ) == - 1 )
+if ( state -> avail_in == 0 )
+strm -> avail_in = state -> avail_in;
+strm -> next_in = state -> next_in;
+ret = inflate ( strm , 5 );
+state -> avail_in = strm -> avail_in;
+state -> next_in = strm -> next_in;
+if ( ret == - 2 )
+if ( ret == 2 )
+if ( ret == - 4 )
+if ( ret == - 3 )
+strm -> adler = crc32 ( strm -> adler , buf2 , count2 - strm -> avail_out );
+if ( state -> fast_seek_cur )
+struct zlib_cur_seek_point * cur = ( struct zlib_cur_seek_point * ) ( state -> fast_seek_cur ) ;
+unsigned int ready = count2 - strm -> avail_out ;
+if ( ready < 32768 )
+unsigned int left = 32768 - cur -> pos ;
+if ( ready >= left )
+memcpy ( ( cur -> window + cur -> pos ) , buf2 , left );
+if ( ready != left )
+memcpy ( ( cur -> window ) , ( buf2 + left ) , ( ready - left ) );
+cur -> pos = ready - left;
+cur -> have += ready;
+memcpy ( ( cur -> window + cur -> pos ) , buf2 , ready );
+cur -> pos += ready;
+cur -> have += ready;
+if ( cur -> have >= 32768 )
+cur -> have = 32768;
+memcpy ( ( cur -> window ) , ( buf2 + ( ready - 32768 ) ) , 32768 );
+cur -> pos = 0;
+cur -> have = 32768;
+if ( cur -> have >= 32768 && ret != 1 && strm -> data_type & 128 && ! ( strm -> data_type & 64 ) )
+zlib_fast_seek_add ( state , cur , strm -> data_type & 7 , state -> raw_pos - ( strm -> avail_in ) , state -> pos + ( count - strm -> avail_out ) );
+buf2 = buf2 + count2 - strm -> avail_out;
+count2 = strm -> avail_out;
+while ( strm -> avail_out && ret != 1 )
+static void zlib_fast_seek_add(FILE_T file,struct zlib_cur_seek_point *point,int bits,gint64 in_pos,gint64 out_pos)
+struct fast_seek_point * item = ( struct fast_seek_point * ) file -> fast_seek -> pdata [ file -> fast_seek -> len - 1 ] ;
+if ( item -> out + 1048576L < out_pos )

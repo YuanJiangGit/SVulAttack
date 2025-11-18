@@ -1,0 +1,8 @@
+void dynamic_buffer_underrun_031()
+int i ;
+char * ptr1 = ( char * ) calloc ( 12 , sizeof ( char ) ) ;
+if ( ptr1 != NULL )
+ptr1 [ 11 ] = '\0';
+for(i=10;i>-1;i--)
+ptr1 [ i ] = 'a';
+free ( ptr1 );

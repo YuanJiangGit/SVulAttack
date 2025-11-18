@@ -1,0 +1,8 @@
+void CWE256_Plaintext_Storage_of_Password__w32_char_03_bad()
+char * data ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+if ( fgets ( data , 100 , pFile ) == NULL )
+data [ 0 ] = '\0';
+data [ 0 ] = '\0';
+if ( LogonUserA ( username , domain , data , LOGON32_LOGON_NETWORK , LOGON32_PROVIDER_DEFAULT , & pHandle ) != 0 )

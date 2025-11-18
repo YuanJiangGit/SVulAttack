@@ -1,0 +1,4 @@
+void CWE134_Uncontrolled_Format_String__wchar_t_environment_vprintf_16_bad()
+while ( 1 )
+wchar_t * environment = GETENV ( ENV_VARIABLE ) ;
+if ( environment != NULL )

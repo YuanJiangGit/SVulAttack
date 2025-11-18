@@ -1,0 +1,5 @@
+static int nv12ToPlanarWrapper(SwsContext *c, const uint8_t
+int srcStride[], int
+int srcSliceH, uint8_t
+int dstStride[])
+copyPlane ( src [ 0 ] , srcStride [ 0 ] , srcSliceY , srcSliceH , c -> srcW , dstParam [ 0 ] , dstStride [ 0 ] );

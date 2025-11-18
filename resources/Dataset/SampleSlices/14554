@@ -1,0 +1,5 @@
+void CWE789_Uncontrolled_Mem_Alloc__malloc_char_fscanf_10_bad()
+size_t data ;
+data = 0;
+if ( globalTrue )
+fscanf ( stdin , "%ud" , & data );

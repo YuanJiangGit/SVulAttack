@@ -1,0 +1,34 @@
+static int CVE_2013_7024_PATCHED_jpeg2000_decode_tile(Jpeg2000DecoderContext *s, Jpeg2000Tile
+AVFrame *picture)
+int compno , reslevelno , bandno ;
+int x , y ;
+for (compno = 0; compno < s->ncomponents; compno++)
+Jpeg2000Component * comp = tile -> comp + compno ;
+Jpeg2000CodingStyle * codsty = tile -> codsty + compno ;
+for (reslevelno = 0; reslevelno < codsty->nreslevels2decode; reslevelno++)
+Jpeg2000ResLevel * rlevel = comp -> reslevel + reslevelno ;
+for (bandno = 0; bandno < rlevel->nbands; bandno++)
+int nb_precincts , precno ;
+Jpeg2000Band * band = rlevel -> band + bandno ;
+if ( band -> coord [ 0 ] [ 0 ] == band -> coord [ 0 ] [ 1 ] || band -> coord [ 1 ] [ 0 ] == band -> coord [ 1 ] [ 1 ] )
+nb_precincts = rlevel -> num_precincts_x * rlevel -> num_precincts_y;
+for (precno = 0; precno < nb_precincts; precno++)
+Jpeg2000Prec * prec = band -> prec + precno ;
+for (cblkno = 0; cblkno < prec->nb_codeblocks_width * prec->nb_codeblocks_height; cblkno++)
+int x , y ;
+Jpeg2000Cblk * cblk = prec -> cblk + cblkno ;
+x = cblk -> coord [ 0 ] [ 0 ];
+if ( s -> cdef [ 0 ] < 0 )
+for (x = 0; x < s->ncomponents; x++)
+s -> cdef [ x ] = x + 1;
+if ( ( s -> ncomponents & 1 ) == 0 )
+s -> cdef [ s -> ncomponents - 1 ] = 0;
+if ( s -> precision <= 8 )
+for (compno = 0; compno < s->ncomponents; compno++)
+Jpeg2000Component * comp = tile -> comp + compno ;
+int32_t * i_datap = comp -> i_data ;
+int val = * i_datap + ( 1 << ( cbps - 1 ) ) ;
+val = av_clip ( val , 0 , ( 1 << cbps ) - 1 );
+* dst = val << ( 8 - cbps );
+i_datap ++;
+dst += pixelsize;

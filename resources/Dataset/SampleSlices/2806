@@ -1,0 +1,11 @@
+void CWE121_Stack_Based_Buffer_Overflow__dest_char_declare_cat_09_bad()
+char * data ;
+char dataBadBuffer [ 50 ] ;
+if ( GLOBAL_CONST_TRUE )
+data = dataBadBuffer;
+data [ 0 ] = '\0';
+strcat ( data , source );
+printLine ( data );
+void printLine (const char * line)
+if ( line != NULL )
+printf ( "%s\n" , line );

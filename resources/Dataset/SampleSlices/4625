@@ -1,0 +1,10 @@
+static void goodG2B()
+twoIntsStruct * data ;
+data = NULL;
+data = ( twoIntsStruct * ) ALLOCA ( 100 * sizeof ( twoIntsStruct ) );
+data [ 0 ] . intOne = 0;
+data [ 0 ] . intTwo = 0;
+CWE401_Memory_Leak__twoIntsStruct_realloc_64b_goodG2BSink ( & data );
+void CWE401_Memory_Leak__twoIntsStruct_realloc_64b_goodG2BSink(void * dataVoidPtr)
+twoIntsStruct * * dataPtr = ( twoIntsStruct * * ) dataVoidPtr ;
+twoIntsStruct * data = ( * dataPtr ) ;

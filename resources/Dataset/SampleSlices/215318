@@ -1,0 +1,23 @@
+static void add_utf8_anychar()
+const unsigned int n = ( sizeof ( utf8_classes ) / sizeof ( utf8_classes [ 0 ] ) ) ;
+unsigned int i ;
+if ( dfa -> utf8_anychar_classes [ 0 ] == 0 )
+for (i = 0; i < n; i++)
+charclass c ;
+dfa -> utf8_anychar_classes [ i ] = ( CSET + charclass_index ( c ) );
+for (i = 1; i < n; i++)
+addtok ( dfa -> utf8_anychar_classes [ i ] );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+work_mbc -> nchars = 0;
+if ( work_mbc -> invert || ! using_utf8 ( ) && work_mbc -> cset != ( - 1 ) || work_mbc -> nchars != 0 || work_mbc -> nch_classes != 0 || work_mbc -> nranges != 0 || work_mbc -> nequivs != 0 || work_mbc -> ncoll_elems != 0 )
+if ( work_mbc -> cset != ( - 1 ) )
+addtok ( CSET + work_mbc -> cset );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+size_t i ;
+for (i = 0; i < work_mbc -> nchars; i++)

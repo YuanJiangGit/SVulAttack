@@ -1,0 +1,9 @@
+static void goodG2B()
+wchar_t * data ;
+wchar_t dataBuffer [ 250 ] = L "PATH="
+data = dataBuffer;
+wcscat ( data , NEW_PATH );
+CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_63b_goodG2BSink ( & data );
+void CWE427_Uncontrolled_Search_Path_Element__wchar_t_file_63b_goodG2BSink(wchar_t * * dataPtr)
+wchar_t * data = * dataPtr ;
+PUTENV ( data );

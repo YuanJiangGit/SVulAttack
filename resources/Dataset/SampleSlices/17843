@@ -1,0 +1,44 @@
+
+CVE_2013_1693_VULN_nsSVGFEMorphologyElement::Filter(nsSVGFilterInstance
+const nsTArray<const Image*>&
+const Image*
+const nsIntRect& rect)
+PRInt32 rx , ry ;
+if ( rx < 0 || ry < 0 )
+if ( rx == 0 && ry == 0 )
+PRUint8 * sourceData = aSources [ 0 ] -> mImage -> Data ( ) ;
+PRUint8 * targetData = aTarget -> mImage -> Data ( ) ;
+PRUint32 stride = aTarget -> mImage -> Stride ( ) ;
+PRUint32 xExt [ 4 ] , yExt [ 4 ] ;
+PRUint8 extrema [ 4 ] ;
+PRUint16 op = mEnumAttributes [ OPERATOR ] . GetAnimValue ( ) ;
+for (PRInt32 y = rect.y; y < rect.YMost(); y++)
+PRUint32 startY = NS_MAX ( 0 , y - ry ) ;
+PRUint32 endY = NS_MIN ( y + ry , instance -> GetSurfaceHeight ( ) - 1 ) ;
+for (PRInt32 x = rect.x; x < rect.XMost(); x++)
+PRUint32 startX = NS_MAX ( 0 , x - rx ) ;
+PRUint32 endX = NS_MIN ( x + rx , instance -> GetSurfaceWidth ( ) - 1 ) ;
+PRUint32 targIndex = y * stride + 4 * x ;
+if ( x == rect . x || xExt [ 0 ] <= startX || xExt [ 1 ] <= startX || xExt [ 2 ] <= startX || xExt [ 3 ] <= startX )
+PRUint32 i ;
+for (i = 0; i < 4; i++)
+extrema [ i ] = sourceData [ targIndex + i ];
+for (PRUint32 y1 = startY; y1 <= endY; y1++)
+for (PRUint32 x1 = startX; x1 <= endX; x1++)
+for (i = 0; i < 4; i++)
+PRUint8 pixel = sourceData [ y1 * stride + 4 * x1 + i ] ;
+if ( ( extrema [ i ] >= pixel && op == nsSVGFEMorphologyElement :: SVG_OPERATOR_ERODE ) || ( extrema [ i ] <= pixel && op == nsSVGFEMorphologyElement :: SVG_OPERATOR_DILATE ) )
+extrema [ i ] = pixel;
+xExt [ i ] = x1;
+yExt [ i ] = y1;
+for (PRUint32 y1 = startY; y1 <= endY; y1++)
+for (PRUint32 i = 0; i < 4; i++)
+PRUint8 pixel = sourceData [ y1 * stride + 4 * endX + i ] ;
+if ( ( extrema [ i ] >= pixel && op == nsSVGFEMorphologyElement :: SVG_OPERATOR_ERODE ) || ( extrema [ i ] <= pixel && op == nsSVGFEMorphologyElement :: SVG_OPERATOR_DILATE ) )
+extrema [ i ] = pixel;
+xExt [ i ] = endX;
+yExt [ i ] = y1;
+targetData [ targIndex ] = extrema [ 0 ];
+targetData [ targIndex + 1 ] = extrema [ 1 ];
+targetData [ targIndex + 2 ] = extrema [ 2 ];
+targetData [ targIndex + 3 ] = extrema [ 3 ];

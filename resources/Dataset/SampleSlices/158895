@@ -1,0 +1,11 @@
+static void goodG2B()
+wchar_t * data ;
+wchar_t dataBuffer [ 100 ] = L ""
+data = dataBuffer;
+wcscat ( data , L "*.*" )
+CWE78_OS_Command_Injection__wchar_t_file_w32_spawnvp_53b_goodG2BSink ( data );
+void CWE78_OS_Command_Injection__wchar_t_file_w32_spawnvp_53b_goodG2BSink(wchar_t * data)
+CWE78_OS_Command_Injection__wchar_t_file_w32_spawnvp_53c_goodG2BSink ( data );
+void CWE78_OS_Command_Injection__wchar_t_file_w32_spawnvp_53c_goodG2BSink(wchar_t * data)
+CWE78_OS_Command_Injection__wchar_t_file_w32_spawnvp_53d_goodG2BSink ( data );
+void CWE78_OS_Command_Injection__wchar_t_file_w32_spawnvp_53d_goodG2BSink(wchar_t * data)

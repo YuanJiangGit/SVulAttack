@@ -1,0 +1,20 @@
+GtkWidget *filter_toolbar_new()
+char * stonesoup_second_buff = 0 ;
+char * stonesoup_finder = "aba" ;
+int stonesoup_check = 0 ;
+char * vilipended_kadai ;
+if ( __sync_bool_compare_and_swap ( & twee_excrementitious , 0 , 1 ) )
+if ( mkdir ( "/opt/stonesoup/workspace/lockDir" , 509U ) == 0 )
+vilipended_kadai = getenv ( "MUSCICOLOUS_EPHAHS" );
+if ( vilipended_kadai != 0 )
+roundhouses_rispetto = & vilipended_kadai;
+pieties_inundation = roundhouses_rispetto + 5;
+bend_superscout = ( ( char * ) ( * ( pieties_inundation - 5 ) ) );
+for (stonesoup_i = 0; ((int )stonesoup_i) <= ((int )(strlen(bend_superscout) - strlen(stonesoup_finder))); ++stonesoup_i)
+for (stonesoup_j = 0; stonesoup_j < strlen(stonesoup_finder); ++stonesoup_j)
+if ( bend_superscout [ stonesoup_i + stonesoup_j ] != stonesoup_finder [ stonesoup_j ] )
+stonesoup_check = 0;
+stonesoup_check = 1;
+if ( stonesoup_check == 1 && stonesoup_j == strlen ( stonesoup_finder ) )
+stonesoup_second_buff = & bend_superscout [ stonesoup_i ];
+tracepoint ( stonesoup_trace , variable_address , "stonesoup_second_buff" , stonesoup_second_buff , "TRIGGER-STATE" );

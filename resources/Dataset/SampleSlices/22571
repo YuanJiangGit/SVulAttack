@@ -1,0 +1,2 @@
+void goodB2GSink(wchar_t * data)
+free ( data );

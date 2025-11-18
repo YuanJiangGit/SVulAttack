@@ -1,0 +1,16 @@
+const char *svn_config_get_server_setting(svn_config_t *cfg,const char *server_group,const char *option_name,const char *default_value)
+const char * retval ;
+svn_config_get ( cfg , & retval , "global" , option_name , default_value );
+void svn_config_get(svn_config_t *cfg,const char **valuep,const char *section,const char *option,const char *default_value)
+if ( cfg )
+cfg_option_t * opt = find_option ( cfg , section , option , & sec ) ;
+static cfg_option_t *find_option(svn_config_t *cfg,const char *section,const char *option,cfg_section_t **sectionp)
+void * sec_ptr ;
+sec_ptr = apr_hash_get ( cfg -> sections , ( cfg -> tmp_key -> data ) , ( cfg -> tmp_key -> len ) );
+if ( sec_ptr != ( ( void * ) 0 ) && option != ( ( void * ) 0 ) )
+if ( ! cfg -> option_names_case_sensitive )
+make_hash_key ( cfg -> tmp_key -> data );
+inline static char *make_hash_key(char *key)
+register char * p ;
+for (p = key; ( *p) != 0; ++p)
+* p = ( ( char ) ( tolower ( ( ( unsigned char ) ( * p ) ) ) ) );

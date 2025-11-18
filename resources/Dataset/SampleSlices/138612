@@ -1,0 +1,12 @@
+void bad()
+wchar_t * data ;
+switch ( 6 )
+static wchar_t dataBuffer [ 100 ] ;
+wmemset ( dataBuffer , L 'A' , 100 - 1
+dataBuffer [ 100 - 1 ] = L '\0'
+data = dataBuffer;
+printWLine ( data );
+void printWLine (const wchar_t * line)
+if ( line != NULL )
+wprintf ( L "%ls\n" , line )
+delete [ ] data

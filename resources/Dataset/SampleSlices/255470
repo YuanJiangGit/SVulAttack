@@ -1,0 +1,40 @@
+
+nestegg_sniff(unsigned char const * buffer, size_t length)
+nestegg_io io ;
+struct sniff_buffer userdata ;
+userdata . buffer = buffer;
+userdata . length = length;
+userdata . offset = 0;
+io . read = ne_buffer_read;
+io . seek = ne_buffer_seek;
+io . tell = ne_buffer_tell;
+io . userdata = & userdata;
+return ne_match_webm ( io , length ) ;
+static
+ne_match_webm(nestegg_io io, int64_t max_offset)
+int r ;
+nestegg * ctx ;
+if ( ! ( io . read && io . seek && io . tell ) )
+ctx = ne_alloc ( sizeof ( * ctx ) );
+static void
+ne_alloc(size_t size)
+return calloc ( 1 , size ) ;
+if ( ! ctx )
+ctx -> io = ne_alloc ( sizeof ( * ctx -> io ) );
+static void
+ne_alloc(size_t size)
+return calloc ( 1 , size ) ;
+if ( ! ctx -> io )
+* ctx -> io = io;
+ctx -> alloc_pool = ne_pool_init ( );
+static struct pool_ctx
+ne_pool_init(void)
+return h_malloc ( sizeof ( struct pool_ctx ) ) ;
+if ( ! ctx -> alloc_pool )
+ctx -> log = ne_null_log_callback;
+r = ne_peek_element ( ctx , & id , NULL );
+static
+ne_peek_element(nestegg * ctx, uint64_t * id, uint64_t * size)
+if ( ctx -> last_valid )
+if ( id )
+* id = ctx -> last_id;

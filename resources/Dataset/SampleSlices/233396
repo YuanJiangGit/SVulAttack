@@ -1,0 +1,15 @@
+static
+CVE_2012_6057_PATCHED_dissect_eigrp_wide_metric_attr (proto_tree *tree, tvbuff_t
+int offset, int limit)
+proto_item * sub_ti ;
+limit *= 2;
+sub_ti = proto_tree_add_text ( tree , tvb , offset , limit , "Attributes" );
+sub_tree = proto_item_add_subtree ( sub_ti , ett_eigrp_tlv_attr );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_opcode , sub_tvb , sub_offset , 1 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_offset , sub_tvb , sub_offset , 1 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_scaled , sub_tvb , sub_offset , 4 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_tag , sub_tvb , sub_offset , 4 , ENC_BIG_ENDIAN );
+dissect_eigrp_metric_comm ( sub_tree , tvb_new_subset ( sub_tvb , sub_offset , 8 , - 1 ) , sub_offset , limit );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_jitter , sub_tvb , sub_offset , 4 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_qenergy , sub_tvb , sub_offset , 4 , ENC_BIG_ENDIAN );
+proto_tree_add_item ( sub_tree , hf_eigrp_attr_energy , sub_tvb , sub_offset , 4 , ENC_BIG_ENDIAN );

@@ -1,0 +1,21 @@
+static void col_set_fmt_time(const frame_data *fd,column_info *cinfo,const gint fmt,const gint col)
+if ( fd -> flags . ref_time )
+switch ( fmt )
+col_set_cls_time ( fd , cinfo , col );
+static void col_set_cls_time(const frame_data *fd,column_info *cinfo,const gint col)
+switch ( timestamp_get_type ( ) )
+col_set_abs_date_time ( fd , cinfo , col );
+static void col_set_abs_date_time(const frame_data *fd,column_info *cinfo,const int col)
+set_abs_date_time ( fd , cinfo -> col_buf [ col ] , ! 0 );
+static void set_abs_date_time(const frame_data *fd,gchar *buf,gboolean local)
+struct tm * tmp ;
+time_t then ;
+if ( fd -> flags . has_ts )
+then = fd -> abs_ts . secs;
+if ( local )
+tmp = localtime ( ( & then ) );
+tmp = gmtime ( ( & then ) );
+tmp = ( ( void * ) 0 );
+if ( tmp != ( ( void * ) 0 ) )
+switch ( timestamp_get_precision ( ) )
+g_snprintf ( buf , 256 , "%04d-%02d-%02d %02d:%02d:%02d.%02ld" , tmp -> tm_year + 1900 , tmp -> tm_mon + 1 , tmp -> tm_mday , tmp -> tm_hour , tmp -> tm_min , tmp -> tm_sec , ( ( long ) fd -> abs_ts . nsecs ) / 10000000 );

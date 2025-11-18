@@ -1,0 +1,7 @@
+void CWE415_Double_Free__malloc_free_char_34_bad()
+char * data ;
+data = ( char * ) malloc ( 100 * sizeof ( char ) );
+free ( data );
+myUnion . unionFirst = data;
+char * data = myUnion . unionSecond ;
+free ( data );

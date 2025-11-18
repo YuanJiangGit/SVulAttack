@@ -1,0 +1,11 @@
+static void good1()
+if ( globalReturnsTrueOrFalse ( ) )
+int globalReturnsTrueOrFalse()
+return ( rand ( ) % 2 ) ;
+intPointer = ( int * ) malloc ( sizeof ( int ) );
+* intPointer = 5;
+* intPointer = 10;
+intPointer = ( int * ) malloc ( sizeof ( int ) );
+* intPointer = 5;
+* intPointer = 10;
+printIntLine ( * intPointer );

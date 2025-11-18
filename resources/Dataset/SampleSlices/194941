@@ -1,0 +1,16 @@
+static void gimp_image_dispose(GObject *object)
+GimpImage * image = ( GimpImage * ) ( g_type_check_instance_cast ( ( ( GTypeInstance * ) object ) , gimp_image_get_type ( ) ) ) ;
+GType gimp_image_get_type()
+static volatile gsize g_define_type_id__volatile = 0 ;
+GType g_define_type_id = g_type_register_static_simple ( gimp_viewable_get_type ( ) , g_intern_static_string ( "GimpImage" ) , ( sizeof ( GimpImageClass ) ) , ( ( GClassInitFunc ) gimp_image_class_intern_init ) , ( sizeof ( GimpImage ) ) , ( ( GInstanceInitFunc ) gimp_image_init ) , ( 0 ) ) ;
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = g_define_type_id ) : 0 );
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = ( ( gsize ) g_define_type_id ) ) : 0 );
+return g_define_type_id__volatile ;
+GimpImagePrivate * private = ( GimpImagePrivate * ) ( g_type_instance_get_private ( ( ( GTypeInstance * ) image ) , gimp_image_get_type ( ) ) ) ;
+GType gimp_image_get_type()
+static volatile gsize g_define_type_id__volatile = 0 ;
+GType g_define_type_id = g_type_register_static_simple ( gimp_viewable_get_type ( ) , g_intern_static_string ( "GimpImage" ) , ( sizeof ( GimpImageClass ) ) , ( ( GClassInitFunc ) gimp_image_class_intern_init ) , ( sizeof ( GimpImage ) ) , ( ( GInstanceInitFunc ) gimp_image_init ) , ( 0 ) ) ;
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = g_define_type_id ) : 0 );
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = ( ( gsize ) g_define_type_id ) ) : 0 );
+return g_define_type_id__volatile ;
+gimp_container_remove_handler ( private -> channels -> container , private -> channel_name_changed_handler );

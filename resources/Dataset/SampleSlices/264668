@@ -1,0 +1,67 @@
+
+SMBNTencrypt(unsigned char *passwd, unsigned char *c8, unsigned char
+const struct nls_table *codepage)
+int rc ;
+unsigned char p16 [ 16 ] , p21 [ 21 ] ;
+memset ( p16 , '\0' , 16 );
+memset ( p21 , '\0' , 21 );
+rc = E_md4hash ( passwd , p16 , codepage );
+
+E_md4hash(const unsigned char *passwd, unsigned char
+const struct nls_table *codepage)
+int rc ;
+int len ;
+__le16 wpwd [ 129 ] ;
+if ( passwd )
+len = cifs_strtoUTF16 ( wpwd , passwd , 128 , codepage );
+len = 0;
+* wpwd = 0;
+rc = mdfour ( p16 , ( unsigned char * ) wpwd , len * sizeof ( __le16 ) );
+
+mdfour(unsigned char *md4_hash, unsigned char *link_str, int link_len)
+int rc ;
+unsigned int size ;
+struct crypto_shash * md4 ;
+struct sdesc * sdescmd4 ;
+md4 = crypto_alloc_shash ( "md4" , 0 , 0 );
+if ( IS_ERR ( md4 ) )
+rc = PTR_ERR ( md4 );
+return rc ;
+size = sizeof ( struct shash_desc ) + crypto_shash_descsize ( md4 );
+sdescmd4 = kmalloc ( size , GFP_KERNEL );
+if ( ! sdescmd4 )
+rc = - ENOMEM;
+sdescmd4 -> shash . tfm = md4;
+sdescmd4 -> shash . flags = 0x0;
+rc = crypto_shash_init ( & sdescmd4 -> shash );
+if ( rc )
+rc = crypto_shash_update ( & sdescmd4 -> shash , link_str , link_len );
+if ( rc )
+rc = crypto_shash_final ( & sdescmd4 -> shash , md4_hash );
+return rc ;
+return rc ;
+if ( rc )
+memcpy ( p21 , p16 , 16 );
+rc = E_P24 ( p21 , c8 , p24 );
+static
+E_P24(unsigned char *p21, const unsigned char *c8, unsigned char *p24)
+int rc ;
+rc = smbhash ( p24 , c8 , p21 );
+static
+smbhash(unsigned char *out, const unsigned char *in, unsigned char *key)
+int rc ;
+struct crypto_skcipher * tfm_des ;
+struct skcipher_request * req ;
+tfm_des = crypto_alloc_skcipher ( "ecb(des)" , 0 , CRYPTO_ALG_ASYNC );
+if ( IS_ERR ( tfm_des ) )
+rc = PTR_ERR ( tfm_des );
+req = skcipher_request_alloc ( tfm_des , GFP_KERNEL );
+if ( ! req )
+rc = - ENOMEM;
+rc = crypto_skcipher_encrypt ( req );
+return rc ;
+if ( rc )
+return rc ;
+if ( rc )
+return rc ;
+return rc ;

@@ -1,0 +1,7 @@
+void bad()
+long * data ;
+data = NULL;
+switch ( 6 )
+data = new long [ 100 ];
+switch ( 7 )
+free ( data );

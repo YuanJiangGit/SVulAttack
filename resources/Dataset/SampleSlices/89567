@@ -1,0 +1,53 @@
+inline static void rb_insert_case3(emem_tree_t *se_tree,emem_tree_node_t *node)
+emem_tree_node_t * uncle ;
+uncle = emem_tree_uncle ( node );
+inline static emem_tree_node_t *emem_tree_uncle(emem_tree_node_t *node)
+emem_tree_node_t * parent ;
+emem_tree_node_t * grandparent ;
+parent = emem_tree_parent ( node );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;
+if ( ! parent )
+return ( ( void * ) 0 ) ;
+grandparent = emem_tree_parent ( parent );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;
+if ( ! grandparent )
+return ( ( void * ) 0 ) ;
+if ( parent == grandparent -> left )
+return grandparent -> right ;
+return grandparent -> left ;
+if ( uncle && uncle -> u . rb_color == 0 )
+rb_insert_case4 ( se_tree , node );
+inline static void rb_insert_case4(emem_tree_t *se_tree,emem_tree_node_t *node)
+emem_tree_node_t * grandparent ;
+emem_tree_node_t * parent ;
+parent = emem_tree_parent ( node );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;
+grandparent = emem_tree_parent ( parent );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;
+if ( ! grandparent )
+if ( node == parent -> right && parent == grandparent -> left )
+node = node -> left;
+if ( node == parent -> left && parent == grandparent -> right )
+node = node -> right;
+rb_insert_case5 ( se_tree , node );
+inline static void rb_insert_case5(emem_tree_t *se_tree,emem_tree_node_t *node)
+emem_tree_node_t * grandparent ;
+emem_tree_node_t * parent ;
+parent = emem_tree_parent ( node );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;
+grandparent = emem_tree_parent ( parent );
+inline static emem_tree_node_t *emem_tree_parent(emem_tree_node_t *node)
+return node -> parent ;
+parent -> u . rb_color = 1;
+grandparent -> u . rb_color = 0;
+if ( node == parent -> left && parent == grandparent -> left )
+rotate_right ( se_tree , grandparent );
+inline static void rotate_right(emem_tree_t *se_tree,emem_tree_node_t *node)
+if ( node -> parent )
+if ( node -> parent -> left == node )
+node -> parent -> left = node -> left;

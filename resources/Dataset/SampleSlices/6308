@@ -1,0 +1,7 @@
+void CWE401_Memory_Leak__int64_t_calloc_09_bad()
+int64_t * data ;
+if ( GLOBAL_CONST_TRUE )
+data = ( int64_t * ) calloc ( 100 , sizeof ( int64_t ) );
+printLongLongLine ( data [ 0 ] );
+void printLongLongLine (int64_t longLongIntNumber)
+printf ( "%lld\n" , longLongIntNumber );

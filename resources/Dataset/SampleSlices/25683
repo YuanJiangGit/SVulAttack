@@ -1,0 +1,7 @@
+void CWE126_Buffer_Overread__char_declare_memcpy_81_bad::action(char * data) const
+char dest [ 100 ] ;
+memset ( dest , 'C' , 100 - 1 );
+dest [ 100 - 1 ] = '\0';
+memcpy ( dest , data , strlen ( dest ) * sizeof ( char ) );
+dest [ 100 - 1 ] = '\0';
+printLine ( dest );

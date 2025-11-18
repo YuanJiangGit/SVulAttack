@@ -1,0 +1,3 @@
+CmdBufferImageTransportFactory::~CmdBufferImageTransportFactory() {
+}
+

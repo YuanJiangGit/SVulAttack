@@ -1,0 +1,1 @@
+void DoNothingWithBool(bool b) {}

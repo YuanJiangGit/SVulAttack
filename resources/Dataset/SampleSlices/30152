@@ -1,0 +1,6 @@
+void CWE426_Untrusted_Search_Path__char_system_10_bad()
+char * data ;
+char dataBuffer [ 100 ] = "" ;
+data = dataBuffer;
+strcpy ( data , BAD_OS_COMMAND );
+if ( SYSTEM ( data ) <= 0 )

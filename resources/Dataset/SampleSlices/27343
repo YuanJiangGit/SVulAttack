@@ -1,0 +1,28 @@
+void redeposition_rowdyism(int lectureproof_phoenician,peonisms_sweetbriar tli_dicynodon)
+yodler_irritate ( lectureproof_phoenician , tli_dicynodon );
+void yodler_irritate(int electricans_nonlitigation,peonisms_sweetbriar hornersville_kibitzed)
+electricans_nonlitigation --;
+if ( electricans_nonlitigation > 0 )
+redeposition_rowdyism ( electricans_nonlitigation , hornersville_kibitzed );
+void redeposition_rowdyism(int lectureproof_phoenician,peonisms_sweetbriar tli_dicynodon)
+yodler_irritate ( lectureproof_phoenician , tli_dicynodon );
+void yodler_irritate(int electricans_nonlitigation,peonisms_sweetbriar hornersville_kibitzed)
+char query [ 1000 ] ;
+electricans_nonlitigation --;
+if ( electricans_nonlitigation > 0 )
+chirologist_assoria = ( ( char * ) hornersville_kibitzed );
+dbhost = getenv ( "DBPGHOST" );
+dbuser = getenv ( "DBPGUSER" );
+dbpassword = getenv ( "DBPGPASSWORD" );
+dbport = getenv ( "DBPGPORT" );
+dbdatabase = getenv ( "SS_DBPGDATABASE" );
+if ( dbhost != 0 && dbport != 0 && dbuser != 0 && dbpassword != 0 && dbdatabase != 0 )
+stonesoup_random_int = ( rand ( ) % 1000 ) + 100;
+snprintf ( query , 1000 , "INSERT INTO shippers (shipperid, companyname) VALUES ('%d', '%s');" , stonesoup_random_int , chirologist_assoria );
+tracepoint ( stonesoup_trace , variable_buffer , "query" , query , "CROSSOVER-STATE" );
+res = PQexec ( conn , query );
+if ( PQresultStatus ( res ) != PGRES_COMMAND_OK )
+PQclear ( res );
+stonesoup_result = PQcmdTuples ( res );
+stonesoup_printf ( "Query OK, %s rows affected\n" , stonesoup_result );
+PQclear ( res );

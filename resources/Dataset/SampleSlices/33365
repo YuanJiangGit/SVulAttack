@@ -1,0 +1,7 @@
+void CWE773_Missing_Reference_to_Active_File_Descriptor_or_Handle__fopen_05_bad()
+FILE * data ;
+data = NULL;
+data = fopen ( "BadSource_fopen.txt" , "w+" );
+if ( staticTrue )
+data = fopen ( "BadSink_fopen.txt" , "w+" );
+if ( data != NULL )

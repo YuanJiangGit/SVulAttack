@@ -1,0 +1,3 @@
+static
+pvscsi_write_config(PCIDevice *pci, uint32_t addr, uint32_t val, int len)
+msi_write_config ( pci , addr , val , len );

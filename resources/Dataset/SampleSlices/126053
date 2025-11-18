@@ -1,0 +1,6 @@
+void bad()
+long * data ;
+vector < long * > dataVector ;
+data = NULL;
+data = ( long * ) malloc ( 1 * sizeof ( long ) );
+dataVector . insert ( dataVector . end ( ) , 1 , data );

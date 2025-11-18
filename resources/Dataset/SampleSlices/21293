@@ -1,0 +1,7 @@
+void bad()
+int64_t * data ;
+data = NULL;
+if ( GLOBAL_CONST_TRUE )
+data = new int64_t
+if ( GLOBAL_CONST_TRUE )
+free ( data );

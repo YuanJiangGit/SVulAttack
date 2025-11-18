@@ -1,0 +1,7 @@
+
+
+uint32_t sample_index, nsTArray<uint16_t>&
+nsTArray<uint32_t>& cipher_sizes, uint8_t iv[])
+if ( sample_index >= mCencInfoCount )
+auto & info = mCencInfo [ sample_index ]
+memcpy ( iv , info . mIV , IV_BYTES );

@@ -1,0 +1,3 @@
+void CWE134_Uncontrolled_Format_String__char_environment_snprintf_51b_goodB2GSink(char * data)
+char dest [ 100 ] = "" ;
+printLine ( dest );

@@ -1,0 +1,24 @@
+static void regexp()
+while ( tok == OR )
+tok = lex ( );
+addtok ( OR );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+_Bool need_or = 0 ;
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+size_t i ;
+for (i = 0; i < work_mbc -> nchars; i++)
+need_or = 1;
+work_mbc -> nchars = 0;
+if ( work_mbc -> invert || ! using_utf8 ( ) && work_mbc -> cset != ( - 1 ) || work_mbc -> nchars != 0 || work_mbc -> nch_classes != 0 || work_mbc -> nranges != 0 || work_mbc -> nequivs != 0 || work_mbc -> ncoll_elems != 0 )
+if ( need_or )
+addtok ( OR );
+static void addtok(token t)
+if ( __ctype_get_mb_cur_max ( ) > 1 && t == MBCSET )
+struct mb_char_classes * work_mbc = & dfa -> mbcsets [ dfa -> nmbcsets - 1 ] ;
+if ( ! work_mbc -> invert )
+work_mbc -> nchars = 0;
+if ( work_mbc -> invert || ! using_utf8 ( ) && work_mbc -> cset != ( - 1 ) || work_mbc -> nchars != 0 || work_mbc -> nch_classes != 0 || work_mbc -> nranges != 0 || work_mbc -> nequivs != 0 || work_mbc -> ncoll_elems != 0 )
+if ( work_mbc -> cset != ( - 1 ) )
+addtok ( CSET + work_mbc -> cset );

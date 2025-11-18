@@ -1,0 +1,3 @@
+void CWE415_Double_Free__malloc_free_int64_t_68b_badSink()
+int64_t * data = CWE415_Double_Free__malloc_free_int64_t_68_badData ;
+free ( data );

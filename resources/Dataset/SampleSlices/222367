@@ -1,0 +1,57 @@
+static
+CVE_2013_1572_PATCHED_dissect_oampdu_event_notification(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+guint8 raw_octet ;
+guint8 event_type ;
+guint32 offset ;
+guint16 bytes ;
+proto_tree * event_tree ;
+proto_item * event_item ;
+offset = OAMPDU_HEADER_SIZE;
+offset += OAMPDU_EVENT_SEQUENCE_SZ;
+while ( 1 )
+bytes = tvb_length_remaining ( tvb , offset );
+if ( bytes < 1 )
+event_type = tvb_get_guint8 ( tvb , offset );
+if ( event_type == 0 )
+event_item = proto_tree_add_uint ( tree , hf_oampdu_event_type , tvb , offset , 1 , event_type );
+offset += OAMPDU_EVENT_TYPE_SZ;
+switch ( event_type )
+raw_octet = tvb_get_guint8 ( tvb , offset );
+offset += OAMPDU_EVENT_LENGTH_SZ;
+offset += OAMPDU_EVENT_TIMESTAMP_SZ;
+offset += OAMPDU_ESPE_WINDOW_SZ;
+offset += OAMPDU_ESPE_THRESHOLD_SZ;
+offset += OAMPDU_ESPE_ERRORS_SZ;
+offset += OAMPDU_ESPE_ERR_TOTAL_SZ;
+offset += OAMPDU_ESPE_TOTAL_SZ;
+raw_octet = tvb_get_guint8 ( tvb , offset );
+offset += OAMPDU_EVENT_LENGTH_SZ;
+offset += OAMPDU_EVENT_TIMESTAMP_SZ;
+offset += OAMPDU_EFE_WINDOW_SZ;
+offset += OAMPDU_EFE_THRESHOLD_SZ;
+offset += OAMPDU_EFE_ERRORS_SZ;
+offset += OAMPDU_EFE_ERR_TOTAL_SZ;
+offset += OAMPDU_EFE_TOTAL_SZ;
+raw_octet = tvb_get_guint8 ( tvb , offset );
+offset += OAMPDU_EVENT_LENGTH_SZ;
+offset += OAMPDU_EVENT_TIMESTAMP_SZ;
+offset += OAMPDU_EFPE_WINDOW_SZ;
+offset += OAMPDU_EFPE_THRESHOLD_SZ;
+offset += OAMPDU_EFPE_ERRORS_SZ;
+offset += OAMPDU_EFPE_ERR_TOTAL_SZ;
+offset += OAMPDU_EFPE_TOTAL_SZ;
+raw_octet = tvb_get_guint8 ( tvb , offset );
+offset += OAMPDU_EVENT_LENGTH_SZ;
+offset += OAMPDU_EVENT_TIMESTAMP_SZ;
+offset += OAMPDU_EFSSE_WINDOW_SZ;
+offset += OAMPDU_EFSSE_THRESHOLD_SZ;
+offset += OAMPDU_EFSSE_ERRORS_SZ;
+offset += OAMPDU_EFSSE_ERR_TOTAL_SZ;
+offset += OAMPDU_EFSSE_TOTAL_SZ;
+event_tree = proto_item_add_subtree ( event_item , ett_oampdu_event_ose );
+raw_octet = tvb_get_guint8 ( tvb , offset );
+event_item = proto_tree_add_uint ( event_tree , hf_oampdu_event_length , tvb , offset , 1 , raw_octet );
+offset += OAMPDU_EVENT_LENGTH_SZ;
+if ( raw_octet < 2 )
+expert_add_info_format ( pinfo , event_item , PI_MALFORMED , PI_ERROR , "Event length should be at least 2" );
+offset += ( raw_octet - 2 );

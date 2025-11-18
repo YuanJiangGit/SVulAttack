@@ -1,0 +1,33 @@
+static int CVE_2013_5641_PATCHED_handle_incoming(struct sip_pvt *p, struct sip_request *req, struct ast_sockaddr *addr, int *recount, int *nounlock)
+const char * cmd ;
+const char * cseq ;
+const char * via ;
+uint32_t seqno ;
+int len ;
+int error = 0 ;
+cseq = sip_get_header ( req , "Cseq" );
+cmd = REQ_OFFSET_TO_STR ( req , header [ 0 ] );
+via = __get_header ( req , "Via" , & via_pos );
+if ( ast_strlen_zero ( cmd ) || ast_strlen_zero ( cseq ) || ast_strlen_zero ( via ) )
+error = 1;
+if ( ! error && sscanf ( cseq , "%30u%n" , & seqno , & len ) != 1 )
+error = 1;
+if ( error )
+cmd = REQ_OFFSET_TO_STR ( req , rlpart1 );
+if ( req -> method == SIP_RESPONSE )
+p -> method = req -> method;
+if ( p -> icseq && ( p -> icseq > seqno ) )
+if ( p -> pendinginvite && seqno == p -> pendinginvite && ( req -> method == SIP_ACK || req -> method == SIP_CANCEL ) )
+if ( p -> icseq && p -> icseq == seqno && req -> method != SIP_ACK && ( p -> method != SIP_CANCEL || p -> alreadygone ) )
+req -> ignore = 1;
+if ( ! p -> pendinginvite && ( req -> method == SIP_CANCEL ) )
+if ( seqno >= p -> icseq )
+p -> icseq = seqno;
+if ( ast_strlen_zero ( p -> theirtag ) )
+char tag [ 128 ] ;
+snprintf ( p -> lastmsg , sizeof ( p -> lastmsg ) , "Rx: %s" , cmd );
+if ( sip_cfg . pedanticsipchecking )
+if ( ! p -> initreq . headers && req -> has_to_tag )
+if ( ! req -> ignore && req -> method == SIP_INVITE )
+char totag [ 128 ] ;
+ast_string_field_set ( p , tag , totag );

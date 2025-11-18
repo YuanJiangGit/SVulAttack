@@ -1,0 +1,4 @@
+GtkWidget *filter_toolbar_new()
+GtkToolItem * filter_bt ;
+filter_bt = gtk_tool_button_new_from_stock ( "Wireshark_Stock_DisplayFilter_Entry" );
+gtk_widget_show ( ( ( GtkWidget * ) ( g_type_check_instance_cast ( ( ( GTypeInstance * ) filter_bt ) , gtk_widget_get_type ( ) ) ) ) );

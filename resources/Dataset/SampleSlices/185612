@@ -1,0 +1,63 @@
+void dfacomp(const char *s,size_t len,struct dfa *d,int searchflag)
+dfaanalyze ( d , searchflag );
+void dfaanalyze(struct dfa *d,int searchflag)
+int * nullable ;
+size_t * nfirstpos ;
+position * firstpos ;
+size_t * nlastpos ;
+position_set tmp ;
+position * o_firstpos ;
+size_t i ;
+d -> searchflag = searchflag;
+nullable = ( ( sizeof ( ( * nullable ) ) == 1 ? xmalloc ( d -> depth ) : xnmalloc ( d -> depth , sizeof ( ( * nullable ) ) ) ) );
+while ( 0 )
+nfirstpos = ( ( sizeof ( ( * nfirstpos ) ) == 1 ? xmalloc ( d -> depth ) : xnmalloc ( d -> depth , sizeof ( ( * nfirstpos ) ) ) ) );
+while ( 0 )
+firstpos = ( ( sizeof ( ( * firstpos ) ) == 1 ? xmalloc ( d -> nleaves ) : xnmalloc ( d -> nleaves , sizeof ( ( * firstpos ) ) ) ) );
+while ( 0 )
+o_firstpos = firstpos , firstpos += d -> nleaves;
+nlastpos = ( ( sizeof ( ( * nlastpos ) ) == 1 ? xmalloc ( d -> depth ) : xnmalloc ( d -> depth , sizeof ( ( * nlastpos ) ) ) ) );
+while ( 0 )
+d -> follows = ( ( sizeof ( ( * d -> follows ) ) == 1 ? xzalloc ( d -> tindex ) : xcalloc ( d -> tindex , sizeof ( ( * d -> follows ) ) ) ) );
+while ( 0 )
+for (i = 0; i < d -> tindex; ++i)
+switch ( d -> tokens [ i ] )
+* ( nullable ++ ) = 1;
+* ( nfirstpos ++ ) = * ( nlastpos ++ ) = 0;
+tmp . nelem = nfirstpos [ - 1 ];
+tmp . elems = firstpos;
+merge ( ( & tmp ) , ( & d -> follows [ pos [ j ] . index ] ) , & merged );
+if ( d -> tokens [ i ] != PLUS )
+nullable [ - 1 ] = 1;
+tmp . nelem = nfirstpos [ - 1 ];
+tmp . elems = firstpos;
+merge ( ( & tmp ) , ( & d -> follows [ pos [ j ] . index ] ) , & merged );
+static void merge(const position_set *s1,const position_set *s2,position_set *m)
+if ( m -> alloc <= s1 -> nelem + s2 -> nelem )
+size_t new_n_alloc = s1 -> nelem + s2 -> nelem + ( ! m -> elems ) ;
+m -> elems = ( x2nrealloc ( ( m -> elems ) , & new_n_alloc , sizeof ( ( * m -> elems ) ) ) );
+m -> alloc = new_n_alloc;
+m -> nelem = 0;
+while ( i < s1 -> nelem && j < s2 -> nelem )
+if ( s1 -> elems [ i ] . index > s2 -> elems [ j ] . index )
+m -> elems [ m -> nelem ++ ] = s1 -> elems [ i ++ ];
+if ( s1 -> elems [ i ] . index < s2 -> elems [ j ] . index )
+m -> elems [ m -> nelem ++ ] = s2 -> elems [ j ++ ];
+m -> elems [ m -> nelem ] = s1 -> elems [ i ++ ];
+m -> elems [ m -> nelem ++ ] . constraint |= s2 -> elems [ j ++ ] . constraint;
+while ( i < s1 -> nelem )
+m -> elems [ m -> nelem ++ ] = s1 -> elems [ i ++ ];
+while ( j < s2 -> nelem )
+m -> elems [ m -> nelem ++ ] = s2 -> elems [ j ++ ];
+if ( nullable [ - 2 ] )
+nfirstpos [ - 2 ] += nfirstpos [ - 1 ];
+firstpos += nfirstpos [ - 1 ];
+if ( nullable [ - 1 ] )
+nlastpos [ - 2 ] += nlastpos [ - 1 ];
+nlastpos [ - 2 ] = nlastpos [ - 1 ];
+nullable [ - 2 ] = nullable [ - 1 ] && nullable [ - 2 ];
+nfirstpos [ - 2 ] += nfirstpos [ - 1 ];
+nlastpos [ - 2 ] += nlastpos [ - 1 ];
+nullable [ - 2 ] = nullable [ - 1 ] || nullable [ - 2 ];
+* ( nullable ++ ) = d -> tokens [ i ] == BACKREF;
+* ( nfirstpos ++ ) = * ( nlastpos ++ ) = 1;

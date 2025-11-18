@@ -1,0 +1,4 @@
+void bad()
+wchar_t * data ;
+data = new wchar_t [ 10 ];
+badData = data;

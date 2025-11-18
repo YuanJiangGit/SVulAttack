@@ -1,0 +1,72 @@
+char *dfaexec(struct dfa *d,const char *begin,char *end,int allow_nl,size_t *count,int *backref)
+state_num s ;
+state_num s1 ;
+const unsigned char * p ;
+state_num * * trans ;
+state_num * t ;
+unsigned char eol = eolbyte ;
+s = s1 = 0;
+p = ( ( const unsigned char * ) begin );
+trans = d -> trans;
+* end = eol;
+if ( d -> mb_cur_max > 1 )
+while ( ( t = trans [ s ] ) != ( ( void * ) 0 ) )
+if ( p > buf_end )
+s1 = s;
+if ( s == 0 )
+if ( ( ( char * ) p ) >= end )
+if ( d -> states [ s ] . mbps . nelem == 0 )
+s = t [ * ( p ++ ) ];
+if ( backref )
+s = transit_state ( d , s , & p );
+trans = d -> trans;
+while ( ( t = trans [ s ] ) != ( ( void * ) 0 ) )
+s1 = t [ * ( p ++ ) ];
+if ( ( t = trans [ s1 ] ) == ( ( void * ) 0 ) )
+state_num tmp = s ;
+s = s1;
+s1 = tmp;
+s = t [ * ( p ++ ) ];
+if ( s >= 0 && ( ( char * ) p ) <= end && d -> fails [ s ] )
+if ( d -> success [ s ] & sbit [ * p ] )
+s1 = s;
+if ( d -> mb_cur_max > 1 )
+s = transit_state ( d , s , & p );
+trans = d -> trans;
+s = d -> fails [ s ] [ * ( p ++ ) ];
+if ( ( ( char * ) p ) > end )
+if ( s >= 0 )
+trans = d -> trans;
+if ( p [ - 1 ] == eol && allow_nl )
+s = d -> newlines [ s1 ];
+s = 0;
+static state_num transit_state(struct dfa *d,state_num s,const unsigned char **pp)
+size_t nelem = d -> states [ s ] . mbps . nelem ;
+if ( nelem > 0 )
+match_lens = check_matching_with_multibyte_ops ( d , s , ( * pp - buf_begin ) );
+static int *check_matching_with_multibyte_ops(struct dfa *d,state_num s,size_t idx)
+size_t i ;
+int * rarray ;
+rarray = ( ( sizeof ( ( * rarray ) ) == 1 ? xmalloc ( d -> states [ s ] . mbps . nelem ) : xnmalloc ( d -> states [ s ] . mbps . nelem , sizeof ( ( * rarray ) ) ) ) );
+while ( 0 )
+for (i = 0; i < d -> states[s] . mbps . nelem; ++i)
+position pos = d -> states [ s ] . mbps . elems [ i ] ;
+switch ( d -> tokens [ pos . index ] )
+rarray [ i ] = match_anychar ( d , s , pos , idx );
+rarray [ i ] = match_mb_charset ( d , s , pos , idx );
+static int match_mb_charset(struct dfa *d,state_num s,position pos,size_t idx)
+int match ;
+struct mb_char_classes * work_mbc ;
+int context ;
+wchar_t wc ;
+wc = inputwcs [ idx ];
+if ( wc == ( ( wchar_t ) eolbyte ) )
+if ( ! ( syntax_bits & ( ( unsigned long ) 1 ) << 1 << 1 << 1 << 1 << 1 << 1 ) )
+if ( wc == ( ( wchar_t ) '\0' ) )
+if ( syntax_bits & ( ( unsigned long ) 1 ) << 1 << 1 << 1 << 1 << 1 << 1 << 1 )
+context = wchar_context ( wc );
+if ( ! ( ( ( ( context & 1 ? pos . constraint & 0xf : 0 ) ) | ( ( context & 2 ? pos . constraint >> 4 & 0xf : 0 ) ) | ( ( context & 4 ? pos . constraint >> 8 & 0xf : 0 ) ) ) & d -> states [ s ] . context ) )
+work_mbc = & d -> mbcsets [ d -> multibyte_prop [ pos . index ] >> 2 ];
+match = ! work_mbc -> invert;
+match = ! match;
+return match ? match_len : 0 ;

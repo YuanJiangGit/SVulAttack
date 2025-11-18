@@ -1,0 +1,26 @@
+static
+CVE_2015_0562_VULN_dissect_dec_rt(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
+guint8 padding_length ;
+guint8 msg_flags ;
+gint offset ;
+proto_tree * rt_tree ;
+proto_item * ti ;
+offset = 0;
+offset += 2;
+msg_flags = tvb_get_guint8 ( tvb , offset );
+ti = proto_tree_add_item ( tree , proto_dec_rt , tvb , 0 , - 1 , ENC_NA );
+rt_tree = proto_item_add_subtree ( ti , ett_dec_rt );
+if ( msg_flags & 0x80 )
+padding_length = msg_flags & 0x7f;
+offset += padding_length;
+msg_flags = tvb_get_guint8 ( tvb , offset );
+ti = proto_tree_add_uint ( rt_tree , hf_dec_routing_flags , tvb , offset , 1 , msg_flags );
+if ( msg_flags & RT_FLAGS_CTRL_MSG )
+guint8 ctl_msg_type ;
+proto_tree * ctl_msg_tree ;
+ctl_msg_type = ( msg_flags >> 1 ) & 0x7;
+ti = proto_tree_add_uint ( rt_tree , hf_dec_ctl_msg_hdr , tvb , offset , 1 , ctl_msg_type );
+ctl_msg_tree = proto_item_add_subtree ( ti , ett_dec_rt_ctl_msg );
+offset ++;
+switch ( ctl_msg_type )
+do_hello_test_msg ( tvb , pinfo , ctl_msg_tree , offset );

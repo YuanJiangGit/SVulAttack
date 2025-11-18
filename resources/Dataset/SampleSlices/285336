@@ -1,0 +1,17 @@
+static
+pvscsi_reset(DeviceState *dev)
+PCIDevice * d = PCI_DEVICE ( dev ) ;
+PVSCSIState * s = PVSCSI ( d ) ;
+pvscsi_reset_adapter ( s );
+static
+pvscsi_reset_adapter(PVSCSIState *s)
+s -> resetting ++;
+s -> resetting --;
+pvscsi_reset_state ( s );
+static
+pvscsi_reset_state(PVSCSIState *s)
+s -> curr_cmd = PVSCSI_CMD_FIRST;
+s -> curr_cmd_data_cntr = 0;
+s -> reg_command_status = PVSCSI_COMMAND_PROCESSING_SUCCEEDED;
+s -> reg_interrupt_status = 0;
+pvscsi_ring_cleanup ( & s -> rings );

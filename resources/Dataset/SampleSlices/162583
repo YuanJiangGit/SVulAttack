@@ -1,0 +1,12 @@
+void CWE127_Buffer_Underread__wchar_t_declare_cpy_05_bad()
+wchar_t * data ;
+wchar_t dataBuffer [ 100 ] ;
+wmemset ( dataBuffer , L 'A' , 100 - 1
+dataBuffer [ 100 - 1 ] = L '\0'
+if ( staticTrue )
+data = dataBuffer - 8;
+wchar_t dest [ 100 * 2 ] ;
+wmemset ( dest , L 'C' , 100 * 2 - 1
+dest [ 100 * 2 - 1 ] = L '\0'
+wcscpy ( dest , data );
+printWLine ( dest );

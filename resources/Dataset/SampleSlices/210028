@@ -1,0 +1,21 @@
+static svn_error_t *close_handler_lazyopen(void *baton)
+lazyopen_baton_t * b = baton ;
+if ( b -> open_on_close )
+svn_error_t * svn_err__temp = lazyopen_if_unopened ( b ) ;
+static svn_error_t *lazyopen_if_unopened(lazyopen_baton_t *b)
+if ( b -> real_stream == ( ( void * ) 0 ) )
+apr_pool_t * scratch_pool = svn_pool_create_ex ( b -> pool , ( ( void * ) 0 ) ) ;
+svn_error_t * svn_err__temp = ( b -> open_func ) ( & stream , b -> open_baton , b -> pool , scratch_pool ) ;
+if ( svn_err__temp )
+return svn_err__temp ;
+while ( 0 )
+return 0 ;
+if ( svn_err__temp )
+while ( 0 )
+if ( b -> real_stream )
+svn_error_t * svn_err__temp = svn_stream_close ( b -> real_stream ) ;
+if ( svn_err__temp )
+while ( 0 )
+svn_error_t *svn_stream_close(svn_stream_t *stream)
+if ( stream -> close_fn == ( ( void * ) 0 ) )
+return ( stream -> close_fn ) ( stream -> baton ) ;

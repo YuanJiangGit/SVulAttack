@@ -1,0 +1,2 @@
+struct dfamust *dfamusts(const struct dfa *d)
+return d -> musts ;

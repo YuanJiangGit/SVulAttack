@@ -1,0 +1,69 @@
+static
+CVE_2013_4921_PATCHED_dissect_radiotap(tvbuff_t * tvb, packet_info * pinfo, proto_tree * tree)
+proto_tree * radiotap_tree = NULL ;
+int offset ;
+guint8 version ;
+guint length ;
+void * data ;
+struct ieee80211_radiotap_iterator iter ;
+static struct radiotap_override overrides [ ]
+IEEE80211_RADIOTAP_XCHANNEL , 4 , 8 ,
+guint n_overrides = array_length ( overrides ) ;
+if ( ! radiotap_bit14_fcs )
+n_overrides --;
+version = tvb_get_guint8 ( tvb , 0 );
+length = tvb_get_letohs ( tvb , 2 );
+if ( tree )
+ti = proto_tree_add_protocol_format ( tree , proto_radiotap , tvb , 0 , length , "Radiotap Header v%u, Length %u" , version , length );
+radiotap_tree = proto_item_add_subtree ( ti , ett_radiotap );
+data = ep_tvb_memdup ( tvb , 0 , length );
+if ( ! data )
+if ( ieee80211_radiotap_iterator_init ( & iter , ( struct ieee80211_radiotap_header * ) data , length , NULL ) )
+iter . overrides = overrides;
+iter . n_overrides = n_overrides;
+if ( tree )
+guchar * bmap_start = ( guchar * ) data + 4 ;
+guint n_bitmaps = ( guint ) ( iter . this_arg - bmap_start ) / 4 ;
+guint i ;
+for (i = 0; i < n_bitmaps; i++)
+guint32 bmap = pletohl ( bmap_start + 4 * i ) ;
+if ( ( bmap & ( BIT ( IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE ) | BIT ( IEEE80211_RADIOTAP_VENDOR_NAMESPACE ) ) ) == ( BIT ( IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE ) | BIT ( IEEE80211_RADIOTAP_VENDOR_NAMESPACE ) ) )
+while ( ! ( err = ieee80211_radiotap_iterator_next ( & iter ) ) )
+offset = ( int ) ( ( guchar * ) iter . this_arg - ( guchar * ) data );
+if ( ! iter . is_radiotap_ns )
+switch ( iter . this_arg_index )
+if ( tree )
+proto_tree * flags_tree ;
+if ( tree )
+proto_item * it ;
+proto_tree * flags_tree ;
+guint16 flags ;
+if ( radiotap_bit14_fcs )
+if ( tree )
+proto_tree * flags_tree ;
+proto_item * it ;
+guint16 flags ;
+flags = tvb_get_letohs ( tvb , offset );
+it = proto_tree_add_uint ( radiotap_tree , hf_radiotap_rxflags , tvb , offset , 2 , flags );
+if ( tree )
+proto_item * it ;
+proto_tree * flags_tree ;
+guint32 flags ;
+flags = tvb_get_letohl ( tvb , offset );
+it = proto_tree_add_uint ( radiotap_tree , hf_radiotap_xchannel_flags , tvb , offset + 0 , 4 , flags );
+flags_tree = proto_item_add_subtree ( it , ett_radiotap_xchannel_flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_turbo , tvb , offset + 0 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_cck , tvb , offset + 0 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_ofdm , tvb , offset + 0 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_2ghz , tvb , offset + 0 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_5ghz , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_passive , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_dynamic , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_gfsk , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_gsm , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_sturbo , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_half , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_quarter , tvb , offset + 1 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_ht20 , tvb , offset + 2 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_ht40u , tvb , offset + 2 , 1 , flags );
+proto_tree_add_boolean ( flags_tree , hf_radiotap_xchannel_flags_ht40d , tvb , offset + 2 , 1 , flags );

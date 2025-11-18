@@ -1,0 +1,17 @@
+static void gimp_display_get_property(GObject *object,guint property_id,GValue *value,GParamSpec *pspec)
+GimpDisplay * display = ( GimpDisplay * ) ( g_type_check_instance_cast ( ( ( GTypeInstance * ) object ) , gimp_display_get_type ( ) ) ) ;
+GType gimp_display_get_type()
+static volatile gsize g_define_type_id__volatile = 0 ;
+GType g_define_type_id = g_type_register_static_simple ( gimp_object_get_type ( ) , g_intern_static_string ( "GimpDisplay" ) , ( sizeof ( GimpDisplayClass ) ) , ( ( GClassInitFunc ) gimp_display_class_intern_init ) , ( sizeof ( GimpDisplay ) ) , ( ( GInstanceInitFunc ) gimp_display_init ) , ( 0 ) ) ;
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = g_define_type_id ) : 0 );
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = ( ( gsize ) g_define_type_id ) ) : 0 );
+return g_define_type_id__volatile ;
+GimpDisplayPrivate * private = ( GimpDisplayPrivate * ) ( g_type_instance_get_private ( ( ( GTypeInstance * ) display ) , gimp_display_get_type ( ) ) ) ;
+GType gimp_display_get_type()
+static volatile gsize g_define_type_id__volatile = 0 ;
+GType g_define_type_id = g_type_register_static_simple ( gimp_object_get_type ( ) , g_intern_static_string ( "GimpDisplay" ) , ( sizeof ( GimpDisplayClass ) ) , ( ( GClassInitFunc ) gimp_display_class_intern_init ) , ( sizeof ( GimpDisplay ) ) , ( ( GInstanceInitFunc ) gimp_display_init ) , ( 0 ) ) ;
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = g_define_type_id ) : 0 );
+( void ) ( 0 ? ( * ( & g_define_type_id__volatile ) = ( ( gsize ) g_define_type_id ) ) : 0 );
+return g_define_type_id__volatile ;
+switch ( property_id )
+g_value_set_int ( value , private -> ID );

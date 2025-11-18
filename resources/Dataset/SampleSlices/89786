@@ -1,0 +1,25 @@
+static gboolean emem_tree_foreach_nodes(emem_tree_node_t *node,tree_foreach_func callback,void *user_data)
+if ( ! node )
+if ( node -> left )
+stop_traverse = emem_tree_foreach_nodes ( node -> left , callback , user_data );
+static gboolean emem_tree_foreach_nodes(emem_tree_node_t *node,tree_foreach_func callback,void *user_data)
+if ( ! node )
+if ( node -> left )
+stop_traverse = emem_tree_foreach_nodes ( node -> left , callback , user_data );
+if ( stop_traverse )
+if ( node -> u . is_subtree == 1 )
+stop_traverse = emem_tree_foreach ( ( node -> data ) , callback , user_data );
+stop_traverse = callback ( node -> data , user_data );
+if ( stop_traverse )
+if ( node -> right )
+stop_traverse = emem_tree_foreach_nodes ( node -> right , callback , user_data );
+static gboolean emem_tree_foreach_nodes(emem_tree_node_t *node,tree_foreach_func callback,void *user_data)
+if ( ! node )
+if ( node -> left )
+stop_traverse = emem_tree_foreach_nodes ( node -> left , callback , user_data );
+if ( stop_traverse )
+if ( node -> u . is_subtree == 1 )
+stop_traverse = emem_tree_foreach ( ( node -> data ) , callback , user_data );
+gboolean emem_tree_foreach(emem_tree_t *emem_tree,tree_foreach_func callback,void *user_data)
+if ( ! emem_tree )
+if ( ! emem_tree -> tree )

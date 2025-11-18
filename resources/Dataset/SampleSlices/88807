@@ -1,0 +1,14 @@
+void col_fill_in_error(column_info *cinfo,frame_data *fdata,const gboolean fill_col_exprs,const gboolean fill_fd_colums)
+int i ;
+if ( ! cinfo )
+for (i = 0; i < cinfo -> num_cols; i++)
+switch ( cinfo -> col_fmt [ i ] )
+if ( fill_fd_colums )
+col_fill_in_frame_data ( fdata , cinfo , i , fill_col_exprs );
+cinfo -> col_data [ i ] = "Read error";
+cinfo -> col_data [ i ] = "???";
+void col_fill_in_frame_data(const frame_data *fd,column_info *cinfo,const gint col,const gboolean fill_col_exprs)
+switch ( cinfo -> col_fmt [ col ] )
+cinfo -> col_data [ col ] = cinfo -> col_buf [ col ];
+cinfo -> col_data [ col ] = cinfo -> col_buf [ col ];
+guint32_to_str_buf ( fd -> cum_bytes , cinfo -> col_buf [ col ] , 256 );
