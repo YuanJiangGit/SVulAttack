@@ -1,9 +1,8 @@
 🛡️ SVulAttack  
 ==========================  
   
-📄 A replication package for paper "Shield Broken: Black-Box Adversarial Attacks on  
-LLM-Based Vulnerability Detectors"    
-📦 This repository contains data pipelines, attack algorithms, model, and utilities.   
+📄 A replication package for the paper "Shield Broken: Black-Box Adversarial Attacks on LLM-Based Vulnerability Detectors"    
+📦 This repository contains data pipelines, attack algorithms, models, and utilities.   
   
 🔖 Contents  
 --------   
@@ -15,6 +14,7 @@ LLM-Based Vulnerability Detectors"
   
 📁 Directory structure  
 -------------------   
+```
 .      
 ├── 🧰 Attack/    
 │   ├── __init__.py    
@@ -60,14 +60,15 @@ LLM-Based Vulnerability Detectors"
 │   ├── get_tokens.py                  # Convert slices into token sequences    
 │   ├── mapping.py                     # Identifier normalization utilities    
 │   ├── nope_Big_Vul.py                # Utility for masked-token evaluations    
-│   └── Util.py                        # Utility for save results    
-└── 📜 requirements.txt                   # Python dependencies    
-└── 📝 readme.md                          # README file    
-  
+│   └── Util.py                        # Utility for saving results    
+└── 📜 requirements.txt               # Python dependencies    
+└── 📝 readme.md                      # README file    
+ ```  
+ 
 🔎 Important file descriptions  
 ---------------------------   
 - 🧰 Attack/Combination_Big_Vul.py — Greedy attack coordinator.    
-This file implements the primary greedy attack loop that iterates over sample IDs, computes a per-line statement importance, and tries a prioritized sequence of transformations: dead-code insertion, constant replacement, macro replacement, loop transformations and variable renaming.   
+This file implements the primary greedy attack loop that iterates over sample IDs, computes a per-line statement importance, and tries a prioritized sequence of transformations: dead-code insertion, constant replacement, macro replacement, loop transformations, and variable renaming.   
   
 - 🧬 Attack/Genetic_Big_Vul.py — Genetic-algorithm attack orchestrator.    
 This module implements a population-based search over program variants: it builds per-line candidate sets, creates and evolves a population, evaluates fitness, and returns the best found variant for each sample.   
@@ -83,49 +84,51 @@ This module implements a population-based search over program variants: it build
 To reproduce experiments on LineVul:   
   
 1) Set up the Environment   
-   - First of all, clone this repository to your local machine and access the main dir via the following commands:   
+   - First of all, clone this repository to your local machine and access the main directory via the following commands:   
      ```bash  
      git clone https://github.com/YuanJiangGit/SVulAttack.git  
      cd SVulAttack  
      ```  
-   - Then, install the python dependencies via the following command:   
+   - Then, install the Python dependencies via the following command:   
      ```bash  
      pip install -r requirements.txt  
      ```  
-     Note: Since the Torch version is strongly dependent on the CUDA version installed on your computer, we cannot specify a particular installation version here. Please install based on your specific configuration to make GPU usable. For installation commands, refer to [this website](https://pytorch.org/).   
+     Note: Since the Torch version is strongly dependent on the CUDA version installed on your computer, we cannot specify a particular installation version here. Please install based on your specific configuration to make the GPU usable. For installation commands, refer to [this website](https://pytorch.org/).   
   
-2) Prepare Detect Model  
+2) Prepare Detection Model  
     - Run the following commands to download the pretrained model "12heads_linevul_model.bin".   
-      ```bash  
+      ```bash
       cd resources  
       cd SavedModels  
       gdown https://drive.google.com/uc?id=1RkIHg6sFnCQatodDHYhSkuTRSBULmayI
       cd ../..   
       ```  
-    - For more information of the detect model, refer to [this repository](https://github.com/awsm-research/LineVul).   
+    - For more information on the detection model, refer to [LineVul](https://github.com/awsm-research/LineVul) and [StagedVulBERT](https://github.com/YuanJiangGit/StagedVulBERT).   
 
 3) Prepare DataSet  
     - Run the following commands to download the dataset "data.pkl".   
-      ```bash  
+      ```bash
       cd resources  
       cd Dataset  
       gdown https://drive.google.com/uc?id=16Ud3P--4DaJnNugiIUmcY7fGuVhUSZpz
       cd ../..   
       ```  
-    - This file is the Big Vul dataset processed by DataProcess/DataPipline_Big_Vul.py. For more information of the dataset, refer to [this repository](https://github.com/rshariffdeen/Big-Vul/tree/master). 
+    - This file is the Big Vul dataset processed by DataProcess/DataPipline_Big_Vul.py. For more information on the dataset, refer to [this repository](https://github.com/rshariffdeen/Big-Vul/tree/master). 
   
 4) Run an attack  
    - Run the greedy attack via the following commands:   
      ```bash  
      cd Entry  
      python main_big_vul.py --algorithm greedy --result_file greedy.csv   
+     cd ..  
      ```  
    - Run the genetic attack via the following commands:   
      ```bash  
      cd Entry  
      python main_big_vul.py --algorithm genetic --result_file genetic.csv   
+     cd ..  
      ```  
-   If the default settings are not used, the following parameters can be also modified during the attack process:   
+   If the default settings are not used, the following parameters can also be modified during the attack process:   
   
    - --limits (int, default: 15): maximum number of modifications allowed per sample.   
    - --batch_size (int, default: 64): batch size of evaluation.   
@@ -134,10 +137,14 @@ To reproduce experiments on LineVul:
    - --macro_tag (bool, default: True): Enable/disable macro replacement.   
    - --unroll_loop (bool, default: True): Enable/disable loop transformations.   
    - --var_tag (bool, default: True): Enable/disable variable renaming.   
-   - --random_tag (bool, default: False): Enable/disable randomly algorithm (greedy only).   
+   - --random_tag (bool, default: False): Enable/disable the random algorithm (greedy only).   
   
 5) (Optional) Analyze results other than AS  
-   - After the attack is completed, enter the SVulAttack/resources/Results and perform further analyze based on the result files.   
+   - After the attack is completed, enter the SVulAttack/resources/Results and perform further analysis based on the result files.   
+
+📝 Statement
+---------------------------  
+The code provided in this repository is exclusively for open-source models. To prevent attacks from being misused, we will not publicly release attack code targeting closed-source models, even if it is nearly identical to existing code in this repository. If needed, please contact the author to obtain it.
   
 📚 Citation  
 -------------------   
