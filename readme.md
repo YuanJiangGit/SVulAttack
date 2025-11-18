@@ -145,8 +145,8 @@ To reproduce experiments on LineVul:
 
 📝 Statement
 ---------------------------  
-The code provided in this repository is exclusively for open-source models. To prevent attacks from being misused, we will not publicly release attack code targeting closed-source models, even if it is nearly identical to existing code in this repository. If needed, please contact the author to obtain it.
+The code provided in this repository is exclusively for open-source models. To prevent attacks from being misused, we will not publicly release attack code targeting closed-source models at this time, even if it is nearly identical to existing code in this repository. If needed, please contact the author to obtain it.
   
 📚 Citation  
 -------------------   
-"Shield Broken: Black-Box Adversarial Attacks on LLM-Based Vulnerability Detectors"
+Jiang Y, Huang S, Treude C, Su X, Wang T. Shield Broken: Black-Box Adversarial Attacks on LLM-Based Vulnerability Detectors.
