@@ -35,7 +35,7 @@
 ├── 🧹 DataProcess/    
 │   ├── __init__.py    
 │   ├── Append_Data_Big_Vul.py         # Utility for sample dataset     
-│   └── DataPipline_Big_Vul.py         # Utility for process Big Vul dataset    
+│   └── DataPipline_Big_Vul.py         # Utility for processing Big Vul dataset    
 │   └── skidf_preprocess.py            # Preprocess similarity relationships   
 ├── ▶️ Entry/    
 │   ├── __init__.py    
