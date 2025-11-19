@@ -35,7 +35,7 @@
 ├── 🧹 DataProcess/    
 │   ├── __init__.py    
 │   ├── Append_Data_Big_Vul.py         # Utility for sample dataset     
-│   └── DataPipline_Big_Vul.py         # Build whole dataset    
+│   └── DataPipline_Big_Vul.py         # Utility for process Big Vul dataset    
 │   └── skidf_preprocess.py            # Preprocess similarity relationships   
 ├── ▶️ Entry/    
 │   ├── __init__.py    
@@ -43,12 +43,10 @@
 ├── 📚 resources/    
 │   ├── Dataset/    
 │   │   ├── BigVulFile/                # Original / raw samples files    
-│   │   ├── embedding/                 # Embedding model    
-│   │   ├── Results/                   # Attack results    
-│   │   ├── SampleSlices/              # Code slices for samples    
-│   │   ├── temp/                      # intermediate files    
-│   │   ├── data.pkl                   # Whole dataset    
+│   │   ├── embedding/                 # Embedding model     
+│   │   ├── data.pkl                   # Big Vul dataset    
 │   │   └── sample_ids.json            # Sample index file    
+│   │   └── ...
 │   └── SavedModels/    
 │      └── 12heads_linevul_model.bin   # Pretrained LineVul model    
 ├── 🧩 Target_model/    
@@ -58,10 +56,10 @@
 ├── 🛠 Utils/    
 │   ├── __init__.py    
 │   ├── function.xls                   # Function name list used for identifier normalisation    
-│   ├── get_tokens.py                  # Convert slices into token sequences    
+│   ├── get_tokens.py                  # Extract tokens from sequence
 │   ├── mapping.py                     # Identifier normalization utilities    
 │   ├── nope_Big_Vul.py                # Utility for masked-token evaluations    
-│   └── Util.py                        # Utility for saving results    
+│   └── Util.py                        # Utility for formatting results     
 └── 📜 requirements.txt               # Python dependencies    
 └── 📝 readme.md                      # README file    
  ```  
@@ -75,7 +73,7 @@ This file implements the primary greedy attack loop that iterates over sample ID
 This module implements a population-based search over program variants: it builds per-line candidate sets, creates and evolves a population, evaluates fitness, and returns the best found variant for each sample.   
   
 - 🔧 Attack/Obfuscation_Big_Vul.py — Backend utilities used by greedy attack.    
-  This file centralizes target-model loading/wrapping, batch inference, similarity scoring, and helper routines that build per-sample candidate dictionaries.   
+  This file centralizes target-model loading/wrapping, batch inference, similarity scoring, and sample parsing.   
   
 - ▶️ Entry/main_big_vul.py — Command-line entrypoint and sample-preparation utilities.    
   This script provides: argument parsing, sample selection, and the chosen attack.   
@@ -97,7 +95,7 @@ To reproduce experiments on LineVul:
      Note: Since the Torch version is strongly dependent on the CUDA version installed on your computer, we cannot specify a particular installation version here. Please install based on your specific configuration to make the GPU usable. For installation commands, refer to [this website](https://pytorch.org/).   
   
 2) Prepare Detection Model  
-    - Run the following commands to download the pretrained model "12heads_linevul_model.bin".   
+    - Run the following commands to download the pretrained model.   
       ```bash
       cd resources  
       cd SavedModels  
@@ -107,7 +105,7 @@ To reproduce experiments on LineVul:
     - For more information on the detection model, refer to [LineVul](https://github.com/awsm-research/LineVul) and [StagedVulBERT](https://github.com/YuanJiangGit/StagedVulBERT).   
 
 3) Prepare DataSet  
-    - Run the following commands to download the dataset "data.pkl".   
+    - Run the following commands to download the dataset.   
       ```bash
       cd resources  
       cd Dataset  
@@ -129,19 +127,18 @@ To reproduce experiments on LineVul:
      python main_big_vul.py --algorithm genetic --result_file genetic.csv   
      cd ..  
      ```  
+   The result file is saved under SVulAttack/resources/Results.  
+
    If the default settings are not used, the following parameters can also be modified during the attack process:   
   
-   - --limits (int, default: 15): maximum number of modifications allowed per sample.   
-   - --batch_size (int, default: 64): batch size of evaluation.   
+   - --limits (int, default: 15): Maximum number of modifications allowed per sample.   
+   - --batch_size (int, default: 64): Batch size used during model inference .   
    - --add_tag (bool, default: True): Enable/disable dead-code insertion.   
    - --const_tag (bool, default: True): Enable/disable constant replacement.   
    - --macro_tag (bool, default: True): Enable/disable macro replacement.   
    - --unroll_loop (bool, default: True): Enable/disable loop transformations.   
    - --var_tag (bool, default: True): Enable/disable variable renaming.   
-   - --random_tag (bool, default: False): Enable/disable the random algorithm (greedy only).   
-  
-5) (Optional) Analyze results other than AS  
-   - After the attack is completed, enter the SVulAttack/resources/Results and perform further analysis based on the result files.   
+   - --random_tag (bool, default: False): Enable/disable the random algorithm (greedy only).
 
 📝 Statement
 ---------------------------  
