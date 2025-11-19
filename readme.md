@@ -140,7 +140,7 @@ To reproduce experiments on LineVul:
    - --var_tag (bool, default: True): Enable/disable variable renaming.   
    - --random_tag (bool, default: False): Enable/disable the random algorithm (greedy only).
 
-5) Tutorial video of Quick start
+5) Tutorial video of Quick start  
     [![Tutorial video](https://img.youtube.com/vi/Vpne3Elgyuw/hqdefault.jpg)](https://youtu.be/Vpne3Elgyuw)
 
 📝 Statement
