@@ -140,6 +140,9 @@ To reproduce experiments on LineVul:
    - --var_tag (bool, default: True): Enable/disable variable renaming.   
    - --random_tag (bool, default: False): Enable/disable the random algorithm (greedy only).
 
+5) Tutorial video of Quick start
+    [![Tutorial video](https://img.youtube.com/vi/Vpne3Elgyuw/hqdefault.jpg)](https://youtu.be/Vpne3Elgyuw)
+
 📝 Statement
 ---------------------------  
 The code provided in this repository is exclusively for open-source models. To prevent attacks from being misused, we will not publicly release attack code targeting closed-source models at this time, even if it is nearly identical to existing code in this repository. If needed, please contact the author to obtain it.
