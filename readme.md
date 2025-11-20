@@ -56,7 +56,7 @@
 ├── 🛠 Utils/    
 │   ├── __init__.py    
 │   ├── function.xls                   # Function name list used for identifier normalisation    
-│   ├── get_tokens.py                  # Extract tokens from sequence
+│   ├── get_tokens.py                  # Utility for extracting tokens from a sequence  
 │   ├── mapping.py                     # Identifier normalization utilities    
 │   ├── nope_Big_Vul.py                # Utility for masked-token evaluations    
 │   └── Util.py                        # Utility for formatting results     
@@ -92,7 +92,7 @@ To reproduce experiments on LineVul:
      ```bash  
      pip install -r requirements.txt  
      ```  
-     Note: Since the Torch version is strongly dependent on the CUDA version installed on your computer, we cannot specify a particular installation version here. Please install based on your specific configuration to make the GPU usable. For installation commands, refer to [this website](https://pytorch.org/).   
+     Note: Since the Torch version is strongly dependent on the CUDA version installed on your machine, we cannot specify a particular installation version here. Please install based on your specific configuration to make the GPU usable. For installation commands, refer to [this website](https://pytorch.org/).   
   
 2) Prepare Detection Model  
     - Run the following commands to download the pretrained model.   
